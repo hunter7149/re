@@ -1,3 +1,6 @@
+import 'package:red_tail/app/components/AppColors.dart';
+import 'package:red_tail/app/components/common_widgets.dart';
+
 import '../../../components/custom_text_field.dart';
 import '../../../components/login_top_shape.dart';
 import '../../../components/primary_button.dart';
@@ -17,79 +20,44 @@ class LoginView extends GetView<LoginController> {
         body: SafeArea(
       child: SingleChildScrollView(
         child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            //LoginTopBar(),
-            const SizedBox(height: 140),
+            SizedBox(
+              height: 100,
+            ),
+            Image.asset(
+              AppAssets.ASSET_APP_REMARK_LOGO,
+              height: 96,
+            ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    AppAssets.ASSET_APP_REMARK_LOGO,
-                    height: 96,
+                  SizedBox(
+                    height: 50,
                   ),
-                  const SizedBox(height: 16),
-                  // const Text(
-                  //   'You can buy anything from here.',
-                  //   textAlign: TextAlign.center,
-                  // ),
-                  const SizedBox(height: 20),
-                TextField(
-                  autocorrect: true,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your email',
-                    hintStyle: TextStyle(
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor,
-                        width: 3,
-                      ),
-                    ),
-                    prefixIcon: IconTheme(
-                      data: IconThemeData(
-                        color: Color(0xFF00416B),
-                      ),
-                      child: Icon(Icons.email),
-                    ),
+                  COMMONWIDGET.loginInput(
+                      controller: controller.email,
+                      hinttext: "Enter your email",
+                      obsecure: false),
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    autocorrect: true,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your password',
-                      hintStyle: TextStyle(
-                        color: Colors.black,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Color(0xFF00416B),
-                          width: 3,
-                        ),
-                      ),
-                      prefixIcon: IconTheme(
-                        data: IconThemeData(
-                          color: Color(0xFF00416B),
-                        ),
-                        child: Icon(Icons.lock),
-                      ),
-                    ),
+                  passwordField(
+                      hinttext: "Enter your password", controller: controller),
+                  SizedBox(
+                    height: 20,
                   ),
-                  const SizedBox(height: 20),
-                  PrimaryButton(
-                    onClick: () {
-                      controller.onTapLogin();
-                    },
-                    text: 'LOGIN',
+                  COMMONWIDGET.button(
+                      title: "LOGIN",
+                      funtion: () {
+                        controller.onTapLogin();
+                      },
+                      height: 50),
+                  SizedBox(
+                    height: 20,
                   ),
-                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
@@ -106,10 +74,45 @@ class LoginView extends GetView<LoginController> {
                   )
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),
     ));
+  }
+
+  static passwordField(
+      {required String hinttext, required LoginController controller}) {
+    return Obx(() {
+      return TextField(
+        controller: controller.password,
+        obscureText: controller.obsecure.value,
+        decoration: InputDecoration(
+            hintText: hinttext,
+            hintStyle: TextStyle(
+              color: Colors.black,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(
+                color: APPCOLORS.mainBlue,
+                width: 1,
+              ),
+            ),
+            suffixIcon: GestureDetector(
+              onTap: () {
+                controller.obsecureUpdater();
+              },
+              child: Icon(
+                Icons.visibility,
+                color: APPCOLORS.mainBlue,
+              ),
+            ),
+            prefixIcon: Icon(
+              Icons.lock,
+              color: APPCOLORS.mainBlue,
+            )),
+      );
+    });
   }
 }
