@@ -4,6 +4,7 @@ import '../../../../constants.dart';
 import '../../../routes/app_pages.dart';
 
 class DashboardController extends GetxController {
+  RxList<dynamic> data = <dynamic>["as", "bs"].obs;
   final RxString argumentToDetailPage = RxString('you are the best!');
   final RxString argumentFromDetailPage = RxString('no argument yet');
 

@@ -14,6 +14,10 @@ abstract class Routes {
   static const PRODUCT = _Paths.PRODUCT;
   static const PRODUCTC = _Paths.PRODUCTC;
   static const ORDERHOME = _Paths.ORDERHOME;
+  static const OFFERINFO = _Paths.OFFERINFO;
+  static const PROMOTIONALADS = _Paths.PROMOTIONALADS;
+  static const STATISTICSPAGE = _Paths.STATISTICSPAGE;
+  static const LEADERSHIPPAGE = _Paths.LEADERSHIPPAGE;
 }
 
 abstract class _Paths {
@@ -29,4 +33,8 @@ abstract class _Paths {
   static const PRODUCT = '/product';
   static const PRODUCTC = '/productc';
   static const ORDERHOME = '/orderhome';
+  static const OFFERINFO = '/offerinfo';
+  static const PROMOTIONALADS = '/promotionalads';
+  static const STATISTICSPAGE = '/statisticspage';
+  static const LEADERSHIPPAGE = '/leadershippage';
 }
