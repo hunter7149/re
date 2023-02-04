@@ -20,6 +20,8 @@ import '../modules/orderHome/bindings/Order_Home_Binding.dart';
 import '../modules/orderHome/views/order_home_view.dart';
 import '../modules/product/bindings/product_binding.dart';
 import '../modules/product/views/product_view.dart';
+import '../modules/productb/bindings/productb_binding.dart';
+import '../modules/productb/views/productb_view.dart';
 import '../modules/productc/bindings/productc_binding.dart';
 import '../modules/productc/views/productc_view.dart';
 import '../modules/promotionalads/bindings/promotionalads_binding.dart';
@@ -117,6 +119,11 @@ class AppPages {
       name: _Paths.LEADERSHIPPAGE,
       page: () => const LeadershippageView(),
       binding: LeadershippageBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRODUCTB,
+      page: () => const ProductbView(),
+      binding: ProductbBinding(),
     ),
   ];
 }

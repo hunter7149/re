@@ -18,6 +18,7 @@ abstract class Routes {
   static const PROMOTIONALADS = _Paths.PROMOTIONALADS;
   static const STATISTICSPAGE = _Paths.STATISTICSPAGE;
   static const LEADERSHIPPAGE = _Paths.LEADERSHIPPAGE;
+  static const PRODUCTB = _Paths.PRODUCTB;
 }
 
 abstract class _Paths {
@@ -37,4 +38,5 @@ abstract class _Paths {
   static const PROMOTIONALADS = '/promotionalads';
   static const STATISTICSPAGE = '/statisticspage';
   static const LEADERSHIPPAGE = '/leadershippage';
+  static const PRODUCTB = '/productb';
 }

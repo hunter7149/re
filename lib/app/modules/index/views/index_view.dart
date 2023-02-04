@@ -6,6 +6,8 @@ import 'package:red_tail/app/modules/orderHome/views/order_home_view.dart';
 import 'package:red_tail/app/modules/product/bindings/product_binding.dart';
 import 'package:red_tail/app/modules/product/views/product_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:red_tail/app/modules/productb/bindings/productb_binding.dart';
+import 'package:red_tail/app/modules/productb/views/productb_view.dart';
 import 'package:red_tail/app/modules/promotionalads/bindings/promotionalads_binding.dart';
 import 'package:red_tail/app/modules/promotionalads/views/promotionalads_view.dart';
 import 'package:red_tail/app/modules/statisticspage/bindings/statisticspage_binding.dart';
@@ -85,6 +87,11 @@ class IndexView extends GetView<IndexController> {
                       routeName: Routes.LEADERSHIPPAGE,
                       page: () => LeadershippageView(),
                       binding: LeadershippageBinding());
+                } else if (routeSettings.name == Routes.PRODUCTB) {
+                  return GetPageRoute(
+                      routeName: Routes.PRODUCTB,
+                      page: () => ProductbView(),
+                      binding: ProductbBinding());
                 }
               },
             ),

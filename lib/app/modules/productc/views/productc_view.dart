@@ -23,7 +23,6 @@ class ProductcView extends GetView<ProductcController> {
     //final String datat=data[0] as String;
     return Scaffold(
       appBar: AppBar(
-
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         toolbarHeight: 50.0,
@@ -31,11 +30,10 @@ class ProductcView extends GetView<ProductcController> {
         elevation: 0.0,
         titleTextStyle: TextStyle(color: Colors.black87),
 
-
         title: const Text("Product Catalogue"),
         actions: <Widget>[
           IconButton(
-            icon:Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back),
             // Image.asset("assets/images/back_arrow.jpg"),
             color: Colors.black87,
             tooltip: 'Comment Icon',
@@ -55,49 +53,49 @@ class ProductcView extends GetView<ProductcController> {
           onPressed: () {},
         ),
       ),
-
       body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: ListView(
-              children: [
-                // const TextField(
-                //   decoration: InputDecoration(
-                //       contentPadding: EdgeInsets.only(left: 16),
-                //       hintText: 'Search Customer',
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.all(
-                //           Radius.circular(32.0),
-                //         ),
-                //       )),
-                //   style: TextStyle(color: Colors.black),
-                // ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                  height: 700,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                       CustomImageCatalog(validationText: "${argument}",label:"assets/images/Nior-Aloevera.png"),
-                      CustomImageCatalog(validationText: "${argument}",label:"assets/images/Nior-Aloevera.png"),
-                      const CustomImageVal(label:"assets/images/product.jpg"),
-                      const CustomImageVal(label:"assets/images/product.jpg"),
-                      const CustomImageVal(label:"assets/images/product.jpg"),
-                      const CustomImageVal(label:"assets/images/product.jpg"),
-                      const CustomImageVal(label:"assets/images/product.jpg"),
-                    ],
-                  ),
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: ListView(
+            children: [
+              // const TextField(
+              //   decoration: InputDecoration(
+              //       contentPadding: EdgeInsets.only(left: 16),
+              //       hintText: 'Search Customer',
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.all(
+              //           Radius.circular(32.0),
+              //         ),
+              //       )),
+              //   style: TextStyle(color: Colors.black),
+              // ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                height: 700,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    CustomImageCatalog(
+                        validationText: "${argument}",
+                        label: "assets/images/Nior-Aloevera.png"),
+                    CustomImageCatalog(
+                        validationText: "${argument}",
+                        label: "assets/images/Nior-Aloevera.png"),
+                    const CustomImageVal(label: "assets/images/product.jpg"),
+                    const CustomImageVal(label: "assets/images/product.jpg"),
+                    const CustomImageVal(label: "assets/images/product.jpg"),
+                    const CustomImageVal(label: "assets/images/product.jpg"),
+                    const CustomImageVal(label: "assets/images/product.jpg"),
+                  ],
                 ),
-                const SizedBox(height: 10),
+              ),
+              const SizedBox(height: 10),
 
-
-                //const SizedBox(height: 80),
-              ],
-            ),
+              //const SizedBox(height: 80),
+            ],
           ),
-
         ),
-
+      ),
     );
   }
 }
