@@ -1,4 +1,8 @@
 import 'dart:ffi';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:red_tail/app/components/common_widgets.dart';
 import 'package:red_tail/app/components/custom_image_catalog.dart';
 import 'package:red_tail/app/components/custom_image_val.dart';
 
@@ -22,80 +26,179 @@ class ProductcView extends GetView<ProductcController> {
     //final  data=Get.arguments;
     //final String datat=data[0] as String;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        toolbarHeight: 50.0,
-        bottomOpacity: 0.0,
-        elevation: 0.0,
-        titleTextStyle: TextStyle(color: Colors.black87),
-
-        title: const Text("Product Catalogue"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.arrow_back),
-            // Image.asset("assets/images/back_arrow.jpg"),
-            color: Colors.black87,
-            tooltip: 'Comment Icon',
-            onPressed: () => Get.back(
-              result: controller.count.value,
-              id: Constants.nestedNavigationNavigatorId,
-            ),
-          ), //IconButton
-          //IconButton
-        ], //<Widget>[]
-        // backgroundColor: Colors.greenAccent[400],
-        // elevation: 50.0,
-        leading: IconButton(
-          icon: const Icon(Icons.library_books_rounded),
-          tooltip: 'Menu Icon',
-          color: Colors.black87,
-          onPressed: () {},
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: ListView(
-            children: [
-              // const TextField(
-              //   decoration: InputDecoration(
-              //       contentPadding: EdgeInsets.only(left: 16),
-              //       hintText: 'Search Customer',
-              //       border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.all(
-              //           Radius.circular(32.0),
-              //         ),
-              //       )),
-              //   style: TextStyle(color: Colors.black),
-              // ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
-                height: 700,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    CustomImageCatalog(
-                        validationText: "${argument}",
-                        label: "assets/images/Nior-Aloevera.png"),
-                    CustomImageCatalog(
-                        validationText: "${argument}",
-                        label: "assets/images/Nior-Aloevera.png"),
-                    const CustomImageVal(label: "assets/images/product.jpg"),
-                    const CustomImageVal(label: "assets/images/product.jpg"),
-                    const CustomImageVal(label: "assets/images/product.jpg"),
-                    const CustomImageVal(label: "assets/images/product.jpg"),
-                    const CustomImageVal(label: "assets/images/product.jpg"),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              //const SizedBox(height: 80),
-            ],
+        appBar: COMMONWIDGET.globalAppBar(
+            tittle: "Description",
+            backFunction: () {
+              Get.back(result: 1);
+            }),
+        body: SafeArea(
+            child: Obx(
+          () => CarouselSlider(
+            options: CarouselOptions(
+                height: MediaQuery.of(context).size.height,
+                viewportFraction: 1),
+            items: controller.products.map((i) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 250,
+                              width: MediaQuery.of(context).size.width,
+                              // width: 125,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(15),
+                                    bottomLeft: Radius.circular(15)),
+                                child: CachedNetworkImage(
+                                  imageUrl: "${i['img']}",
+                                  // height: 160,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Center(
+                                      child: CircularProgressIndicator()),
+                                  errorWidget: (ctx, url, err) => Image.asset(
+                                    'assets/images/noprev.png',
+                                    height: 70,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '${i['name']}',
+                              style: TextStyle(
+                                  fontSize: 24.0, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Weight: ${i['weight']}',
+                              style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Offers: ${i['offer']}',
+                              style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Price: ${i['price']} Tk',
+                              style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            COMMONWIDGET.addtoCart(
+                                title: "Add to cart",
+                                funtion: () {},
+                                color: Colors.green.shade300),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 20),
+                              height: 1,
+                              color: Colors.grey.shade300,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'About ${i['name']}',
+                                      style: TextStyle(
+                                          fontSize: 24.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      ' ${i['description']} ',
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Active Ingredients',
+                                      style: TextStyle(
+                                          fontSize: 24.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      i['ingredients'],
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Speical Claims',
+                                      style: TextStyle(
+                                          fontSize: 24.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      i['claims'],
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ));
+                },
+              );
+            }).toList(),
           ),
-        ),
-      ),
-    );
+        )));
   }
 }

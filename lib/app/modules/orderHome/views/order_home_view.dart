@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
 
@@ -39,8 +40,8 @@ class OrderHomeView extends GetView<OrderHomeController> {
           bottomOpacity: 0.0,
           elevation: 0.0,
           titleTextStyle: TextStyle(color: Colors.black87),
-          title: Image.asset("assets/logo/login_logo_hb.png",
-              width: 150, height: 30, fit: BoxFit.fill),
+          // title: Image.asset("assets/logo/login_logo_hb.png",
+          //     width: 150, height: 30, fit: BoxFit.fill),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.arrow_back),
@@ -199,119 +200,200 @@ class OrderHomeView extends GetView<OrderHomeController> {
                 //   style: TextStyle(color: Colors.black),
                 // ),
                 const SizedBox(height: 20),
-                Text(
-                  'Last order',
-                  style: TextStyle(fontSize: 22, color: Colors.grey.shade700),
+                Obx(
+                  () => controller.isReorderCompleted.value
+                      ? Container()
+                      : Text(
+                          'Last order',
+                          style: TextStyle(
+                              fontSize: 22, color: Colors.grey.shade700),
+                        ),
                 ),
                 const SizedBox(height: 10),
                 //---------------------Last order option---------------//
 
-                Column(
-                  children: [
-                    Container(
-                      height: 250,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade500),
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10))),
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: context.isPhone
-                              ? 2
-                              : context.isSmallTablet
-                                  ? 3
-                                  : 4,
-                          childAspectRatio: 4 / 2.6,
-                          mainAxisSpacing: 5,
-                          crossAxisSpacing: 5,
-                        ),
-                        itemCount: controller.previousOrder.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
+                Obx(
+                  () => controller.isReorderCompleted.value
+                      ? Container()
+                      : controller.isReorder.value
+                          ? Container(
+                              height: 300,
                               decoration: BoxDecoration(
+                                  color: Colors.green.shade300,
                                   border:
                                       Border.all(color: Colors.grey.shade500),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10))),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CachedNetworkImage(
-                                    imageUrl: controller.previousOrder[0]
-                                            ['products'][index]['img']
-                                        .toString(),
-                                    // height: 160,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => Center(
-                                        child: CircularProgressIndicator()),
-                                    errorWidget: (ctx, url, err) => Image.asset(
-                                      'assets/images/noprev.png',
-                                      height: 70,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.check,
+                                      color: Colors.white,
+                                      size: 100,
                                     ),
+                                    Text(
+                                      'Products added to cart!',
+                                      style: TextStyle(
+                                          fontSize: 26,
+                                          color: Colors.grey.shade100),
+                                    ),
+                                  ]),
+                            )
+                          : Column(
+                              children: [
+                                Container(
+                                  height: 250,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 0, horizontal: 10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey.shade500),
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10))),
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: context.isPhone
+                                          ? 2
+                                          : context.isSmallTablet
+                                              ? 3
+                                              : 4,
+                                      childAspectRatio: 4 / 2.6,
+                                      mainAxisSpacing: 5,
+                                      crossAxisSpacing: 5,
+                                    ),
+                                    itemCount: controller
+                                        .previousOrder[0]['products'].length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.grey.shade500),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(10))),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  15),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  15)),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: controller
+                                                        .previousOrder[0]
+                                                            ['products'][index]
+                                                            ['img']
+                                                        .toString(),
+                                                    // height: 160,
+                                                    fit: BoxFit.cover,
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        Center(
+                                                            child:
+                                                                CircularProgressIndicator()),
+                                                    errorWidget:
+                                                        (ctx, url, err) =>
+                                                            Image.asset(
+                                                      'assets/images/noprev.png',
+                                                      height: 70,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 5),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      controller
+                                                          .previousOrder[0]
+                                                              ['products']
+                                                              [index]['name']
+                                                          .toString(),
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                          fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                        controller
+                                                            .previousOrder[0]
+                                                                ['products']
+                                                                [index]
+                                                                ['catagory']
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontSize: 10)),
+                                                    Text(
+                                                        controller
+                                                            .previousOrder[0]
+                                                                ['products']
+                                                                [index]['brand']
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontSize: 10)),
+                                                    Text(
+                                                      'Unit Tk ${controller.previousOrder[0]['products'][index]['price'].toString()}',
+                                                      style: TextStyle(
+                                                          fontSize: 10),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                  SizedBox(width: 5),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        controller.previousOrder[0]['products']
-                                                [index]['name']
-                                            .toString(),
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                      Text(
-                                          controller.previousOrder[0]
-                                                  ['products'][index]
-                                                  ['catagory']
-                                              .toString(),
-                                          style: TextStyle(fontSize: 10)),
-                                      Text(
-                                          controller.previousOrder[0]
-                                                  ['products'][index]['brand']
-                                              .toString(),
-                                          style: TextStyle(fontSize: 10)),
-                                      Text(
-                                        'Unit Tk ${controller.previousOrder[0]['products'][index]['price'].toString()}',
-                                        style: TextStyle(fontSize: 10),
-                                      )
-                                    ],
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    controller.addAllToCart();
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: Colors.green.shade300,
+                                        // border: Border.all(color: Colors.grey.shade500),
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10))),
+                                    child: Center(
+                                        child: Text(
+                                      "ADD TO CART",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white),
+                                    )),
                                   ),
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.green.shade300,
-                          // border: Border.all(color: Colors.grey.shade500),
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10))),
-                      child: Center(
-                          child: Text(
-                        "ADD TO CART",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      )),
-                    )
-                  ],
                 ),
                 SizedBox(height: 16),
                 Text(

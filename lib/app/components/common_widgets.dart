@@ -48,6 +48,30 @@ class COMMONWIDGET {
     );
   }
 
+  static addtoCart(
+      {required String title,
+      required VoidCallback funtion,
+      double? height,
+      double? margin,
+      Color? color}) {
+    return ZoomTapAnimation(
+      onTap: funtion,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: margin ?? 10),
+        height: height ?? 50,
+        width: double.maxFinite,
+        decoration: BoxDecoration(
+            color: color ?? APPCOLORS.mainBlue,
+            borderRadius: BorderRadius.circular(10)),
+        child: Center(
+            child: Text(
+          title,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+        )),
+      ),
+    );
+  }
+
   static globalAppBar(
       {IconData? leadingIcon,
       Color? leadingIconColor,
