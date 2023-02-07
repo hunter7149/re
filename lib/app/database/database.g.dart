@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `cartItem` (`id` INTEGER NOT NULL, `userid` INTEGER NOT NULL, `productId` INTEGER NOT NULL, `customerName` TEXT NOT NULL, `beatName` TEXT NOT NULL, `productName` TEXT NOT NULL, `catagory` TEXT NOT NULL, `unit` TEXT NOT NULL, `image` TEXT NOT NULL, `price` REAL NOT NULL, `brand` TEXT NOT NULL, `quantity` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `cartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `productId` INTEGER, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -109,7 +109,7 @@ class _$CartItemDao extends CartItemDao {
             'cartItem',
             (cartItem item) => <String, Object?>{
                   'id': item.id,
-                  'userid': item.userid,
+                  'userId': item.userId,
                   'productId': item.productId,
                   'customerName': item.customerName,
                   'beatName': item.beatName,
@@ -133,40 +133,40 @@ class _$CartItemDao extends CartItemDao {
 
   @override
   Future<List<cartItem>> findAllCartItem() async {
-    return _queryAdapter.queryList('SELECT * FROM cartlist',
+    return _queryAdapter.queryList('SELECT * FROM cartItem',
         mapper: (Map<String, Object?> row) => cartItem(
-            row['id'] as int,
-            row['userid'] as int,
-            row['productId'] as int,
-            row['customerName'] as String,
-            row['beatName'] as String,
-            row['productName'] as String,
-            row['catagory'] as String,
-            row['unit'] as String,
-            row['image'] as String,
-            row['price'] as double,
-            row['brand'] as String,
-            row['quantity'] as int));
+            id: row['id'] as int?,
+            userId: row['userId'] as int?,
+            productId: row['productId'] as int?,
+            customerName: row['customerName'] as String?,
+            beatName: row['beatName'] as String?,
+            productName: row['productName'] as String?,
+            catagory: row['catagory'] as String?,
+            unit: row['unit'] as String?,
+            image: row['image'] as String?,
+            price: row['price'] as double?,
+            brand: row['brand'] as String?,
+            quantity: row['quantity'] as int?));
   }
 
   @override
   Stream<cartItem?> findCartItemById(int id) {
-    return _queryAdapter.queryStream('SELECT * FROM cartlist WHERE userid = ?1',
+    return _queryAdapter.queryStream('SELECT * FROM cartItem WHERE userid = ?1',
         mapper: (Map<String, Object?> row) => cartItem(
-            row['id'] as int,
-            row['userid'] as int,
-            row['productId'] as int,
-            row['customerName'] as String,
-            row['beatName'] as String,
-            row['productName'] as String,
-            row['catagory'] as String,
-            row['unit'] as String,
-            row['image'] as String,
-            row['price'] as double,
-            row['brand'] as String,
-            row['quantity'] as int),
+            id: row['id'] as int?,
+            userId: row['userId'] as int?,
+            productId: row['productId'] as int?,
+            customerName: row['customerName'] as String?,
+            beatName: row['beatName'] as String?,
+            productName: row['productName'] as String?,
+            catagory: row['catagory'] as String?,
+            unit: row['unit'] as String?,
+            image: row['image'] as String?,
+            price: row['price'] as double?,
+            brand: row['brand'] as String?,
+            quantity: row['quantity'] as int?),
         arguments: [id],
-        queryableName: 'cartlist',
+        queryableName: 'cartItem',
         isView: false);
   }
 

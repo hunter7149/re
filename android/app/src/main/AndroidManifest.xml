@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.red_tail">
    <application
+        android:usesCleartextTraffic="true"
         android:label="red_tail"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

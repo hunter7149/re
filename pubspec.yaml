@@ -25,8 +25,9 @@ dependencies:
   cached_network_image: ^3.2.3
   google_maps_flutter: ^2.2.3
   floor: ^1.4.1
-  chewie: ^1.4.0
+  # chewie: ^1.4.0
   carousel_slider: ^4.2.1
+  video_player: ^2.5.1
   
 
 dev_dependencies:

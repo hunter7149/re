@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:red_tail/app/DAO/cartitemdao.dart';
 import 'package:red_tail/app/models/cartproduct.dart';
 
 import '../../../database/database.dart';
@@ -191,42 +192,58 @@ class OrderHomeController extends GetxController {
   RxBool isReorderCompleted = false.obs;
 
   addAllToCart() async {
-    // final database =
-    //     await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
-    // final cartItemDao = database.cartItemDao;
-    // final tempList = previousOrder[0]["products"];
-    // tempList.forEach((element) async {
-    //   cartItem item = cartItem(
-    //       0,
-    //       1,
-    //       element["productId"],
-    //       dropdownBeatValue.value,
-    //       dropdownCustomerValue.value,
-    //       element["name"],
-    //       element["catagory"],
-    //       element["unit"],
-    //       element["img"],
-    //       double.tryParse(element["price"].toString()) ?? 0.0,
-    //       element["brand"],
-    //       element["quantity"]);
-    //   await cartItemDao.insertCartItem(item);
-    // });
-    // // final data = await cartItemDao.findAllCartItem() as List<cartItem>;
-    // print("=======================");
-    // // print(data);
-    isReorder.value = true;
-    update();
-    Timer(Duration(seconds: 2), () {
-      isReorderCompleted.value = true;
-      update();
+    final tempList = previousOrder[0]["products"];
+    tempList.forEach((element) async {
+      cartItem item = cartItem(
+          userId: 1,
+          productId: element["productId"],
+          beatName: dropdownBeatValue.value,
+          customerName: dropdownCustomerValue.value,
+          productName: element["name"],
+          catagory: element["catagory"],
+          unit: element["unit"],
+          image: element["img"],
+          price: double.tryParse(element["price"].toString()) ?? 0.0,
+          brand: element["brand"],
+          quantity: element["quantity"]);
+      await cartItemDao.insertCartItem(item);
     });
+    // final data = await cartItemDao.findAllCartItem() as List<cartItem>;
+    print("=======================");
+    // print(data);
+    // isReorder.value = true;
+    // update();
+    loadData();
+    // Timer(Duration(seconds: 2), () {
+    //   isReorderCompleted.value = true;
+    // update();
+    // });
+  }
+
+  //get value
+  RxList<cartItem> cartItems = <cartItem>[].obs;
+  loadData() async {
+    await cartItemDao.findAllCartItem().then((value) {
+      cartItems.value = value;
+      print("dta length -> ${cartItems[0].beatName}");
+    });
+  }
+
+  late CartItemDao cartItemDao;
+
+  initValues() async {
+    final database =
+        await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
+    cartItemDao = database.cartItemDao;
+
+    beatCustomerValueSet();
+    initialDropdownValue();
   }
 
   @override
   void onInit() {
     super.onInit();
-    beatCustomerValueSet();
-    initialDropdownValue();
+    initValues();
   }
 
   @override

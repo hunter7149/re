@@ -45,7 +45,7 @@ class ProductbView extends GetView<ProductbController> {
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 125,
+                          width: 100,
                           child: ClipRRect(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(15),
@@ -80,55 +80,55 @@ class ProductbView extends GetView<ProductbController> {
                               //   "Description: ${controller.products[index]['description']}",
                               //   style: TextStyle(fontSize: 16),
                               // ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "USP: ${controller.products[index]['usp']}",
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.grey.shade600),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "SKU's: ${controller.products[index]['sku']}",
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.grey.shade600),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Variant: ${controller.products[index]['variant']}",
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.grey.shade600),
-                              ),
+                              // SizedBox(
+                              //   height: 5,
+                              // ),
+                              // Text(
+                              //   "USP: ${controller.products[index]['usp']}",
+                              //   style: TextStyle(
+                              //       fontSize: 16, color: Colors.grey.shade600),
+                              // ),
+                              // SizedBox(
+                              //   height: 5,
+                              // ),
+                              // Text(
+                              //   "SKU's: ${controller.products[index]['sku']}",
+                              //   style: TextStyle(
+                              //       fontSize: 16, color: Colors.grey.shade600),
+                              // ),
+                              // SizedBox(
+                              //   height: 5,
+                              // ),
+                              // Text(
+                              //   "Variant: ${controller.products[index]['variant']}",
+                              //   style: TextStyle(
+                              //       fontSize: 16, color: Colors.grey.shade600),
+                              // ),
                             ],
                           ),
                         ),
                         SizedBox(
                           width: 10,
                         ),
-                        // Container(
-                        //   height: 80,
-                        //   width: 50,
-                        //   margin: EdgeInsets.only(top: 20),
-                        //   decoration: BoxDecoration(
-                        //       color: Colors.teal.shade500,
-                        //       borderRadius: BorderRadius.only(
-                        //           topLeft: Radius.circular(30),
-                        //           bottomRight: Radius.circular(15))),
-                        //   child: Center(
-                        //     child: Text(
-                        //       "${controller.products[index]['quantity']}",
-                        //       style: TextStyle(
-                        //           color: Colors.white,
-                        //           fontSize: 18,
-                        //           fontWeight: FontWeight.bold),
-                        //     ),
-                        //   ),
-                        // )
+                        Container(
+                          height: 90,
+                          width: 50,
+                          margin: EdgeInsets.only(top: 20),
+                          decoration: BoxDecoration(
+                              color: Colors.teal.shade500,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  bottomRight: Radius.circular(15))),
+                          child: Center(
+                            child: Text(
+                              "${controller.products[index]['quantity']}",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),

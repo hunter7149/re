@@ -2,9 +2,13 @@ import 'dart:ffi';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:chewie/chewie.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:red_tail/app/components/common_widgets.dart';
 import 'package:red_tail/app/components/custom_image_catalog.dart';
 import 'package:red_tail/app/components/custom_image_val.dart';
+import 'package:video_player/video_player.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../constants.dart';
 import '../../../components/bottom_navigation.dart';
@@ -29,15 +33,32 @@ class ProductcView extends GetView<ProductcController> {
         appBar: COMMONWIDGET.globalAppBar(
             tittle: "Description",
             backFunction: () {
-              Get.back(result: 1);
+              Get.back(
+                id: Constants.nestedNavigationNavigatorId,
+              );
             }),
         body: SafeArea(
             child: Obx(
           () => CarouselSlider(
             options: CarouselOptions(
+                onScrolled: (value) {},
                 height: MediaQuery.of(context).size.height,
                 viewportFraction: 1),
             items: controller.products.map((i) {
+              List<String> ingredients = i["ingredients"];
+              List<String> claims = i["claims"];
+              String a = i["video"];
+              VideoPlayerController videoPlayerController =
+                  VideoPlayerController.network(i["video"]);
+              ;
+              Future.microtask(() async {
+                await videoPlayerController.initialize();
+                videoPlayerController.play();
+              });
+
+              // isVideoInitalized.value = true;
+              // controller.testpo(a: i["video"]);
+
               return Builder(
                 builder: (BuildContext context) {
                   return Container(
@@ -111,86 +132,193 @@ class ProductcView extends GetView<ProductcController> {
                               height: 1,
                               color: Colors.grey.shade300,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'About ${i['name']}',
-                                      style: TextStyle(
-                                          fontSize: 24.0,
-                                          fontWeight: FontWeight.bold),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 250,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: VideoPlayer(videoPlayerController),
+                                  ),
+                                  ZoomTapAnimation(
+                                    onTap: () {
+                                      videoPlayerController.play();
+                                    },
+                                    child: Icon(
+                                      Icons.play_arrow,
+                                      size: 40,
                                     ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      ' ${i['description']} ',
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            // Obx(() => controller.isVideoInitalized.value
+                            //     ? controller.seeVideo(link: i["video"])
+
+                            //     //  Container(
+                            //     //     height: 250,
+                            //     //   )
+                            //     //     color: Colors.red,
+                            //     //     child: VideoPlayer(
+                            //     //         controller.videoPlayerController),
+                            //     : Container()),
+                            // Container(
+                            //     height: 250,
+                            //     color: Colors.red,
+                            //     child: VideoPlayer(videoPlayerController)),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'About ${i['name']}',
+                                        style: TextStyle(
+                                            fontSize: 24.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        ' ${i['description']} ',
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Active Ingredients',
-                                      style: TextStyle(
-                                          fontSize: 24.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      i['ingredients'],
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Active Ingredients',
+                                        style: TextStyle(
+                                            fontSize: 24.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: ingredients
+                                            .map((e) => Container(
+                                                  margin: EdgeInsets.all(5),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        FontAwesomeIcons
+                                                            .circleDot,
+                                                        size: 10,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 2,
+                                                      ),
+                                                      Text(
+                                                        e,
+                                                        style: TextStyle(
+                                                            fontSize: 18.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ))
+                                            .toList(),
+                                      )
+                                      // Text(
+                                      //   i['ingredients'],
+                                      //   style: TextStyle(
+                                      //       fontSize: 20.0,
+                                      //       fontWeight: FontWeight.w400),
+                                      // ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Speical Claims',
-                                      style: TextStyle(
-                                          fontSize: 24.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      i['claims'],
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Speical Claims',
+                                        style: TextStyle(
+                                            fontSize: 24.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: claims
+                                            .map((e) => Container(
+                                                  margin: EdgeInsets.all(5),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        FontAwesomeIcons
+                                                            .circleDot,
+                                                        size: 10,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 2,
+                                                      ),
+                                                      Text(
+                                                        e,
+                                                        style: TextStyle(
+                                                            fontSize: 18.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ))
+                                            .toList(),
+                                      )
+                                      // Text(
+                                      //   i['claims'],
+                                      //   style: TextStyle(
+                                      //       fontSize: 20.0,
+                                      //       fontWeight: FontWeight.w400),
+                                      // ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         ),
