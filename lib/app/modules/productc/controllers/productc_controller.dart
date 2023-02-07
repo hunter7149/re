@@ -2,8 +2,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:red_tail/app/models/cartproduct.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../DAO/cartitemdao.dart';
+import '../../../database/database.dart';
 import '../../../routes/app_pages.dart';
 
 class ProductcController extends GetxController {
@@ -96,10 +99,51 @@ class ProductcController extends GetxController {
     update();
   }
 
+  addToCart({required cartItem data}) async {
+    cartItem item = data;
+    if (await cartItemDao.insertCartItem(data).then((value) => true)) {
+      totalpriceUpdater();
+      Get.snackbar("Success", "Product added successfully!",
+          backgroundColor: Colors.green);
+    } else {}
+    ;
+
+    // final data = await cartItemDao.findAllCartItem() as List<cartItem>;
+    print("=======================");
+    // print(data);
+    // isReorder.value = true;
+    // update();
+
+    // Timer(Duration(seconds: 2), () {
+    //   isReorderCompleted.value = true;
+    // update();
+    // });
+  }
+
+  late CartItemDao cartItemDao;
+
+  initValues() async {
+    final database =
+        await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
+    cartItemDao = database.cartItemDao;
+  }
+
+  totalpriceUpdater() {
+    totalPrice.value = 0.0;
+    update();
+  }
+
+  RxDouble totalPrice = 0.0.obs;
+  calculation({required double price, required int quanity}) {
+    totalPrice.value = price * quanity;
+    update();
+  }
+
   @override
   void onInit() {
     super.onInit();
     initializeProducts();
+    initValues();
     // videoInit();
     // videoController();
   }
