@@ -103,9 +103,21 @@ class ProductcController extends GetxController {
     cartItem item = data;
     if (await cartItemDao.insertCartItem(data).then((value) => true)) {
       totalpriceUpdater();
-      Get.snackbar("Success", "Product added successfully!",
-          backgroundColor: Colors.green);
-    } else {}
+      Get.snackbar(
+        "Success",
+        "Product added successfully!",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } else {
+      totalpriceUpdater();
+      Get.snackbar(
+        "Success",
+        "Product was not added!",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
     ;
 
     // final data = await cartItemDao.findAllCartItem() as List<cartItem>;

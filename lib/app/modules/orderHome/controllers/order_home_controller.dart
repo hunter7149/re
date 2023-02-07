@@ -211,13 +211,13 @@ class OrderHomeController extends GetxController {
     // final data = await cartItemDao.findAllCartItem() as List<cartItem>;
     print("=======================");
     // print(data);
-    // isReorder.value = true;
-    // update();
+    isReorder.value = true;
+    update();
     loadData();
-    // Timer(Duration(seconds: 2), () {
-    //   isReorderCompleted.value = true;
-    // update();
-    // });
+    Timer(Duration(seconds: 2), () {
+      isReorderCompleted.value = true;
+      update();
+    });
   }
 
   //get value
