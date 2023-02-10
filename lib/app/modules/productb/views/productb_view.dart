@@ -111,14 +111,14 @@ class ProductbView extends GetView<ProductbController> {
                           width: 10,
                         ),
                         Container(
-                          height: 90,
-                          width: 50,
-                          margin: EdgeInsets.only(top: 20),
+                          height: 50,
+                          width: 90,
+                          // margin: EdgeInsets.only(top: 20),
                           decoration: BoxDecoration(
                               color: Colors.teal.shade500,
                               borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  bottomRight: Radius.circular(15))),
+                                  topLeft: Radius.circular(15),
+                                  bottomLeft: Radius.circular(15))),
                           child: Center(
                             child: Text(
                               "${controller.products[index]['quantity']}",

@@ -128,7 +128,20 @@ class ProductcView extends GetView<ProductcController> {
                             COMMONWIDGET.addtoCart(
                                 title: "Add to cart",
                                 funtion: () {
-                                  addAlert(controller: controller, data: i);
+                                  cartItem product = cartItem(
+                                      userId: 1,
+                                      productId: i["productId"],
+                                      customerName: "",
+                                      beatName: "",
+                                      productName: i["name"],
+                                      catagory: i["catagory"],
+                                      unit: i["unit"],
+                                      image: i["img"],
+                                      price: i["price"],
+                                      brand: i["brand"],
+                                      quantity: 1);
+                                  controller.addToCart(data: product);
+                                  // addAlert(controller: controller, data: i);
                                 },
                                 color: Colors.green.shade300),
                             Container(
