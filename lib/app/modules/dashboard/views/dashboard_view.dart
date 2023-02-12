@@ -85,6 +85,7 @@ class DashboardView extends GetView<DashboardController> {
                           menuItem(
                               icon: Icons.shopping_cart_checkout,
                               color: Colors.blue,
+                              valid: true,
                               title: "Order Management",
                               function: () {
                                 Get.toNamed(Routes.ORDERHOME,
@@ -94,6 +95,7 @@ class DashboardView extends GetView<DashboardController> {
                               icon: Icons.list,
                               color: Colors.deepOrange,
                               title: "Product Catalogue",
+                              valid: true,
                               function: () async {
                                 var result;
                                 result = await Get.toNamed(Routes.PRODUCT,
@@ -109,6 +111,7 @@ class DashboardView extends GetView<DashboardController> {
                               icon: Icons.discount,
                               color: Colors.pink,
                               title: "Offers",
+                              valid: false,
                               function: () {
                                 Get.toNamed(Routes.OFFERINFO,
                                     id: Constants.nestedNavigationNavigatorId);
@@ -117,6 +120,7 @@ class DashboardView extends GetView<DashboardController> {
                               icon: Icons.tv,
                               color: Colors.green,
                               title: "Promotionals",
+                              valid: false,
                               function: () {
                                 Get.toNamed(Routes.PROMOTIONALADS,
                                     id: Constants.nestedNavigationNavigatorId);
@@ -125,6 +129,7 @@ class DashboardView extends GetView<DashboardController> {
                               icon: FontAwesomeIcons.lineChart,
                               color: Colors.teal,
                               title: "Statistics",
+                              valid: false,
                               function: () {
                                 Get.toNamed(Routes.STATISTICSPAGE,
                                     id: Constants.nestedNavigationNavigatorId);
@@ -133,6 +138,7 @@ class DashboardView extends GetView<DashboardController> {
                               icon: Icons.list,
                               color: Colors.deepPurple,
                               title: "Leadership Board",
+                              valid: false,
                               function: () {
                                 Get.toNamed(Routes.LEADERSHIPPAGE,
                                     id: Constants.nestedNavigationNavigatorId);
@@ -196,9 +202,10 @@ class DashboardView extends GetView<DashboardController> {
       {required IconData icon,
       required MaterialColor color,
       required String title,
-      required VoidCallback function}) {
+      required VoidCallback function,
+      required bool valid}) {
     return ZoomTapAnimation(
-      onTap: function,
+      onTap: valid ? function : () {},
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         // EdgeInsets.only(
@@ -209,26 +216,27 @@ class DashboardView extends GetView<DashboardController> {
         //                                 ? 8
         //                                 : 0),
         decoration: BoxDecoration(
-            color: color.shade100, borderRadius: BorderRadius.circular(15)),
+            color: valid ? color.shade100 : Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(15)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
               decoration: BoxDecoration(
-                  color: color.shade200,
+                  color: valid ? color.shade200 : Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(100)),
               padding: EdgeInsets.all(15),
               child: Icon(
                 icon,
                 size: 50,
-                color: color.shade500,
+                color: valid ? color.shade500 : Colors.grey.shade500,
               ),
             ),
             Text(
               title,
               style: TextStyle(
                   fontSize: 18,
-                  color: color.shade500,
+                  color: valid ? color.shade500 : Colors.grey.shade500,
                   fontWeight: FontWeight.w500),
             )
           ],

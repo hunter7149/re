@@ -116,7 +116,11 @@ class IndexView extends GetView<IndexController> {
               items: [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.apps), label: 'Service'),
+                    icon: Icon(
+                      Icons.apps,
+                      size: 30,
+                    ),
+                    label: 'Service'),
                 BottomNavigationBarItem(
                     icon: Obx(() => Stack(
                           alignment: Alignment.center,
