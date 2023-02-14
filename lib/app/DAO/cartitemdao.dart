@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:floor/floor.dart';
 import 'package:red_tail/app/models/cartproduct.dart';
 
@@ -12,6 +14,13 @@ abstract class CartItemDao {
   @insert
   Future<void> insertCartItem(CartItem item);
 
-  @Query('DELETE FROM CartItem WHERE userid = :userID')
-  Future<void> deleteUsersByID(int userID);
+  @Query('DELETE FROM CartItem WHERE id = :id')
+  Future<void> deleteCartItemByID(int id);
+  @Query('DELETE FROM CartItem WHERE userId = :userId')
+  Future<void> deleteCartItemByuserID(int userId);
+  @update
+  Future<int?> updateCartItem(CartItem item);
+  // @Query(
+  //     'UPDATE CartItem SET price = :price WHERE userId = :userId AND productId = :productId AND id = :id')
+  // Future<int?> updateData(int userId, int productId, double price, int id);
 }

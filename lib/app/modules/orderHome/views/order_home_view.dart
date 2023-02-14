@@ -204,11 +204,13 @@ class OrderHomeView extends GetView<OrderHomeController> {
                 Obx(
                   () => controller.isReorderCompleted.value
                       ? Container()
-                      : Text(
-                          'Last order',
-                          style: TextStyle(
-                              fontSize: 22, color: Colors.grey.shade700),
-                        ),
+                      : controller.itemList.length == 0
+                          ? Container()
+                          : Text(
+                              'Last order',
+                              style: TextStyle(
+                                  fontSize: 22, color: Colors.grey.shade700),
+                            ),
                 ),
                 const SizedBox(height: 10),
                 //---------------------Last order option---------------//
@@ -241,7 +243,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                     ),
                                   ]),
                             )
-                          : controller.previousOrder.isEmpty
+                          : controller.itemList.isEmpty
                               ? Container()
                               : Column(
                                   children: [
@@ -278,9 +280,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                             mainAxisSpacing: 5,
                                             crossAxisSpacing: 5,
                                           ),
-                                          itemCount: controller
-                                              .previousOrder[0]['products']
-                                              .length,
+                                          itemCount: controller.itemList.length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return Padding(
@@ -315,9 +315,8 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                         child:
                                                             CachedNetworkImage(
                                                           imageUrl: controller
-                                                              .previousOrder[0]
-                                                                  ['products']
-                                                                  [index]['img']
+                                                              .itemList[index]
+                                                              .image
                                                               .toString(),
                                                           // height: 160,
                                                           fit: BoxFit.cover,
@@ -348,11 +347,8 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                         children: [
                                                           Text(
                                                             controller
-                                                                .previousOrder[
-                                                                    0]
-                                                                    ['products']
-                                                                    [index]
-                                                                    ['name']
+                                                                .itemList[index]
+                                                                .productName
                                                                 .toString(),
                                                             textAlign:
                                                                 TextAlign.left,
@@ -361,28 +357,24 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                           ),
                                                           Text(
                                                               controller
-                                                                  .previousOrder[
-                                                                      0][
-                                                                      'products']
-                                                                      [index][
-                                                                      'catagory']
+                                                                  .itemList[
+                                                                      index]
+                                                                  .catagory
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       10)),
                                                           Text(
                                                               controller
-                                                                  .previousOrder[
-                                                                      0][
-                                                                      'products']
-                                                                      [index]
-                                                                      ['brand']
+                                                                  .itemList[
+                                                                      index]
+                                                                  .brand
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       10)),
                                                           Text(
-                                                            'Unit Tk ${controller.previousOrder[0]['products'][index]['price'].toString()}',
+                                                            'Unit Tk ${controller.itemList[index].price.toString()}',
                                                             style: TextStyle(
                                                                 fontSize: 10),
                                                           )

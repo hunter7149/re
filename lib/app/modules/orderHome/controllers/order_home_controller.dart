@@ -4,8 +4,12 @@ import 'package:get/get.dart';
 import 'package:red_tail/app/DAO/cartitemdao.dart';
 import 'package:red_tail/app/models/cartproduct.dart';
 
+import '../../../DAO/orderItemDao.dart';
+import '../../../DAO/saleRequisitionDao.dart';
 import '../../../components/cart_value.dart';
 import '../../../database/database.dart';
+import '../../../models/orderItem.dart';
+import '../../../models/saleRequisition.dart';
 
 class OrderHomeController extends GetxController {
   final count = 0.0.obs;
@@ -194,19 +198,19 @@ class OrderHomeController extends GetxController {
 
   addAllToCart() async {
     final tempList = previousOrder[0]["products"];
-    tempList.forEach((element) async {
+    itemList.forEach((element) async {
       CartItem item = CartItem(
           userId: 1,
-          productId: element["productId"],
+          productId: element.productId,
           beatName: dropdownBeatValue.value,
           customerName: dropdownCustomerValue.value,
-          productName: element["name"],
-          catagory: element["catagory"],
-          unit: element["unit"],
-          image: element["img"],
-          price: double.tryParse(element["price"].toString()) ?? 0.0,
-          brand: element["brand"],
-          quantity: element["quantity"]);
+          productName: element.productName,
+          catagory: element.catagory,
+          unit: element.unit,
+          image: element.image,
+          price: double.tryParse(element.price.toString()) ?? 0.0,
+          brand: element.brand,
+          quantity: element.quantity);
       await cartItemDao.insertCartItem(item);
     });
     CartCounter.cartCounter();
@@ -237,9 +241,51 @@ class OrderHomeController extends GetxController {
     final database =
         await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
     cartItemDao = database.cartItemDao;
+    orderItemDao = database.orderItemDao;
+    saleRequisitionDao = database.saleRequisitionDao;
+    await reqOrderList();
 
     beatCustomerValueSet();
     initialDropdownValue();
+  }
+
+//----------------------------Code for previous order suggestion-------------------///
+  late OrderItemDao orderItemDao;
+  late SaleRequisitionDao saleRequisitionDao;
+  RxList<OrderItem> orderItem = <OrderItem>[].obs;
+//-----------------------Get Main Order List----------------------//
+  reqOrderList() async {
+    await orderItemDao.findAllOrderItemBySaleId(1).then((value) async {
+      orderItem.clear();
+      orderItem.refresh();
+
+      orderItem.value = value;
+      orderItem.refresh();
+      update();
+      if (orderItem.length != 0) {
+        if (orderItem.length == 1) {
+          await reqOrderedItemsList(
+              orderId: orderItem[orderItem.length - 1].orderId!);
+        } else {
+          await reqOrderedItemsList(
+              orderId: orderItem[orderItem.length].orderId!);
+        }
+      }
+      print(orderItem.length);
+      update();
+    });
+  }
+
+//---------------------Get Detailed Order List------------------------//
+  RxList<SaleRequisition> itemList = <SaleRequisition>[].obs;
+  reqOrderedItemsList({required int orderId}) async {
+    saleRequisitionDao.findAllSaleItemBySaleId(orderId, 1).then((value) {
+      itemList.clear();
+      itemList.refresh();
+      itemList.value = value;
+      itemList.refresh();
+      update();
+    });
   }
 
   @override

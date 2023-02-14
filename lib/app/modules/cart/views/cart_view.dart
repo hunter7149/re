@@ -276,6 +276,8 @@ class CartView extends GetView<CartController> {
                                                 width: 70,
                                                 height: 40,
                                                 child: TextField(
+                                                  keyboardType:
+                                                      TextInputType.number,
                                                   textAlign: TextAlign.center,
                                                   onChanged: (Value) {
                                                     if (quantity
@@ -453,9 +455,15 @@ class CartView extends GetView<CartController> {
               ),
               actionsPadding: EdgeInsets.all(10),
               actions: [
-                InkWell(
+                ZoomTapAnimation(
                   onTap: () {
+                    controller.reqRemoveFromCart(index: index);
                     Get.back();
+                    Get.snackbar(
+                        "Item removed!", "The item was removed from your cart!",
+                        colorText: Colors.white,
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 2));
                   },
                   child: Container(
                     height: 40,

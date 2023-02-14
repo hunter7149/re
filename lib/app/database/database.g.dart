@@ -140,6 +140,25 @@ class _$CartItemDao extends CartItemDao {
                   'brand': item.brand,
                   'quantity': item.quantity
                 },
+            changeListener),
+        _cartItemUpdateAdapter = UpdateAdapter(
+            database,
+            'CartItem',
+            ['id'],
+            (CartItem item) => <String, Object?>{
+                  'id': item.id,
+                  'userId': item.userId,
+                  'productId': item.productId,
+                  'customerName': item.customerName,
+                  'beatName': item.beatName,
+                  'productName': item.productName,
+                  'catagory': item.catagory,
+                  'unit': item.unit,
+                  'image': item.image,
+                  'price': item.price,
+                  'brand': item.brand,
+                  'quantity': item.quantity
+                },
             changeListener);
 
   final sqflite.DatabaseExecutor database;
@@ -149,6 +168,8 @@ class _$CartItemDao extends CartItemDao {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<CartItem> _cartItemInsertionAdapter;
+
+  final UpdateAdapter<CartItem> _cartItemUpdateAdapter;
 
   @override
   Future<List<CartItem>> findAllCartItem() async {
@@ -190,14 +211,26 @@ class _$CartItemDao extends CartItemDao {
   }
 
   @override
-  Future<void> deleteUsersByID(int userID) async {
-    await _queryAdapter.queryNoReturn('DELETE FROM CartItem WHERE userid = ?1',
-        arguments: [userID]);
+  Future<void> deleteCartItemByID(int id) async {
+    await _queryAdapter
+        .queryNoReturn('DELETE FROM CartItem WHERE id = ?1', arguments: [id]);
+  }
+
+  @override
+  Future<void> deleteCartItemByuserID(int userId) async {
+    await _queryAdapter.queryNoReturn('DELETE FROM CartItem WHERE userId = ?1',
+        arguments: [userId]);
   }
 
   @override
   Future<void> insertCartItem(CartItem item) async {
     await _cartItemInsertionAdapter.insert(item, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<int> updateCartItem(CartItem item) {
+    return _cartItemUpdateAdapter.updateAndReturnChangedRows(
+        item, OnConflictStrategy.abort);
   }
 }
 

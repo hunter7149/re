@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cool_alert/cool_alert.dart';
 import 'package:floor/floor.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:red_tail/app/DAO/orderItemDao.dart';
@@ -38,12 +39,19 @@ class CartController extends GetxController {
   }
 
   priceQuantiyUpdater(
-      {required int index, required String quantity, required String price}) {
+      {required int index,
+      required String quantity,
+      required String price}) async {
     CartItem newItem = CartItem(
+        id: cartItems[index].id,
         userId: 1,
         productId: cartItems[index].productId,
-        beatName: "",
-        customerName: "dropdownCustomerValue.value",
+        beatName: cartItems[index].beatName!.toString().isEmpty
+            ? ""
+            : cartItems[index].beatName.toString(),
+        customerName: cartItems[index].customerName!.toString().isEmpty
+            ? ""
+            : cartItems[index].customerName.toString(),
         productName: cartItems[index].productName,
         catagory: cartItems[index].catagory,
         unit: cartItems[index].unit,
@@ -54,7 +62,23 @@ class CartController extends GetxController {
     // cartItems.removeAt(index);
     cartItems[index] = newItem;
     cartItems.refresh();
+    print(
+        "${cartItems[index].userId!}+${cartItems[index].productId!}+${cartItems[index].price!}+${cartItems[index].id!}");
+    // await cartItemDao
+    //     .updateData(cartItems[index].userId!, cartItems[index].productId!,
+    //         cartItems[index].price!, cartItems[index].id!)
+    //     .then((value) {
+    //   print("Updated row count->${value}");
+    // });
+    await cartItemDao.updateCartItem(newItem);
     totalPriceCounter();
+    Update();
+  }
+
+  reqRemoveFromCart({required int index}) {
+    cartItemDao.deleteCartItemByID(cartItems[index].id!);
+    cartItems.removeAt(index);
+    cartItems.refresh();
     Update();
   }
 
@@ -142,7 +166,7 @@ class CartController extends GetxController {
           quantity: element.quantity);
       await saleRequisitionDao.insertSaleItem(item);
     });
-    await cartItemDao.deleteUsersByID(1).then((value) {
+    await cartItemDao.deleteCartItemByuserID(1).then((value) {
       cartItems.clear();
       cartItems.refresh();
       CoolAlert.show(

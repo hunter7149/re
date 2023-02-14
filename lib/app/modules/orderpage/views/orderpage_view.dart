@@ -36,7 +36,7 @@ class OrderpageView extends GetView<OrderpageController> {
                       "assets/images/emptycart.jpg",
                       height: 200,
                     ),
-                    Text("You have no items in your cart!"),
+                    Text("You have no orders!"),
                   ],
                 ),
               ),
