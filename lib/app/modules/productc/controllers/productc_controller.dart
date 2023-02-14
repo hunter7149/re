@@ -1,8 +1,10 @@
 // import 'package:chewie/chewie.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:red_tail/app/components/cart_value.dart';
+import 'package:red_tail/app/components/internet_connection_checker.dart';
 import 'package:red_tail/app/models/cartproduct.dart';
 import 'package:red_tail/app/modules/index/controllers/index_controller.dart';
 import 'package:video_player/video_player.dart';
@@ -92,7 +94,7 @@ class ProductcController extends GetxController {
         "brand": "Remark",
         "quantity": 5,
         "img":
-            "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
+            "https://www.rizik.com.bd/wp-content/uploads/Nior-Matte-Lipstick-Pencil-18.jpg",
         "video":
             "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4"
       }
@@ -102,6 +104,11 @@ class ProductcController extends GetxController {
   }
 
   addToCart({required CartItem data}) async {
+    if (await ICHECKER.checkConnection()) {
+      print("INTERNET");
+    } else {
+      print("NO INTERNET");
+    }
     CartItem item = data;
     if (await cartItemDao.insertCartItem(data).then((value) => true)) {
       totalpriceUpdater();
@@ -115,7 +122,7 @@ class ProductcController extends GetxController {
     } else {
       totalpriceUpdater();
       Get.snackbar(
-        "Success",
+        "Failure",
         "Product was not added!",
         backgroundColor: Colors.red,
         colorText: Colors.white,
