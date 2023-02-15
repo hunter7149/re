@@ -25,7 +25,7 @@ dependencies:
   cached_network_image: ^3.2.3
   google_maps_flutter: ^2.2.3
   floor: ^1.4.1
-  # chewie: ^1.4.0
+  chewie: ^1.4.0
   carousel_slider: ^4.2.1
   video_player: ^2.5.1
   # lottie: ^2.2.0
@@ -33,6 +33,13 @@ dependencies:
   intl: ^0.18.0
   cool_alert: ^1.1.0
   connectivity_plus: ^3.0.3
+  dio: ^4.0.6
+  package_info_plus: ^3.0.3
+  get_storage: ^2.0.3
+  mime: ^1.0.4
+  workmanager: ^0.5.1
+  # shared_preferences: ^2.0.17
+  # flutter_background: ^1.2.0
   
 
 dev_dependencies:

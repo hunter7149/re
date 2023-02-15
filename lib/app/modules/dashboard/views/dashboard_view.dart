@@ -1,4 +1,6 @@
+import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:video_player/video_player.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
 import 'package:flutter/material.dart';
@@ -34,27 +36,24 @@ class DashboardView extends GetView<DashboardController> {
                   flex: 2,
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 10.0),
-                    height: 250,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        offerItem(
-                            dataLink:
-                                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Dreamy-Glow-Brightening-Cream-2.jpg"),
-                        offerItem(
-                            dataLink:
-                                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Dreamy-Glow-Brightening-Cream-2.jpg"),
-                        offerItem(
-                            dataLink:
-                                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Dreamy-Glow-Brightening-Cream-2.jpg"),
-                        offerItem(
-                            dataLink:
-                                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Dreamy-Glow-Brightening-Cream-2.jpg"),
-                        offerItem(
-                            dataLink:
-                                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Dreamy-Glow-Brightening-Cream-2.jpg")
-                      ],
-                    ),
+                    height: 320,
+                    child: Obx(() => ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: controller.urls.map((e) {
+                          if (e["type"] == 0) {
+                            return offerItem(dataLink: e['link']);
+                          } else {
+                            return offerItemVideo(dataLink: e['link']);
+                          }
+                        }).toList()
+
+                        //  <Widget>[
+
+                        //   // offerItem(
+                        //   //     dataLink:
+                        //   //         "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Dreamy-Glow-Brightening-Cream-2.jpg")
+                        // ],
+                        )),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -245,7 +244,7 @@ class DashboardView extends GetView<DashboardController> {
     );
   }
 
-  static offerItem({required String dataLink}) {
+  static Widget offerItem({required String dataLink}) {
     return Container(
       margin: EdgeInsets.all(10),
       // height: 175,
@@ -256,6 +255,46 @@ class DashboardView extends GetView<DashboardController> {
         child: Image.network(
           dataLink,
           fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  static Widget offerItemVideo({required String dataLink}) {
+    VideoPlayerController videoPlayerController =
+        new VideoPlayerController.network(dataLink);
+
+    // initController() async {
+    //   if (videoPlayerController.value.isInitialized) {
+    //     videoPlayerController.dispose();
+    //   } else {
+    //     await videoPlayerController.initialize();
+    //   }
+    // }
+
+    // initController();
+
+    ChewieController chewieController = new ChewieController(
+        videoPlayerController: videoPlayerController,
+        autoPlay: true,
+        looping: true,
+        autoInitialize: true,
+        showOptions: false,
+        showControls: false,
+        aspectRatio: 0.8);
+
+    return Container(
+      margin: EdgeInsets.all(10),
+      // height: 175,
+      width: 170,
+      height: double.maxFinite,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(width: 0.7, color: Colors.grey)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Chewie(
+          controller: chewieController,
         ),
       ),
     );
