@@ -79,7 +79,8 @@ class COMMONWIDGET {
       IconData? bacKIcon,
       required String tittle,
       required Callback backFunction,
-      VoidCallback? leadingFunction}) {
+      VoidCallback? leadingFunction,
+      bool? backEnabled}) {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
@@ -90,19 +91,23 @@ class COMMONWIDGET {
 
       title: Text(tittle),
       actions: [
-        IconButton(
-          icon: Icon(Icons.arrow_back),
-          // Image.asset("assets/images/back_arrow.jpg"),
-          color: backIconColor ?? Colors.grey.shade700,
-          tooltip: 'Comment Icon',
-          onPressed: backFunction,
-        ), //IconButton
+        backEnabled == true
+            ? IconButton(
+                icon: Icon(Icons.arrow_back),
+                // Image.asset("assets/images/back_arrow.jpg"),
+                color: backIconColor ?? Colors.grey.shade700,
+                tooltip: 'Comment Icon',
+                onPressed: backFunction,
+              )
+            : Container()
+
+        //IconButton
         //IconButton
       ], //<Widget>[]
       // backgroundColor: Colors.greenAccent[400],
       // elevation: 50.0,
       leading: IconButton(
-        icon: const Icon(Icons.library_books_rounded),
+        icon: Icon(leadingIcon ?? Icons.library_books_rounded),
         tooltip: 'Menu Icon',
         color: Colors.grey.shade700,
         onPressed: leadingFunction ?? () {},

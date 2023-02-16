@@ -78,7 +78,7 @@ class ProductcController extends GetxController {
         "img":
             "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
         "video":
-            "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_2mb.mp4"
+            "https://file-examples.com/storage/fe1aa0c9d563ea1e4a1fd34/2017/04/file_example_MP4_640_3MG.mp4"
       },
       {
         "productId": 102,
@@ -95,8 +95,7 @@ class ProductcController extends GetxController {
         "quantity": 5,
         "img":
             "https://www.rizik.com.bd/wp-content/uploads/Nior-Matte-Lipstick-Pencil-18.jpg",
-        "video":
-            "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4"
+        "video": "http://techslides.com/demos/sample-videos/small.mp4"
       }
     ];
     products.refresh();

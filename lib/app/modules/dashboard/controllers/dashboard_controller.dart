@@ -16,6 +16,21 @@ class DashboardController extends GetxController {
     },
     {
       "link":
+          "https://montresorbd.com/wp-content/uploads/2021/03/Meringue-1.jpg",
+      "type": 0
+    },
+    {
+      "link":
+          "https://montresorbd.com/wp-content/uploads/2021/03/Meringue-1.jpg",
+      "type": 0
+    },
+    {
+      "link":
+          "https://montresorbd.com/wp-content/uploads/2021/03/Meringue-1.jpg",
+      "type": 0
+    },
+    {
+      "link":
           "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4",
       "type": 1
     },
@@ -30,6 +45,10 @@ class DashboardController extends GetxController {
       "type": 1
     },
   ].obs;
+  argumentUpdater({required double result}) {
+    argumentFromDetailPage.value = result.toStringAsFixed(0);
+    update();
+  }
 
   Future goToDetailPage(var index) async {
     var result;

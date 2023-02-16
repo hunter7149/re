@@ -170,10 +170,11 @@ class CartController extends GetxController {
       cartItems.clear();
       cartItems.refresh();
       CoolAlert.show(
-        context: Get.context!,
-        type: CoolAlertType.success,
-        // text: "Order Successfull!",
-      );
+          context: Get.context!,
+          type: CoolAlertType.success,
+          animType: CoolAlertAnimType.slideInDown
+          // text: "Order Successfull!",
+          );
     });
 
     Update();

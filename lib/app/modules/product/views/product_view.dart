@@ -29,14 +29,16 @@ class ProductView extends GetView<ProductController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: COMMONWIDGET.globalAppBar(
-          tittle: "Product Catalogue",
-          backFunction: () {
-            print("Hello0");
-            Get.back(
-              result: controller.count.value,
-              id: Constants.nestedNavigationNavigatorId,
-            );
-          }),
+        tittle: "Product Catalogue",
+        backEnabled: false,
+        backFunction: () {
+          print("Hello0");
+          // Get.back(
+          //   result: controller.count.value,
+          //   id: Constants.nestedNavigationNavigatorId,
+          // );
+        },
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(0.0),

@@ -17,6 +17,7 @@ class ProductbView extends GetView<ProductbController> {
       backgroundColor: Colors.white,
       appBar: COMMONWIDGET.globalAppBar(
           tittle: "Product Catalogue",
+          backEnabled: true,
           backFunction: () {
             Get.back(
               // result: controller..products.length,

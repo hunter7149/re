@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:chewie/chewie.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:red_tail/app/components/common_widgets.dart';
@@ -32,8 +34,10 @@ class ProductcView extends GetView<ProductcController> {
     //final  data=Get.arguments;
     //final String datat=data[0] as String;
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: COMMONWIDGET.globalAppBar(
             tittle: "Description",
+            backEnabled: true,
             backFunction: () {
               Get.back(
                 id: Constants.nestedNavigationNavigatorId,
@@ -49,26 +53,24 @@ class ProductcView extends GetView<ProductcController> {
             items: controller.products.map((i) {
               List<String> ingredients = i["ingredients"];
               List<String> claims = i["claims"];
-              String a = i["video"];
-              // VideoPlayerController videoPlayerController =
-              //     VideoPlayerController.network(i["video"]);
-              // ;
-              // Future.microtask(() async {
-              //   await videoPlayerController.initialize();
-              //   videoPlayerController.play();
-              // });
-
-              // isVideoInitalized.value = true;
-              // controller.testpo(a: i["video"]);
 
               return Builder(
                 builder: (BuildContext context) {
+                  VideoPlayerController videoPlayerController =
+                      new VideoPlayerController.network(i["video"]);
+                  ChewieController chewieController = new ChewieController(
+                      videoPlayerController: videoPlayerController,
+                      autoInitialize: true,
+                      showOptions: false,
+                      showControls: true,
+                      aspectRatio: 1.5);
                   return Container(
                       width: MediaQuery.of(context).size.width,
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
+                            //-----------------------------Product Image--------------------------------//
                             Container(
                               height: 250,
                               width: MediaQuery.of(context).size.width,
@@ -82,7 +84,10 @@ class ProductcView extends GetView<ProductcController> {
                                   // height: 160,
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Center(
-                                      child: CircularProgressIndicator()),
+                                      child: SpinKitRotatingCircle(
+                                    color: Colors.red,
+                                    size: 50.0,
+                                  )),
                                   errorWidget: (ctx, url, err) => Image.asset(
                                     'assets/images/noprev.png',
                                     height: 70,
@@ -182,10 +187,7 @@ class ProductcView extends GetView<ProductcController> {
                             //     //     child: VideoPlayer(
                             //     //         controller.videoPlayerController),
                             //     : Container()),
-                            // Container(
-                            //     height: 250,
-                            //     color: Colors.red,
-                            //     child: VideoPlayer(videoPlayerController)),
+
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16),
                               child: Row(
@@ -215,6 +217,24 @@ class ProductcView extends GetView<ProductcController> {
                                 ],
                               ),
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                                height: 235,
+                                margin: EdgeInsets.symmetric(horizontal: 16),
+                                // color: Colors.red,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 0.7,
+                                        color: Colors.grey.shade500),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Chewie(
+                                    controller: chewieController,
+                                  ),
+                                )),
                             SizedBox(
                               height: 20,
                             ),

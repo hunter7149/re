@@ -150,7 +150,7 @@ class LoginController extends GetxController {
     String value = storage.read("lastSyncTime");
     print("Saved last sync date = ${value}");
 
-    Get.toNamed(Routes.INDEX);
+    Get.offNamed(Routes.INDEX);
   }
 
   @override

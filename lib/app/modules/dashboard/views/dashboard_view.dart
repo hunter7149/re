@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:video_player/video_player.dart';
@@ -43,12 +44,12 @@ class DashboardView extends GetView<DashboardController> {
                           if (e["type"] == 0) {
                             return offerItem(dataLink: e['link']);
                           } else {
-                            return offerItemVideo(dataLink: e['link']);
+                            return Container();
+                            // return offerItemVideo(dataLink: e['link']);
                           }
                         }).toList()
 
-                        //  <Widget>[
-
+                        //     <Widget>[
                         //   // offerItem(
                         //   //     dataLink:
                         //   //         "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Dreamy-Glow-Brightening-Cream-2.jpg")
@@ -97,14 +98,20 @@ class DashboardView extends GetView<DashboardController> {
                               valid: true,
                               function: () async {
                                 var result;
+                                Get.put(DashboardController());
                                 result = await Get.toNamed(Routes.PRODUCT,
                                     arguments:
                                         controller.argumentToDetailPage.value,
                                     id: Constants.nestedNavigationNavigatorId);
-                                controller.argumentFromDetailPage.value =
-                                    result == null
-                                        ? 'No argument'
-                                        : (result as double).toStringAsFixed(0);
+                                double result2 =
+                                    double.parse(result.toString());
+                                if (result != null) {
+                                  controller.argumentUpdater(result: result2);
+                                }
+                                // controller.argumentFromDetailPage.value =
+                                //     result == null
+                                //         ? 'No argument'
+                                //         : (result as double).toStringAsFixed(0);
                               }),
                           menuItem(
                               icon: Icons.discount,
@@ -249,12 +256,21 @@ class DashboardView extends GetView<DashboardController> {
       margin: EdgeInsets.all(10),
       // height: 175,
       width: 175,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(width: 0.7, color: Colors.grey.shade400)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
-        child: Image.network(
-          dataLink,
+        child: CachedNetworkImage(
+          imageUrl: dataLink,
+          // height: 160,
           fit: BoxFit.cover,
+          placeholder: (context, url) =>
+              Center(child: CircularProgressIndicator()),
+          errorWidget: (ctx, url, err) => Image.asset(
+            'assets/images/noprev.png',
+            height: 70,
+          ),
         ),
       ),
     );

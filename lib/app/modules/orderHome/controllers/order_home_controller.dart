@@ -264,11 +264,10 @@ class OrderHomeController extends GetxController {
       update();
       if (orderItem.length != 0) {
         if (orderItem.length == 1) {
-          await reqOrderedItemsList(
-              orderId: orderItem[orderItem.length - 1].orderId!);
+          await reqOrderedItemsList(orderId: orderItem[0].orderId!);
         } else {
           await reqOrderedItemsList(
-              orderId: orderItem[orderItem.length].orderId!);
+              orderId: orderItem[orderItem.length - 1].orderId!);
         }
       }
       print(orderItem.length);
