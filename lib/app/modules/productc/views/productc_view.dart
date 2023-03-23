@@ -84,7 +84,7 @@ class ProductcView extends GetView<ProductcController> {
                                   // height: 160,
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Center(
-                                      child: SpinKitRotatingCircle(
+                                      child: SpinKitPulse(
                                     color: Colors.red,
                                     size: 50.0,
                                   )),

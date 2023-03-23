@@ -60,7 +60,7 @@ class ProductbView extends GetView<ProductbController> {
                                   Center(child: CircularProgressIndicator()),
                               errorWidget: (ctx, url, err) => Image.asset(
                                 'assets/images/noprev.png',
-                                height: 70,
+                                // height: 70,
                               ),
                             ),
                           ),
