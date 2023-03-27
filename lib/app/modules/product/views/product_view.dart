@@ -1,4 +1,5 @@
 import 'package:red_tail/app/components/common_widgets.dart';
+import 'package:red_tail/app/config/app_themes.dart';
 import 'package:red_tail/app/modules/account/views/account_view.dart';
 import 'package:red_tail/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:red_tail/app/modules/index/views/index_view.dart';
@@ -83,18 +84,15 @@ class ProductView extends GetView<ProductController> {
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.lightBlue.withOpacity(0.09),
-                                  blurRadius: 5,
-                                  spreadRadius: 1,
-                                  offset: Offset(0, 4))
-                            ],
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20)),
                             border: Border.all(
-                                width: 1, color: Colors.blue.shade100)),
+                                width: 1, color: AppThemes.modernGreen)),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20)),
                           child: Image(
                             image: AssetImage("assets/images/${index}.png"),
                             fit: BoxFit.contain,

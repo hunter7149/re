@@ -148,45 +148,12 @@ class ProductcView extends GetView<ProductcController> {
                                   controller.addToCart(data: product);
                                   // addAlert(controller: controller, data: i);
                                 },
-                                color: Colors.green.shade300),
+                                color: AppThemes.modernGreen),
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 20),
                               height: 1,
                               color: Colors.grey.shade300,
                             ),
-                            // Padding(
-                            //   padding: EdgeInsets.symmetric(horizontal: 16),
-                            //   child: Column(
-                            //     children: [
-                            //       Container(
-                            //         height: 250,
-                            //         decoration: BoxDecoration(
-                            //             borderRadius:
-                            //                 BorderRadius.circular(15)),
-                            //         child: VideoPlayer(videoPlayerController),
-                            //       ),
-                            //       ZoomTapAnimation(
-                            //         onTap: () {
-                            //           videoPlayerController.play();
-                            //         },
-                            //         child: Icon(
-                            //           Icons.play_arrow,
-                            //           size: 40,
-                            //         ),
-                            //       )
-                            //     ],
-                            //   ),
-                            // ),
-                            // Obx(() => controller.isVideoInitalized.value
-                            //     ? controller.seeVideo(link: i["video"])
-
-                            //     //  Container(
-                            //     //     height: 250,
-                            //     //   )
-                            //     //     color: Colors.red,
-                            //     //     child: VideoPlayer(
-                            //     //         controller.videoPlayerController),
-                            //     : Container()),
 
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16),

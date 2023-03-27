@@ -563,7 +563,7 @@ class CartView extends GetView<CartController> {
                   child: Container(
                     height: 40,
                     decoration: BoxDecoration(
-                        color: Colors.green.shade500,
+                        color: AppThemes.modernGreen,
                         borderRadius: BorderRadius.circular(10)),
                     alignment: Alignment.center,
                     child: Text("Place Order",

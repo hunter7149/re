@@ -128,9 +128,9 @@ class IndexView extends GetView<IndexController> {
                   );
                 },
                 child: BottomNavigationBar(
-                  backgroundColor: colorScheme.surface,
-                  selectedItemColor: colorScheme.onSurface,
-                  unselectedItemColor: colorScheme.onSurface.withOpacity(.60),
+                  backgroundColor: AppThemes.modernBlue,
+                  selectedItemColor: AppThemes.modernGreen,
+                  unselectedItemColor: Colors.grey.shade800,
                   currentIndex: controller.tabIndex.value,
                   items: [
                     BottomNavigationBarItem(

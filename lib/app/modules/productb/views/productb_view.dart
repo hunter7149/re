@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:red_tail/app/components/common_widgets.dart';
+import 'package:red_tail/app/config/app_themes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../constants.dart';
@@ -35,18 +36,18 @@ class ProductbView extends GetView<ProductbController> {
                         id: Constants.nestedNavigationNavigatorId);
                   },
                   child: Container(
-                    // height: 160,
+                    height: 150,
                     margin: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
                         border:
-                            Border.all(width: 1, color: Colors.blue.shade100)),
+                            Border.all(width: 1, color: AppThemes.modernGreen)),
                     child: Row(
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 100,
+                          width: 150,
                           child: ClipRRect(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(15),
@@ -75,36 +76,8 @@ class ProductbView extends GetView<ProductbController> {
                             children: [
                               Text(
                                 "${controller.products[index]['name']}",
-                                style: TextStyle(fontSize: 24),
+                                style: TextStyle(fontSize: 18),
                               ),
-                              // Text(
-                              //   "Description: ${controller.products[index]['description']}",
-                              //   style: TextStyle(fontSize: 16),
-                              // ),
-                              // SizedBox(
-                              //   height: 5,
-                              // ),
-                              // Text(
-                              //   "USP: ${controller.products[index]['usp']}",
-                              //   style: TextStyle(
-                              //       fontSize: 16, color: Colors.grey.shade600),
-                              // ),
-                              // SizedBox(
-                              //   height: 5,
-                              // ),
-                              // Text(
-                              //   "SKU's: ${controller.products[index]['sku']}",
-                              //   style: TextStyle(
-                              //       fontSize: 16, color: Colors.grey.shade600),
-                              // ),
-                              // SizedBox(
-                              //   height: 5,
-                              // ),
-                              // Text(
-                              //   "Variant: ${controller.products[index]['variant']}",
-                              //   style: TextStyle(
-                              //       fontSize: 16, color: Colors.grey.shade600),
-                              // ),
                             ],
                           ),
                         ),
@@ -116,13 +89,13 @@ class ProductbView extends GetView<ProductbController> {
                           width: 90,
                           // margin: EdgeInsets.only(top: 20),
                           decoration: BoxDecoration(
-                              color: Colors.teal.shade500,
+                              color: AppThemes.modernGreen,
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(15),
                                   bottomLeft: Radius.circular(15))),
                           child: Center(
                             child: Text(
-                              "${controller.products[index]['quantity']}",
+                              "${controller.products[index]['quantity']} Items",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
