@@ -23,13 +23,13 @@ appSync() {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(
-      callbackDispatcher, // The top level function, aka callbackDispatcher
-      isInDebugMode:
-          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-      );
-  Workmanager().registerPeriodicTask("appSync", "AppSync",
-      frequency: Duration(seconds: 10));
+  // Workmanager().initialize(
+  //     callbackDispatcher, // The top level function, aka callbackDispatcher
+  //     isInDebugMode:
+  //         true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  //     );
+  // Workmanager().registerPeriodicTask("appSync", "AppSync",
+  //     frequency: Duration(seconds: 10));
 
   await GetStorage.init();
   String synctime = await GetStorage().read("lastSyncTime") ?? "0";
