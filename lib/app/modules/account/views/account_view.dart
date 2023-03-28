@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:get/get.dart';
+import 'package:red_tail/app/components/common_widgets.dart';
+import 'package:red_tail/app/config/app_themes.dart';
 
 import '../controllers/account_controller.dart';
 
@@ -9,16 +13,139 @@ class AccountView extends GetView<AccountController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AccountView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'AccountView is working',
-          style: TextStyle(fontSize: 20),
+        body: Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Column(children: [
+        Container(
+          padding: EdgeInsets.only(left: 10, right: 50, top: 80, bottom: 80),
+
+          // height: 300,
+          decoration: BoxDecoration(
+              color: AppThemes.modernGreen,
+              borderRadius:
+                  BorderRadius.only(bottomRight: Radius.circular(200))),
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  // height: 100,
+                  // width: 100,
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(width: 2, color: Colors.white)),
+                  child: Image.asset(
+                    "assets/logo/user.png",
+                    height: 80,
+                    width: 80,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Mohammad Khalid Bin Oalid",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "IT executive (Software)",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "emonnatbd@gmail.com",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "01303146132",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w400),
+                      ),
+                      Container(
+                        // height: 40,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        margin: EdgeInsets.only(top: 10, right: 30),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                bottomRight: Radius.circular(30)),
+                            color: AppThemes.modernLightBrown),
+                        child: Center(
+                          child: Text(
+                            "Details",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ]),
         ),
-      ),
-    );
+        SizedBox(
+          height: 20,
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 24),
+                  height: 200,
+                  decoration: BoxDecoration(
+                      color: AppThemes.modernBlue,
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 24),
+                  height: 200,
+                  decoration: BoxDecoration(
+                      color: AppThemes.modernDeepSea,
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 24),
+                  height: 200,
+                  decoration: BoxDecoration(
+                      color: AppThemes.modernPlantation,
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+              ],
+            ),
+          ),
+        )
+      ]),
+    ));
   }
 }

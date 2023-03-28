@@ -75,6 +75,11 @@ class CartController extends GetxController {
     Update();
   }
 
+  screenRefresh() {
+    cartItems.refresh();
+    Update();
+  }
+
   reqRemoveFromCart({required int index}) {
     cartItemDao.deleteCartItemByID(cartItems[index].id!);
     cartItems.removeAt(index);

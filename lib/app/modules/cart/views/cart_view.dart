@@ -37,7 +37,7 @@ class CartView extends GetView<CartController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        "assets/images/emptycart.jpg",
+                        "assets/images/emptycart.png",
                         height: 200,
                       ),
                       Text("You have no items in your cart!"),
@@ -82,248 +82,273 @@ class CartView extends GetView<CartController> {
                                 TextEditingController();
                             quantity.text =
                                 controller.cartItems[index].quantity.toString();
-                            return Stack(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 10),
-                                  height: 120,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          width: 1,
-                                          color: Colors.grey.shade300)),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(15),
-                                              bottomRight: Radius.circular(15)),
-                                          child: CachedNetworkImage(
-                                            imageUrl: controller
-                                                .cartItems[index].image
-                                                .toString(),
-                                            height: 80,
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) => Center(
-                                                child:
-                                                    CircularProgressIndicator()),
-                                            errorWidget: (ctx, url, err) =>
-                                                Image.asset(
-                                              'assets/images/noprev.png',
-                                              height: 70,
+                            return Dismissible(
+                              background: Container(
+                                color: AppThemes.modernRed,
+                                child: Icon(
+                                  Icons.delete,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              // key: Key("${index}"),
+                              key: UniqueKey(),
+                              onDismissed: (direction) {
+                                deleteAlert(
+                                    controller: controller, index: index);
+                                controller.screenRefresh();
+                              },
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 10),
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            width: 1,
+                                            color: Colors.grey.shade300)),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(15),
+                                                bottomRight:
+                                                    Radius.circular(15)),
+                                            child: CachedNetworkImage(
+                                              imageUrl: controller
+                                                  .cartItems[index].image
+                                                  .toString(),
+                                              height: 80,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) => Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                              errorWidget: (ctx, url, err) =>
+                                                  Image.asset(
+                                                'assets/images/noprev.png',
+                                                height: 70,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                      "${controller.cartItems[index].productName}",
-                                                      style: TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w500)),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                      "Brand: ${controller.cartItems[index].brand}",
-                                                      style: TextStyle(
-                                                          fontSize: 14)),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                      "${controller.cartItems[index].price} TK",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: AppThemes
-                                                              .modernLightBrown)),
-                                                ],
-                                              ),
-                                            ],
-                                          )),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          ZoomTapAnimation(
-                                            onTap: () {
-                                              int a =
-                                                  int.tryParse(quantity.text) ??
-                                                      0;
-                                              a++;
-                                              double unitPrice = controller
-                                                      .cartItems[index].price! /
-                                                  int.parse(quantity.text);
-                                              quantity.text = a.toString();
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text(
+                                                        "${controller.cartItems[index].productName}",
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500)),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                        "Brand: ${controller.cartItems[index].brand}",
+                                                        style: TextStyle(
+                                                            fontSize: 14)),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                        "${controller.cartItems[index].price} TK",
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: AppThemes
+                                                                .modernLightBrown)),
+                                                  ],
+                                                ),
+                                              ],
+                                            )),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            ZoomTapAnimation(
+                                              onTap: () {
+                                                int a = int.tryParse(
+                                                        quantity.text) ??
+                                                    0;
+                                                a++;
+                                                double unitPrice = controller
+                                                        .cartItems[index]
+                                                        .price! /
+                                                    int.parse(quantity.text);
+                                                quantity.text = a.toString();
 
-                                              String price = (unitPrice * a)
-                                                  .toStringAsFixed(2);
-                                              controller.priceQuantiyUpdater(
-                                                  index: index,
-                                                  quantity: quantity.text,
-                                                  price: price);
-                                            },
-                                            child: Container(
-                                              height: 30,
-                                              width: 30,
-                                              padding: EdgeInsets.all(5),
-                                              child: Center(
-                                                  child: Icon(
-                                                FontAwesomeIcons.plus,
-                                                color: Colors.grey.shade800,
-                                                size: 10,
-                                              )),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey.shade200,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100)),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 70,
-                                            height: 30,
-                                            child: TextField(
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              textAlign: TextAlign.center,
-                                              onChanged: (Value) {
-                                                if (quantity.text.isNotEmpty) {
-                                                  if (int.parse(quantity.text) >
-                                                      0) {
-                                                    double unitPrice =
-                                                        controller
-                                                                .cartItems[
-                                                                    index]
-                                                                .price! /
-                                                            controller
-                                                                .cartItems[
-                                                                    index]
-                                                                .quantity!;
-
-                                                    String price = (unitPrice *
-                                                            int.parse(
-                                                                quantity.text))
-                                                        .toStringAsFixed(2);
-                                                    controller
-                                                        .priceQuantiyUpdater(
-                                                            index: index,
-                                                            quantity:
-                                                                quantity.text,
-                                                            price: price);
-                                                  }
-                                                }
+                                                String price = (unitPrice * a)
+                                                    .toStringAsFixed(2);
+                                                controller.priceQuantiyUpdater(
+                                                    index: index,
+                                                    quantity: quantity.text,
+                                                    price: price);
                                               },
-                                              controller: quantity,
-                                              decoration: InputDecoration(
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  borderSide: BorderSide(
-                                                    color: Colors.grey.shade400,
-                                                    width: 0.7,
+                                              child: Container(
+                                                height: 30,
+                                                width: 30,
+                                                padding: EdgeInsets.all(5),
+                                                child: Center(
+                                                    child: Icon(
+                                                  FontAwesomeIcons.plus,
+                                                  color: Colors.grey.shade800,
+                                                  size: 10,
+                                                )),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.grey.shade200,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100)),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 70,
+                                              height: 30,
+                                              child: TextField(
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                textAlign: TextAlign.center,
+                                                onChanged: (Value) {
+                                                  if (quantity
+                                                      .text.isNotEmpty) {
+                                                    if (int.parse(
+                                                            quantity.text) >
+                                                        0) {
+                                                      double unitPrice =
+                                                          controller
+                                                                  .cartItems[
+                                                                      index]
+                                                                  .price! /
+                                                              controller
+                                                                  .cartItems[
+                                                                      index]
+                                                                  .quantity!;
+
+                                                      String price = (unitPrice *
+                                                              int.parse(quantity
+                                                                  .text))
+                                                          .toStringAsFixed(2);
+                                                      controller
+                                                          .priceQuantiyUpdater(
+                                                              index: index,
+                                                              quantity:
+                                                                  quantity.text,
+                                                              price: price);
+                                                    }
+                                                  }
+                                                },
+                                                controller: quantity,
+                                                decoration: InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide: BorderSide(
+                                                      color:
+                                                          Colors.grey.shade400,
+                                                      width: 0.7,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          ZoomTapAnimation(
-                                            onTap: () {
-                                              int a =
-                                                  int.tryParse(quantity.text) ??
-                                                      0;
-                                              if (a > 1) {
-                                                a--;
-                                              } else {
-                                                a = 1;
-                                              }
-                                              if (int.parse(quantity.text) -
-                                                      1 ==
-                                                  0) {
-                                                quantity.text = "1";
-                                              }
-                                              double unitPrice = controller
-                                                      .cartItems[index].price! /
-                                                  int.parse(quantity.text);
-                                              quantity.text = a.toString();
+                                            ZoomTapAnimation(
+                                              onTap: () {
+                                                int a = int.tryParse(
+                                                        quantity.text) ??
+                                                    0;
+                                                if (a > 1) {
+                                                  a--;
+                                                } else {
+                                                  a = 1;
+                                                }
+                                                if (int.parse(quantity.text) -
+                                                        1 ==
+                                                    0) {
+                                                  quantity.text = "1";
+                                                }
+                                                double unitPrice = controller
+                                                        .cartItems[index]
+                                                        .price! /
+                                                    int.parse(quantity.text);
+                                                quantity.text = a.toString();
 
-                                              String price = (unitPrice * a)
-                                                  .toStringAsFixed(2);
-                                              controller.priceQuantiyUpdater(
-                                                  index: index,
-                                                  quantity: quantity.text,
-                                                  price: price);
-                                            },
-                                            child: Container(
-                                              height: 30,
-                                              width: 30,
-                                              padding: EdgeInsets.all(5),
-                                              child: Center(
-                                                  child: Icon(
-                                                FontAwesomeIcons.minus,
-                                                color: Colors.grey.shade800,
-                                                size: 10,
-                                              )),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey.shade200,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100)),
+                                                String price = (unitPrice * a)
+                                                    .toStringAsFixed(2);
+                                                controller.priceQuantiyUpdater(
+                                                    index: index,
+                                                    quantity: quantity.text,
+                                                    price: price);
+                                              },
+                                              child: Container(
+                                                height: 30,
+                                                width: 30,
+                                                padding: EdgeInsets.all(5),
+                                                child: Center(
+                                                    child: Icon(
+                                                  FontAwesomeIcons.minus,
+                                                  color: Colors.grey.shade800,
+                                                  size: 10,
+                                                )),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.grey.shade200,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100)),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 20,
-                                      )
-                                    ],
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                // Positioned(
-                                //     right: 17,
-                                //     top: 11,
-                                //     child: ZoomTapAnimation(
-                                //       onTap: () {
-                                //         deleteAlert(
-                                //             controller: controller,
-                                //             index: index);
-                                //       },
-                                //       child: Container(
-                                //         padding: EdgeInsets.all(5),
-                                //         decoration: BoxDecoration(
-                                //             color: Colors.grey.shade200,
-                                //             borderRadius: BorderRadius.only(
-                                //                 topRight: Radius.circular(10),
-                                //                 bottomLeft:
-                                //                     Radius.circular(10))),
-                                //         child: Icon(Icons.delete,
-                                //             color: AppThemes.modernCoolPink),
-                                //       ),
-                                //     ))
-                              ],
+                                  // Positioned(
+                                  //     right: 17,
+                                  //     top: 11,
+                                  //     child: ZoomTapAnimation(
+                                  //       onTap: () {
+                                  //         deleteAlert(
+                                  //             controller: controller,
+                                  //             index: index);
+                                  //       },
+                                  //       child: Container(
+                                  //         padding: EdgeInsets.all(5),
+                                  //         decoration: BoxDecoration(
+                                  //             color: Colors.grey.shade200,
+                                  //             borderRadius: BorderRadius.only(
+                                  //                 topRight: Radius.circular(10),
+                                  //                 bottomLeft:
+                                  //                     Radius.circular(10))),
+                                  //         child: Icon(Icons.delete,
+                                  //             color: AppThemes.modernCoolPink),
+                                  //       ),
+                                  //     ))
+                                ],
+                              ),
                             );
                           },
                         ),

@@ -18,6 +18,7 @@ class OrderpageView extends GetView<OrderpageController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: const Text(
@@ -33,7 +34,7 @@ class OrderpageView extends GetView<OrderpageController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/images/emptycart.jpg",
+                      "assets/images/emptycart.png",
                       height: 200,
                     ),
                     Text("You have no orders!"),

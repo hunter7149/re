@@ -180,9 +180,10 @@ class IndexView extends GetView<IndexController> {
                             )),
                         label: 'Cart'),
                     BottomNavigationBarItem(
-                        icon: Icon(FontAwesomeIcons.listUl), label: 'Orders'),
+                        icon: Icon(FontAwesomeIcons.bagShopping),
+                        label: 'Orders'),
                     BottomNavigationBarItem(
-                        icon: Icon(FontAwesomeIcons.user), label: 'Account'),
+                        icon: Icon(FontAwesomeIcons.listUl), label: 'More'),
                   ],
                   onTap: controller.onTabClick,
                 ),

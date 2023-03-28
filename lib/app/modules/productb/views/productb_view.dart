@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:get/get.dart';
 import 'package:red_tail/app/components/common_widgets.dart';
@@ -57,8 +58,10 @@ class ProductbView extends GetView<ProductbController> {
                                   "${controller.products[index]['image']}",
                               // height: 160,
                               fit: BoxFit.cover,
-                              placeholder: (context, url) =>
-                                  Center(child: CircularProgressIndicator()),
+                              placeholder: (context, url) => Center(
+                                  child: SpinKitThreeBounce(
+                                color: AppThemes.modernGreen,
+                              )),
                               errorWidget: (ctx, url, err) => Image.asset(
                                 'assets/images/noprev.png',
                                 // height: 70,

@@ -64,6 +64,8 @@ class ProductcView extends GetView<ProductcController> {
                       showOptions: false,
                       showControls: true,
                       aspectRatio: 1.5);
+
+                  videoPlayerController.initialize();
                   return Container(
                       width: MediaQuery.of(context).size.width,
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
