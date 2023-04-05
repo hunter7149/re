@@ -2,12 +2,10 @@ import 'dart:math';
 
 import 'package:cool_alert/cool_alert.dart';
 import 'package:floor/floor.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:red_tail/app/DAO/orderItemDao.dart';
 import 'package:red_tail/app/DAO/saleRequisitionDao.dart';
-import 'package:red_tail/app/components/location_data.dart';
 import 'package:red_tail/app/models/orderItem.dart';
 import 'package:red_tail/app/models/saleRequisition.dart';
 

@@ -78,7 +78,7 @@ class ProductcController extends GetxController {
         "img":
             "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
         "video":
-            "https://file-examples.com/storage/fe1aa0c9d563ea1e4a1fd34/2017/04/file_example_MP4_640_3MG.mp4"
+            "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
       },
       {
         "productId": 102,

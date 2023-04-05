@@ -213,6 +213,7 @@ class DashboardView extends GetView<DashboardController> {
     return ZoomTapAnimation(
       onTap: valid ? function : () {},
       child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
         margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         // EdgeInsets.only(
         //                             left: index % 2 == 0
@@ -244,6 +245,7 @@ class DashboardView extends GetView<DashboardController> {
                   fontSize: 18,
                   color: valid ? color.shade500 : Colors.grey.shade500,
                   fontWeight: FontWeight.w500),
+              textAlign: TextAlign.center,
             )
           ],
         ),

@@ -60,6 +60,7 @@ class ProductcView extends GetView<ProductcController> {
                       new VideoPlayerController.network(i["video"]);
                   ChewieController chewieController = new ChewieController(
                       videoPlayerController: videoPlayerController,
+                      autoPlay: true,
                       autoInitialize: true,
                       showOptions: false,
                       showControls: true,
@@ -204,6 +205,7 @@ class ProductcView extends GetView<ProductcController> {
                                     controller: chewieController,
                                   ),
                                 )),
+
                             SizedBox(
                               height: 20,
                             ),
