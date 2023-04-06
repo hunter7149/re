@@ -3,7 +3,32 @@ import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:red_tail/app/components/AppColors.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../config/app_assets.dart';
+
 class COMMONWIDGET {
+  static underDev() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            AppAssets.ASSET_UNDERDEV,
+            height: 300,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            "This feature is under development.Please wait for the next update.",
+            style: TextStyle(color: Colors.grey.shade700, fontSize: 18),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
   static loginInput(
       {required String hinttext,
       required TextEditingController controller,

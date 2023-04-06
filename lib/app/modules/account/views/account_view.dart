@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:red_tail/app/components/common_widgets.dart';
 import 'package:red_tail/app/config/app_themes.dart';
 
+import '../../../config/app_assets.dart';
 import '../controllers/account_controller.dart';
 
 class AccountView extends GetView<AccountController> {
@@ -120,6 +121,24 @@ class AccountView extends GetView<AccountController> {
                   decoration: BoxDecoration(
                       color: AppThemes.modernBlue,
                       borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        AppAssets.ASSET_EDIT_PROFILE,
+                        height: 100,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Text(
+                        "My profile",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 20,
@@ -130,6 +149,24 @@ class AccountView extends GetView<AccountController> {
                   decoration: BoxDecoration(
                       color: AppThemes.modernDeepSea,
                       borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        AppAssets.ASSET_TASKS,
+                        height: 100,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Text(
+                        "My Tasks",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 20,

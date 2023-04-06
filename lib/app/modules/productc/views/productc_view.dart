@@ -26,7 +26,7 @@ import 'package:get/get.dart';
 import '../controllers/productc_controller.dart';
 
 class ProductcView extends GetView<ProductcController> {
-  final String argument;
+  final dynamic argument;
   const ProductcView({Key? key, required this.argument}) : super(key: key);
   @override
   Widget build(BuildContext context) {

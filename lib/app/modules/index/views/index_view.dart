@@ -77,7 +77,7 @@ class IndexView extends GetView<IndexController> {
                       return GetPageRoute(
                           routeName: Routes.PRODUCTC,
                           page: () => ProductcView(
-                                argument: routeSettings.arguments as String,
+                                argument: routeSettings.arguments,
                               ),
                           binding: ProductcBinding());
                     } else if (routeSettings.name == Routes.ORDERHOME) {
@@ -180,7 +180,7 @@ class IndexView extends GetView<IndexController> {
                             )),
                         label: 'Cart'),
                     BottomNavigationBarItem(
-                        icon: Icon(FontAwesomeIcons.bagShopping),
+                        icon: Icon(FontAwesomeIcons.shoppingBag),
                         label: 'Orders'),
                     BottomNavigationBarItem(
                         icon: Icon(FontAwesomeIcons.listUl), label: 'More'),

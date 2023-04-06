@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:red_tail/app/components/common_widgets.dart';
 
 import '../controllers/services_controller.dart';
 
@@ -9,16 +10,8 @@ class ServicesView extends GetView<ServicesController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ServicesView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'ServicesView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      backgroundColor: Colors.white,
+      body: Center(child: COMMONWIDGET.underDev()),
     );
   }
 }

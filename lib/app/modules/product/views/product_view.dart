@@ -33,7 +33,6 @@ class ProductView extends GetView<ProductController> {
         tittle: "Product Catalogue",
         backEnabled: false,
         backFunction: () {
-          print("Hello0");
           // Get.back(
           //   result: controller.count.value,
           //   id: Constants.nestedNavigationNavigatorId,
