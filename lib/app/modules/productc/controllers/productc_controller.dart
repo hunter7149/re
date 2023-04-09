@@ -1,4 +1,5 @@
 // import 'package:chewie/chewie.dart';
+import 'package:chewie/chewie.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -160,11 +161,71 @@ class ProductcController extends GetxController {
     update();
   }
 
+  RxList<Map<int, dynamic>> videoControllerList = <Map<int, dynamic>>[].obs;
+  assignVideoController() {
+    products.forEach((element) {
+      if (element["video"] != null && element["video"].toString().isNotEmpty) {
+        VideoPlayerController videoPlayerController =
+            VideoPlayerController.network(element["video"]);
+        Map<int, dynamic> tempData = {
+          element["productId"]: videoPlayerController
+        };
+        videoControllerList.add(tempData);
+        videoControllerList.refresh();
+      }
+    });
+  }
+
+  singleController({required int productId}) {
+    // search for the element with productId in videoControllerList
+    final videoControllerMap = videoControllerList.firstWhereOrNull(
+      (element) => element.containsKey(productId),
+    );
+
+    // if the videoControllerMap is not null, return the video URL
+    if (videoControllerMap != null) {
+      print(videoControllerMap[productId].runtimeType);
+      return videoControllerMap[productId];
+    } else {
+      return null;
+    }
+  }
+
+  returnPlayer({required int productId}) {
+    VideoPlayerController videoPlayerController =
+        singleController(productId: productId);
+    if (videoPlayerController != null) {
+      ChewieController chewieController = new ChewieController(
+          videoPlayerController: videoPlayerController,
+          autoPlay: true,
+          autoInitialize: true,
+          showOptions: false,
+          showControls: true,
+          aspectRatio: 1.5);
+
+      videoPlayerController.initialize();
+      return Chewie(
+        controller: chewieController,
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  void disposeVideoControllers() {
+    for (final videoControllerMap in videoControllerList) {
+      final videoPlayerController = videoControllerMap.values.first;
+      videoPlayerController.dispose();
+    }
+    videoControllerList.clear();
+  }
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     initializeProducts();
     initValues();
+    await assignVideoController();
     // videoInit();
     // videoController();
   }
@@ -175,7 +236,10 @@ class ProductcController extends GetxController {
   }
 
   @override
-  void onClose() {}
+  void onClose() {
+    disposeVideoControllers();
+  }
+
   void setArgument(String argument) {
     print('setArgument');
   }
