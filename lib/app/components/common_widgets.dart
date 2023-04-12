@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:red_tail/app/components/AppColors.dart';
+import 'package:red_tail/app/config/app_themes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../config/app_assets.dart';
@@ -44,13 +45,13 @@ class COMMONWIDGET {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide(
-              color: APPCOLORS.mainBlue,
+              color: AppThemes.modernBlue,
               width: 1,
             ),
           ),
           prefixIcon: Icon(
             Icons.email,
-            color: APPCOLORS.mainBlue,
+            color: AppThemes.modernBlue,
           )),
     );
   }
@@ -63,7 +64,8 @@ class COMMONWIDGET {
         height: height ?? 40,
         width: double.maxFinite,
         decoration: BoxDecoration(
-            color: APPCOLORS.mainBlue, borderRadius: BorderRadius.circular(15)),
+            color: AppThemes.modernBlue,
+            borderRadius: BorderRadius.circular(15)),
         child: Center(
             child: Text(
           "LOGIN",
@@ -107,36 +109,35 @@ class COMMONWIDGET {
       VoidCallback? leadingFunction,
       bool? backEnabled}) {
     return AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
-      toolbarHeight: 50.0,
-      bottomOpacity: 0.0,
-      elevation: 0.0,
-      titleTextStyle: TextStyle(color: Colors.grey.shade700),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        toolbarHeight: 50.0,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        titleTextStyle: TextStyle(color: Colors.grey.shade700),
+        title: Text(tittle),
+        actions: [
+          // backEnabled == true
+          //     ? IconButton(
+          //         icon: Icon(Icons.arrow_back),
+          //         // Image.asset("assets/images/back_arrow.jpg"),
+          //         color: backIconColor ?? Colors.grey.shade700,
+          //         tooltip: 'Comment Icon',
+          //         onPressed: backFunction,
+          //       )
+          //     : Container()
 
-      title: Text(tittle),
-      actions: [
-        backEnabled == true
-            ? IconButton(
-                icon: Icon(Icons.arrow_back),
-                // Image.asset("assets/images/back_arrow.jpg"),
-                color: backIconColor ?? Colors.grey.shade700,
-                tooltip: 'Comment Icon',
-                onPressed: backFunction,
-              )
-            : Container()
-
-        //IconButton
-        //IconButton
-      ], //<Widget>[]
-      // backgroundColor: Colors.greenAccent[400],
-      // elevation: 50.0,
-      leading: IconButton(
-        icon: Icon(leadingIcon ?? Icons.library_books_rounded),
-        tooltip: 'Menu Icon',
-        color: Colors.grey.shade700,
-        onPressed: leadingFunction ?? () {},
-      ),
-    );
+          // //IconButton
+          // //IconButton
+        ], //<Widget>[]
+        // backgroundColor: Colors.greenAccent[400],
+        // elevation: 50.0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          // Image.asset("assets/images/back_arrow.jpg"),
+          color: backIconColor ?? Colors.grey.shade700,
+          tooltip: 'Comment Icon',
+          onPressed: backFunction,
+        ));
   }
 }

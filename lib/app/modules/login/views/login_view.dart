@@ -58,20 +58,20 @@ class LoginView extends GetView<LoginController> {
                   SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Dont have an account?',
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        ' Create Account',
-                        style: TextStyle(
-                            fontSize: 16, color: AppThemes.PrimaryDarkColor),
-                      )
-                    ],
-                  )
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: const [
+                  //     Text(
+                  //       'Dont have an account?',
+                  //       textAlign: TextAlign.center,
+                  //     ),
+                  //     Text(
+                  //       ' Create Account',
+                  //       style: TextStyle(
+                  //           fontSize: 16, color: AppThemes.PrimaryDarkColor),
+                  //     )
+                  //   ],
+                  // )
                 ],
               ),
             )
@@ -95,7 +95,7 @@ class LoginView extends GetView<LoginController> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: BorderSide(
-                color: APPCOLORS.mainBlue,
+                color: AppThemes.modernBlue,
                 width: 1,
               ),
             ),
@@ -105,12 +105,12 @@ class LoginView extends GetView<LoginController> {
               },
               child: Icon(
                 Icons.visibility,
-                color: APPCOLORS.mainBlue,
+                color: AppThemes.modernBlue,
               ),
             ),
             prefixIcon: Icon(
               Icons.lock,
-              color: APPCOLORS.mainBlue,
+              color: AppThemes.modernBlue,
             )),
       );
     });

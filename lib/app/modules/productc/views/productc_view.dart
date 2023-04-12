@@ -198,23 +198,23 @@ class ProductcView extends GetView<ProductcController> {
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  Container(
-                                      height: 235,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 16),
-                                      // color: Colors.red,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 0.7,
-                                              color: Colors.grey.shade500),
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          child: controller.returnPlayer(
-                                              productId: controller.products[i]
-                                                  ['productId']))),
+                                  // Container(
+                                  //     height: 235,
+                                  //     margin:
+                                  //         EdgeInsets.symmetric(horizontal: 16),
+                                  //     // color: Colors.red,
+                                  //     decoration: BoxDecoration(
+                                  //         border: Border.all(
+                                  //             width: 0.7,
+                                  //             color: Colors.grey.shade500),
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(15)),
+                                  //     child: ClipRRect(
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(15),
+                                  //         child: controller.returnPlayer(
+                                  //             productId: controller.products[i]
+                                  //                 ['productId']))),
 
                                   SizedBox(
                                     height: 20,

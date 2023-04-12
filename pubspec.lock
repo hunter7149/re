@@ -544,6 +544,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.0"
+  internet_connection_checker:
+    dependency: "direct main"
+    description:
+      name: internet_connection_checker
+      sha256: "1c683e63e89c9ac66a40748b1b20889fd9804980da732bf2b58d6d5456c8e876"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+1"
   intl:
     dependency: "direct main"
     description:
@@ -848,6 +856,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.2"
+  quickalert:
+    dependency: "direct main"
+    description:
+      name: quickalert
+      sha256: "33a52870b2a87c55d0649d0cd228efaa2368d5df39231fdecebb71f349a9b221"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   rxdart:
     dependency: transitive
     description:
@@ -856,14 +872,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
-  salomon_bottom_bar:
-    dependency: "direct main"
-    description:
-      name: salomon_bottom_bar
-      sha256: "13c875cb025ab96a8eb7c0c4087b9a0e04aff17a23b56e048c7f94b33e0d991e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.1"
   shelf:
     dependency: transitive
     description:

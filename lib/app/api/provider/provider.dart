@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../callbacks/callbacks.dart';
@@ -12,17 +13,18 @@ abstract class Providers implements CallBack {
       {required String endPoint,
       required Method method,
       required Map<String, dynamic> map}) async {
-    ///----- updated by rasel
-    ///------Adding some value to recieved map
     Map<String, dynamic> finalMap = map;
     finalMap['version_code'] =
         await PackageInfo.fromPlatform().then((value) => value.buildNumber);
-    finalMap['device_id'] = Pref.readData(key: Pref.DEVICE_ID).toString();
-    finalMap['current_os'] = Platform.isAndroid ? 'android' : 'ios';
+    // finalMap['macAdds'] = "c295f3a8cebb9807";
+    finalMap['macAdds'] = kDebugMode
+        ? "c295f3a8cebb9807"
+        : Pref.readData(key: Pref.DEVICE_IDENTITY).toString();
+    finalMap['os'] = Platform.isAndroid ? 'android' : 'ios';
 
-    if (Pref.readData(key: Pref.LOGIN_DATA) != null)
-      finalMap['user_id'] =
-          Pref.readData(key: Pref.LOGIN_DATA)['user_id'].toString();
+    // if (Pref.readData(key: Pref.LOGIN_INFORMATION) != null)
+    //   finalMap['user_id'] =
+    //       Pref.readData(key: Pref.LOGIN_INFORMATION)['user_id'].toString();
 
     /// ---- @end
     return await ApiService().request(endPoint, method, map);
@@ -33,19 +35,27 @@ abstract class Providers implements CallBack {
       {required String endPoint,
       required Method method,
       required Map<String, dynamic> map}) async {
-    ///------ updated by rasel
+    String token = Pref.readData(key: Pref.LOGIN_INFORMATION);
+
     ///Adding some value in recieved map
     Map<String, dynamic> finalMap = map;
     finalMap['version_code'] =
         await PackageInfo.fromPlatform().then((value) => value.buildNumber);
-    finalMap['device_id'] = Pref.readData(key: Pref.DEVICE_ID).toString();
-    finalMap['current_os'] = Platform.isAndroid ? 'android' : 'ios';
-    if (Pref.readData(key: Pref.LOGIN_DATA) != null)
-      finalMap['user_id'] =
-          Pref.readData(key: Pref.LOGIN_DATA)['user_id'].toString();
+    // finalMap['macAdds'] = "c295f3a8cebb9807";
+    finalMap['macAdds'] = kDebugMode
+        ? "c295f3a8cebb9807"
+        : Pref.readData(key: Pref.DEVICE_IDENTITY).toString();
+    // finalMap['macAdds'] = Pref.readData(key: Pref.DEVICE_IDENTITY).toString();
+    finalMap['os'] = Platform.isAndroid ? 'android' : 'ios';
+    // finalMap['token'] = token;
+
+    // if (Pref.readData(key: Pref.LOGIN_DATA) != null)
+    //   finalMap['user_id'] =
+    //       Pref.readData(key: Pref.LOGIN_DATA)['user_id'].toString();
 
     ///-- @end
-    return await ApiService(token: Pref.readData(key: Pref.LOGIN_DATA)['token'])
-        .request(endPoint, method, finalMap);
+
+    print("Requested api token ------------>${token}");
+    return await ApiService(token: token).request(endPoint, method, finalMap);
   }
 }

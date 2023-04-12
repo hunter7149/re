@@ -4,8 +4,11 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:floor/floor.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:red_tail/app/DAO/orderItemDao.dart';
 import 'package:red_tail/app/DAO/saleRequisitionDao.dart';
+import 'package:red_tail/app/config/app_themes.dart';
 import 'package:red_tail/app/models/orderItem.dart';
 import 'package:red_tail/app/models/saleRequisition.dart';
 
@@ -172,12 +175,17 @@ class CartController extends GetxController {
     await cartItemDao.deleteCartItemByuserID(1).then((value) {
       cartItems.clear();
       cartItems.refresh();
-      CoolAlert.show(
-          context: Get.context!,
-          type: CoolAlertType.success,
-          animType: CoolAlertAnimType.slideInDown
-          // text: "Order Successfull!",
-          );
+      QuickAlert.show(
+        confirmBtnColor: AppThemes.modernGreen,
+        context: Get.context!,
+        type: QuickAlertType.success,
+      );
+      // CoolAlert.show(
+      //     context: Get.context!,
+      //     type: CoolAlertType.success,
+      //     animType: CoolAlertAnimType.slideInDown
+      //     // text: "Order Successfull!",
+      //     );
     });
 
     Update();
