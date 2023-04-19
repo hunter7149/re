@@ -108,7 +108,8 @@ class CartView extends GetView<CartController> {
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
                                             width: 1,
-                                            color: Colors.grey.shade300)),
+                                            color: AppThemes.modernGreen
+                                                .withOpacity(0.6))),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -225,6 +226,14 @@ class CartView extends GetView<CartController> {
                                             Container(
                                               width: 70,
                                               height: 30,
+                                              // decoration: BoxDecoration(
+                                              //     border: Border.all(
+                                              //       color: AppThemes.modernGreen
+                                              //           .withOpacity(0.3),
+                                              //       width: 0.7,
+                                              //     ),
+                                              //     borderRadius:
+                                              //         BorderRadius.circular(8)),
                                               child: TextField(
                                                 keyboardType:
                                                     TextInputType.number,
@@ -263,10 +272,10 @@ class CartView extends GetView<CartController> {
                                                   border: OutlineInputBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            10),
+                                                            5),
                                                     borderSide: BorderSide(
                                                       color:
-                                                          Colors.grey.shade400,
+                                                          AppThemes.modernGreen,
                                                       width: 0.7,
                                                     ),
                                                   ),

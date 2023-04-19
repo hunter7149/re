@@ -59,7 +59,7 @@ class LoginController extends GetxController {
               Pref.writeData(key: Pref.USER_PASSWORD, value: password.text);
               isLogingIn.value = false;
               update();
-              Get.offNamed(Routes.HOME, arguments: {"data": data});
+              Get.offNamed(Routes.INDEX);
             } else {
               isLogingIn.value = false;
               update();

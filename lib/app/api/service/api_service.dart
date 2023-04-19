@@ -6,14 +6,8 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 
 enum Method { POST, GET, PUT, DELETE, PATCH }
 
-const BASE_URL = 'https://api.medboxbd.com';
+const BASE_URL = 'http://192.168.10.223:8090/dp/';
 // const BASE_URL = 'http://192.168.11.12/8.1/eco_pulse/public';
-// const BASE_URL =
-// // kDebugMode
-//     // ? 'http://192.168.11.21/ecopulse/public' //----------Salman Vai------------//
-//     // ? 'http://192.168.11.12/8.1/eco_pulse/public' //---------------Raihan Vai------------//
-//     // :
-//     'https://api.medboxbd.com';
 
 class ApiService extends GetxService {
   late Dio _dio;

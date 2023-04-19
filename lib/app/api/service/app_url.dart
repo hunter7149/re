@@ -1,3 +1,3 @@
 class AppUrl {
-  static String loginApi = "";
+  static String loginApi = "login/auth";
 }

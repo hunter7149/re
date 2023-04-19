@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
+import 'package:red_tail/app/components/common_widgets.dart';
+import 'package:red_tail/app/config/app_themes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../constants.dart';
@@ -34,38 +36,34 @@ class OrderHomeView extends GetView<OrderHomeController> {
     String? selectedValue;
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          toolbarHeight: 50.0,
-          bottomOpacity: 0.0,
-          elevation: 0.0,
-          titleTextStyle: TextStyle(color: Colors.black87),
-          // title: Image.asset("assets/logo/login_logo_hb.png",
-          //     width: 150, height: 30, fit: BoxFit.fill),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              // Image.asset("assets/images/back_arrow.jpg"),
-              color: Colors.black87,
-              tooltip: 'Comment Icon',
-              onPressed: () => Get.back(
-                result: controller.count.value,
-                id: Constants.nestedNavigationNavigatorId,
-              ),
-            ), //IconButton
-            //IconButton
-          ], //<Widget>[]
-          // backgroundColor: Colors.greenAccent[400],
-          // elevation: 50.0,
-          leading: IconButton(
-            icon:
-                new Image.asset("assets/logo/main-menu.png", fit: BoxFit.fill),
-            tooltip: 'Menu Icon',
-            color: Colors.black87,
-            onPressed: () {},
-          ),
-        ),
+        appBar: COMMONWIDGET.globalAppBar(
+            tittle: "Order management",
+            backFunction: () => Get.back(
+                  result: controller.count.value,
+                  id: Constants.nestedNavigationNavigatorId,
+                )),
+
+        // AppBar(
+        //   automaticallyImplyLeading: false,
+        //   backgroundColor: Colors.white,
+        //   toolbarHeight: 50.0,
+        //   bottomOpacity: 0.0,
+        //   elevation: 0.0,
+        //   title: Text(
+        //     "Order management",
+        //   ),
+        //   titleTextStyle: TextStyle(color: Colors.black87),
+        //   leading: IconButton(
+        //     icon: Icon(Icons.arrow_back),
+        //     // Image.asset("assets/images/back_arrow.jpg"),
+        //     color: Colors.black87,
+        //     tooltip: 'Click home icon twice to back!',
+        //     onPressed: () => Get.back(
+        //       result: controller.count.value,
+        //       id: Constants.nestedNavigationNavigatorId,
+        //     ),
+        //   ),
+        // ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(20.0),
@@ -114,81 +112,90 @@ class OrderHomeView extends GetView<OrderHomeController> {
                 // ),
 
                 Obx(() {
-                  return Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                        // color: Colors.blueGrey.shade200,
-                        border:
-                            Border.all(width: 1, color: Colors.grey.shade500),
-                        borderRadius: BorderRadius.circular(10)),
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 5),
-                    margin: EdgeInsets.only(top: 10),
-                    width: double.maxFinite,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        isExpanded: true,
-                        alignment: Alignment.center,
-                        value: controller.dropdownBeatValue.value,
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.grey.shade700,
-                        ),
-                        elevation: 2,
-                        style: TextStyle(
-                            color: Colors.grey.shade700,
-                            fontWeight: FontWeight.w300),
-                        onChanged: (String? newValue) {
-                          controller.DropdownBeatValueUpdater(newValue!);
-                        },
-                        items: controller.beatList.value
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  );
+                  return controller.beatList.isEmpty
+                      ? Container()
+                      : Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              // color: Colors.blueGrey.shade200,
+                              border: Border.all(
+                                  width: 1, color: Colors.grey.shade500),
+                              borderRadius: BorderRadius.circular(10)),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 24, vertical: 5),
+                          margin: EdgeInsets.only(top: 10),
+                          width: double.maxFinite,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              isExpanded: true,
+                              alignment: Alignment.center,
+                              value: controller.dropdownBeatValue.value,
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.grey.shade700,
+                              ),
+                              elevation: 2,
+                              style: TextStyle(
+                                  color: Colors.grey.shade700,
+                                  fontWeight: FontWeight.w300),
+                              onChanged: (String? newValue) {
+                                controller.DropdownBeatValueUpdater(newValue!);
+                              },
+                              items: controller.beatList.value
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
                 }),
                 const SizedBox(height: 10),
                 Obx(() {
-                  return Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                        // color: Colors.blueGrey.shade200,
-                        border:
-                            Border.all(width: 1, color: Colors.grey.shade500),
-                        borderRadius: BorderRadius.circular(10)),
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 5),
-                    margin: EdgeInsets.only(top: 10),
-                    width: double.maxFinite,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        isExpanded: true,
-                        alignment: Alignment.center,
-                        value: controller.dropdownCustomerValue.value,
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.grey.shade700,
-                        ),
-                        elevation: 2,
-                        style: TextStyle(
-                            color: Colors.grey.shade700,
-                            fontWeight: FontWeight.w300),
-                        onChanged: (String? newValue) {
-                          controller.DropdownCustomerValueUpdater(newValue!);
-                        },
-                        items: controller.customerList.value
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  );
+                  return controller.customerList.isEmpty
+                      ? Container()
+                      : Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              // color: Colors.blueGrey.shade200,
+                              border: Border.all(
+                                  width: 1, color: Colors.grey.shade500),
+                              borderRadius: BorderRadius.circular(10)),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 24, vertical: 5),
+                          margin: EdgeInsets.only(top: 10),
+                          width: double.maxFinite,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              isExpanded: true,
+                              alignment: Alignment.center,
+                              value: controller.dropdownCustomerValue.value,
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.grey.shade700,
+                              ),
+                              elevation: 2,
+                              style: TextStyle(
+                                  color: Colors.grey.shade700,
+                                  fontWeight: FontWeight.w300),
+                              onChanged: (String? newValue) {
+                                controller.DropdownCustomerValueUpdater(
+                                    newValue!);
+                              },
+                              items: controller.customerList.value
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
                 }), // const TextField(
                 //   decoration: InputDecoration(
                 //       contentPadding: EdgeInsets.only(left: 16),
@@ -424,10 +431,10 @@ class OrderHomeView extends GetView<OrderHomeController> {
                 Container(
                   padding: EdgeInsets.all(5),
                   height: 300,
-                  decoration: BoxDecoration(
-                      // color: Colors.blueGrey.shade200,
-                      border: Border.all(width: 1, color: Colors.grey.shade500),
-                      borderRadius: BorderRadius.circular(10)),
+                  // decoration: BoxDecoration(
+                  //     // color: Colors.blueGrey.shade200,
+                  //     border: Border.all(width: 1, color: Colors.grey.shade500),
+                  //     borderRadius: BorderRadius.circular(10)),
                   child: GridView.count(
                     scrollDirection: Axis.horizontal,
                     crossAxisCount: 2,
@@ -439,21 +446,14 @@ class OrderHomeView extends GetView<OrderHomeController> {
                               id: Constants.nestedNavigationNavigatorId);
                         },
                         child: Container(
-                          // width: 100,
-                          // height: 100,
                           margin: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.blue.withOpacity(0.02),
-                                    blurRadius: 5,
-                                    spreadRadius: 1,
-                                    offset: Offset(0, 4))
-                              ],
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
+                                  bottomRight: Radius.circular(15)),
                               border: Border.all(
-                                  width: 1, color: Colors.blue.shade100)),
+                                  width: 1, color: AppThemes.modernGreen)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image(
@@ -462,62 +462,48 @@ class OrderHomeView extends GetView<OrderHomeController> {
                             ),
                           ),
                         ),
-
-                        // Container(
-                        //   child: Card(
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(15.0),
-                        //     ),
-                        //     color: Colors.white,
-                        //     child:
-                        //         // Text("Item ${index}"),
-                        //         Image(
-                        //       image: AssetImage("assets/images/${index}.png"),
-                        //     ),
-                        //   ),
-                        // ),
                       );
                     }),
                   ),
                 ),
                 SizedBox(height: 20),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: menus.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    MenuModel menu = menus[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                            // color: Colors.blueGrey.shade200,
-                            border: Border.all(
-                                width: 1, color: Colors.grey.shade500),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              menu.tittle ?? '',
-                              style: TextStyle(fontSize: 24),
-                            ),
-                            Image.asset(
-                              menu.image ?? AppAssets.ASSET_EMPTY_IMAGE,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  AppAssets.ASSET_BRAND_IMAGE,
-                                  height: 40,
-                                );
-                              },
-                              height: 64,
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                // ListView.builder(
+                //   shrinkWrap: true,
+                //   itemCount: menus.length,
+                //   itemBuilder: (BuildContext context, int index) {
+                //     MenuModel menu = menus[index];
+                //     return Padding(
+                //       padding: EdgeInsets.only(bottom: 8.0),
+                //       child: Container(
+                //         padding: EdgeInsets.symmetric(horizontal: 16),
+                //         decoration: BoxDecoration(
+                //             // color: Colors.blueGrey.shade200,
+                //             border: Border.all(
+                //                 width: 1, color: Colors.grey.shade500),
+                //             borderRadius: BorderRadius.circular(10)),
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //           children: [
+                //             Text(
+                //               menu.tittle ?? '',
+                //               style: TextStyle(fontSize: 24),
+                //             ),
+                //             Image.asset(
+                //               menu.image ?? AppAssets.ASSET_EMPTY_IMAGE,
+                //               errorBuilder: (context, error, stackTrace) {
+                //                 return Image.asset(
+                //                   AppAssets.ASSET_BRAND_IMAGE,
+                //                   height: 40,
+                //                 );
+                //               },
+                //               height: 64,
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
               ],
             ),
           ),

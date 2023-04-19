@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:red_tail/app/config/app_themes.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
@@ -32,7 +33,19 @@ class DashboardView extends GetView<DashboardController> {
                 //       )),
                 //   style: TextStyle(color: Colors.black),
                 // ),
-
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Today's deal",
+                        // textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 20, color: Colors.grey.shade800),
+                      ),
+                    ],
+                  ),
+                ),
                 Expanded(
                   flex: 2,
                   child: Container(
@@ -260,7 +273,7 @@ class DashboardView extends GetView<DashboardController> {
       width: 175,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(width: 0.7, color: Colors.grey.shade400)),
+          border: Border.all(width: 0.5, color: AppThemes.modernGreen)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: CachedNetworkImage(

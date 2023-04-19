@@ -52,7 +52,7 @@ class LoginView extends GetView<LoginController> {
                   COMMONWIDGET.button(
                       title: "LOGIN",
                       funtion: () {
-                        controller.onTapLogin();
+                        controller.requestLogin();
                       },
                       height: 50),
                   SizedBox(
