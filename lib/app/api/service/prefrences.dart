@@ -8,6 +8,8 @@ class Pref {
   static var USER_ID = 'user_id';
   static var USER_PASSWORD = "user_password";
   static var DEVICE_IDENTITY = 'device-identity';
+  static var BEAT_NAME = 'beat_name';
+  static var CUSTOMER_NAME = 'customer_name';
 
   static void writeData({required String key, required dynamic value}) =>
       box.write(key, value);

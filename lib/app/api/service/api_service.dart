@@ -6,7 +6,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 
 enum Method { POST, GET, PUT, DELETE, PATCH }
 
-const BASE_URL = 'http://192.168.10.223:8090/dp/';
+const BASE_URL = 'http://192.168.10.204:8090/dp/';
 // const BASE_URL = 'http://192.168.11.12/8.1/eco_pulse/public';
 
 class ApiService extends GetxService {

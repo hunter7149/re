@@ -108,7 +108,9 @@ class IndexView extends GetView<IndexController> {
                     } else if (routeSettings.name == Routes.PRODUCTB) {
                       return GetPageRoute(
                           routeName: Routes.PRODUCTB,
-                          page: () => ProductbView(),
+                          page: () => ProductbView(
+                                argument: routeSettings.arguments,
+                              ),
                           binding: ProductbBinding());
                     }
                   },

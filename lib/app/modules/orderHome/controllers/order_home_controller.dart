@@ -16,30 +16,132 @@ class OrderHomeController extends GetxController {
 //-------------------Beat and customer dummy list-------------//
   List<Map<String, dynamic>> beatCustomer = <Map<String, dynamic>>[
     {
-      "beatname": "beat-1",
-      "customers": ["Customer-1", "Customer-2"]
+      "beatname": "Digpait",
+      "customers": [
+        'Allahor Dan Store',
+        'Aporupa Cos.',
+        'Baba mayar Doua store',
+        'Babul Store',
+        'Bai Bai Store',
+        'Bismilla Store',
+        'Eti Store',
+        'Fohad store',
+        'Forid store',
+        'Galava Cosmeticse',
+        'Harun Cosmeticse',
+        'Hassan Ent',
+        'Jahangir Store',
+        'Jonnony Cosmeticse',
+        'Junayet Store',
+        'Khan paper House',
+        'Lija Store',
+        'Ma Cosmeticse',
+        'Maruf Cosmeticse',
+        'Matara store',
+        'Mayer Achol Cos',
+        'Meshok cosmetics',
+        'Mim Store',
+        'Misuk Cos',
+        'Modina store',
+        'Moinal store',
+        'Momin cosmetics',
+        'Mondira store',
+        'Nimay Store',
+        'Nupor Varaitice',
+        'Poran store',
+        'Protasha Con.',
+        'Radoy Cosmeticse',
+        'Raja khan Store',
+        'Rakib Store',
+        'Robiul store',
+        'Rofiqul store',
+        'Rokon Store',
+        'RomaRony store',
+        'Roni store',
+        'Saiful Cosmeticse',
+        'Sakil Store',
+        'Santa store',
+        'Shimul Cosmeticse',
+        'Shohid Store',
+        'Shoriny Traders',
+        'Sithi Store',
+        'Sobus nur store',
+        'Sohag store',
+        'Sojona Cos',
+        'Somun cosmetics',
+        'Sulaiman Store',
+        'Sumi Cosmeticse',
+        'Tanjena store',
+        'uzzal Cosmeticse'
+      ]
     },
     {
-      "beatname": "beat-2",
-      "customers": ["Customer-3", "Customer-4"]
+      "beatname": "Gupalpur Bazar",
+      "customers": [
+        'AF AM store',
+        'Afaj Store',
+        'Allamin store',
+        'Amdadul store',
+        'Anowar Store',
+        'Bai Bai Store',
+        'Bismillah Store',
+        'Chomot kar Store',
+        'Ebrahim store',
+        'Garments cosmetics',
+        'Karim Store',
+        'Khan cosmetics',
+        'Khan Shopping Store',
+        'Ladys Corner',
+        'Ma Babar Dowa',
+        'Malek store',
+        'Maruf cosmetics',
+        'Mayar Achal store',
+        'Melion store',
+        'Mohi Uddin',
+        'New Bismillah Store',
+        'Nirob Varaitice',
+        'Ria Moni Varaitice',
+        'Rokon Store',
+        'Salam Store',
+        'Shafin store',
+        'Sobuj Cosmetics',
+        'Sohel store',
+        'Sohel Store',
+        'Subhan Store',
+        'Tanvir Store',
+        'Zyaul store'
+      ]
     },
     {
-      "beatname": "beat-3",
-      "customers": ["Customer-5", "Customer-6"]
+      "beatname": "Kothakoli Market",
+      "customers": [
+        'Abdus Satter Moslagor',
+        'Abu Sama Trades',
+        'Afjal Store',
+        'Amin Store',
+        'Anuwer Rokomary',
+        'Chori Ghor Cos',
+        'Dav Store',
+        'Faria Cosmetics',
+        'Fashoin Word',
+        'Hoqe Varaitice',
+        'Istiak Varaitics',
+        'Jonatar Prethibi',
+        'Kanu Store',
+        'Katbo Cos',
+        'Lipu Corner',
+        'Luva confectionary',
+      ]
     }
   ];
 
   //-------------------------Beat Dropdown menu--------------------//
 
   RxString dropdownBeatValue = 'Beat-1'.obs;
-  RxList<String> beatList = <String>[
+  RxList<String> beatData = <String>[
     'Beat-1',
     'Beat-2',
     'Beat-3',
-    'Beat-4',
-    'Beat-5',
-    'Beat-6',
-    'Beat-7'
   ].obs;
   DropdownBeatValueUpdater(String type) {
     dropdownBeatValue.value = type;
@@ -68,10 +170,6 @@ class OrderHomeController extends GetxController {
     'Shop-123',
     'Shop-452',
     'Shop-875',
-    'Shop-356',
-    'Shop-485',
-    'Shop-149',
-    'Shop-258'
   ].obs;
   DropdownCustomerValueUpdater(String type) {
     dropdownCustomerValue.value = type;
@@ -80,11 +178,11 @@ class OrderHomeController extends GetxController {
   }
 
   initialDropdownValue() {
-    beatList.clear();
+    beatData.clear();
     beatCustomer.forEach((element) {
-      beatList.add(element['beatname']);
+      beatData.add(element['beatname']);
     });
-    beatList.refresh();
+    beatData.refresh();
 
     dropdownBeatValue.value = beatCustomer[0]["beatname"];
     // DropdownCustomerValueUpdater(beatCustomer[0]["beatname"]);

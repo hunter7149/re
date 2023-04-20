@@ -41,6 +41,7 @@ class IndexController extends GetxController {
     if (newTab == 2) {
       Get.put(CartController());
       Get.find<CartController>().onInit();
+      Get.find<CartController>().initialDropdownValue();
       hasNewValueUpdater(value: false);
     } else {
       CartCounter.cartCounter();

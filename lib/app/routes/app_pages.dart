@@ -124,7 +124,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PRODUCTB,
-      page: () => const ProductbView(),
+      page: () => ProductbView(),
       binding: ProductbBinding(),
     ),
     GetPage(

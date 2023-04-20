@@ -30,7 +30,8 @@ class ProductcView extends GetView<ProductcController> {
   const ProductcView({Key? key, required this.argument}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    controller.setArgument(argument);
+    controller.setData(data: argument);
+
     //final  data=Get.arguments;
     //final String datat=data[0] as String;
     return Scaffold(
@@ -81,8 +82,8 @@ class ProductcView extends GetView<ProductcController> {
                                         // height: 160,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) => Center(
-                                            child: SpinKitPulse(
-                                          color: Colors.red,
+                                            child: SpinKitRipple(
+                                          color: AppThemes.modernGreen,
                                           size: 50.0,
                                         )),
                                         errorWidget: (ctx, url, err) =>

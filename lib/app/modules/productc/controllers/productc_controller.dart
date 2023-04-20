@@ -4,6 +4,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:red_tail/app/api/repository/repository.dart';
 import 'package:red_tail/app/components/cart_value.dart';
 import 'package:red_tail/app/components/internet_connection_checker.dart';
 import 'package:red_tail/app/models/cartproduct.dart';
@@ -26,7 +28,7 @@ class ProductcController extends GetxController {
   // }
   //RxInt currentIndex = 4.obs;
 // onTapMain(){
-//   Get.toNamed(Routes.INDEX);
+//   Get.toNamed(Routes.INDEX);a
 // }
 
   // videoInit() async {
@@ -62,43 +64,83 @@ class ProductcController extends GetxController {
   final count = 0.0.obs;
   RxList<Map<String, dynamic>> products = <Map<String, dynamic>>[].obs;
   initializeProducts() async {
-    products.value = [
-      {
-        "productId": 101,
-        "name": "Tylox",
-        "weight": "300 ml",
-        "offer": "BOGO",
-        "description": "This is a demo product",
-        "ingredients": ["Menthol", "Soap"],
-        "claims": ["non-alergic", "adove 18"],
-        "catagory": "Toilet Cleaner",
-        "unit": "pcs",
-        "price": 99.5,
-        "brand": "Remark",
-        "quantity": 5,
-        "img":
-            "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
-        "video":
-            "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
-      },
-      {
-        "productId": 102,
-        "name": "Nior",
-        "weight": "500 ml",
-        "offer": "15% off",
-        "description": "This is a demo product",
-        "ingredients": ["Serum", "Vitamin C"],
-        "claims": ["non-alergic", "adove 18"],
-        "catagory": "Toilet Cleaner",
-        "unit": "pcs",
-        "price": 99.5,
-        "brand": "Remark",
-        "quantity": 5,
-        "img":
-            "https://www.rizik.com.bd/wp-content/uploads/Nior-Matte-Lipstick-Pencil-18.jpg",
-        "video": "http://techslides.com/demos/sample-videos/small.mp4"
-      }
-    ];
+    await Repository().getAllProducts(body: {
+      "brand": "${tempData['brand']}",
+      "generic_name": "${tempData['type']}"
+    }).then((value) {
+      products.value = value;
+    });
+    // products.value = [
+    //   {
+    //     "productId": 101,
+    //     "name": "Tylox",
+    //     "weight": "300 ml",
+    //     "offer": "BOGO",
+    //     "description": "This is a demo product",
+    //     "ingredients": ["Menthol", "Soap"],
+    //     "claims": ["non-alergic", "adove 18"],
+    //     "catagory": "Toilet Cleaner",
+    //     "unit": "pcs",
+    //     "price": 99.5,
+    //     "brand": "Remark",
+    //     "quantity": 5,
+    //     "img":
+    //         "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
+    //     "video":
+    //         "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+    //   },
+    //   {
+    //     "productId": 102,
+    //     "name": "Nior",
+    //     "weight": "500 ml",
+    //     "offer": "15% off",
+    //     "description": "This is a demo product",
+    //     "ingredients": ["Serum", "Vitamin C"],
+    //     "claims": ["non-alergic", "adove 18"],
+    //     "catagory": "Toilet Cleaner",
+    //     "unit": "pcs",
+    //     "price": 99.5,
+    //     "brand": "Remark",
+    //     "quantity": 5,
+    //     "img":
+    //         "https://www.rizik.com.bd/wp-content/uploads/Nior-Matte-Lipstick-Pencil-18.jpg",
+    //     "video": "http://techslides.com/demos/sample-videos/small.mp4"
+    //   },
+    //   {
+    //     "productId": 102,
+    //     "name": "Nior",
+    //     "weight": "500 ml",
+    //     "offer": "15% off",
+    //     "description": "This is a demo product",
+    //     "ingredients": ["Serum", "Vitamin C"],
+    //     "claims": ["non-alergic", "adove 18"],
+    //     "catagory": "Toilet Cleaner",
+    //     "unit": "pcs",
+    //     "price": 99.5,
+    //     "brand": "Remark",
+    //     "quantity": 5,
+    //     "img":
+    //         "https://www.rizik.com.bd/wp-content/uploads/Nior-Matte-Lipstick-Pencil-18.jpg",
+    //     "video": "http://techslides.com/demos/sample-videos/small.mp4"
+    //   },
+    //   {
+    //     "productId": 102,
+    //     "name": "Nior",
+    //     "weight": "500 ml",
+    //     "offer": "15% off",
+    //     "description": "This is a demo product",
+    //     "ingredients": ["Serum", "Vitamin C"],
+    //     "claims": ["non-alergic", "adove 18"],
+    //     "catagory": "Toilet Cleaner",
+    //     "unit": "pcs",
+    //     "price": 99.5,
+    //     "brand": "Remark",
+    //     "quantity": 5,
+    //     "img":
+    //         "https://www.rizik.com.bd/wp-content/uploads/Nior-Matte-Lipstick-Pencil-18.jpg",
+    //     "video": "http://techslides.com/demos/sample-videos/small.mp4"
+    //   }
+    // ];
     products.refresh();
     update();
   }
@@ -220,12 +262,22 @@ class ProductcController extends GetxController {
     videoControllerList.clear();
   }
 
+//-----------------------------------------------------------------Online data------------------------------------------------------------//
+  RxMap<String, dynamic> tempData = <String, dynamic>{}.obs;
+  setData({required dynamic data}) {
+    tempData.value = data as Map<String, dynamic>;
+    tempData.refresh();
+    update();
+    initializeProducts();
+  }
+
   @override
   Future<void> onInit() async {
     super.onInit();
-    initializeProducts();
+    // initializeProducts();
     initValues();
     await assignVideoController();
+
     // videoInit();
     // videoController();
   }

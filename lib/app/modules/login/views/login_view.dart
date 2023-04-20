@@ -53,6 +53,7 @@ class LoginView extends GetView<LoginController> {
                       title: "LOGIN",
                       funtion: () {
                         controller.requestLogin();
+                        // controller.onTapLogin();
                       },
                       height: 50),
                   SizedBox(

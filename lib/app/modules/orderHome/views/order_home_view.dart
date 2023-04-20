@@ -112,7 +112,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                 // ),
 
                 Obx(() {
-                  return controller.beatList.isEmpty
+                  return controller.beatData.isEmpty
                       ? Container()
                       : Container(
                           height: 50,
@@ -141,7 +141,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                               onChanged: (String? newValue) {
                                 controller.DropdownBeatValueUpdater(newValue!);
                               },
-                              items: controller.beatList.value
+                              items: controller.beatData.value
                                   .map<DropdownMenuItem<String>>(
                                       (String value) {
                                 return DropdownMenuItem<String>(

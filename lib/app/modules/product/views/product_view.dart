@@ -18,6 +18,7 @@ import '../controllers/product_controller.dart';
 
 class ProductView extends GetView<ProductController> {
   final String argument;
+
   const ProductView({Key? key, required this.argument}) : super(key: key);
   // String searchValue = '';
   //  int currentIndex = 4;
@@ -25,6 +26,17 @@ class ProductView extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
+    List brands = [
+      'acnol',
+      'blazoskin',
+      'tylox',
+      'herlan',
+      'lily',
+      'nior',
+      'orix',
+      'siodil',
+      'sunbit'
+    ];
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
@@ -71,7 +83,7 @@ class ProductView extends GetView<ProductController> {
                         // );
                         // Get.to(() => ProductcView(argument: index.toString(),));
                         Get.toNamed(Routes.PRODUCTB,
-                            arguments: index.toString(),
+                            arguments: {"brand": brands[index]},
                             id: Constants.nestedNavigationNavigatorId);
                         // Get.toNamed(Routes.PRODUCTC,
                         //     arguments: index.toString(),

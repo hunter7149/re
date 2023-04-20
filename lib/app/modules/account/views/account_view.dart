@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:red_tail/app/components/common_widgets.dart';
 import 'package:red_tail/app/config/app_themes.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../config/app_assets.dart';
 import '../controllers/account_controller.dart';
@@ -83,23 +84,26 @@ class AccountView extends GetView<AccountController> {
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w400),
                       ),
-                      Container(
-                        // height: 40,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        margin: EdgeInsets.only(top: 10, right: 30),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                bottomRight: Radius.circular(30)),
-                            color: AppThemes.modernLightBrown),
-                        child: Center(
-                          child: Text(
-                            "Details",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18),
+                      ZoomTapAnimation(
+                        onTap: () {},
+                        child: Container(
+                          // height: 40,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          margin: EdgeInsets.only(top: 10, right: 30),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  bottomRight: Radius.circular(30)),
+                              color: AppThemes.modernSexyRed),
+                          child: Center(
+                            child: Text(
+                              "Logout",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18),
+                            ),
                           ),
                         ),
                       ),

@@ -433,7 +433,8 @@ class CartView extends GetView<CartController> {
                           left: 0,
                           child: ZoomTapAnimation(
                             onTap: () {
-                              confirmAlert(controller: controller);
+                              beatSelection(controller: controller);
+                              // confirmAlert(controller: controller);
                             },
                             child: Container(
                               height: 50,
@@ -586,6 +587,173 @@ class CartView extends GetView<CartController> {
               content: Container(
                 // height: 80,
                 child: Text("Are you sure to palce this order ?"),
+              ),
+              actionsPadding: EdgeInsets.all(10),
+              actions: [
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                    controller.requestCheckout();
+                  },
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: AppThemes.modernGreen,
+                        borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.center,
+                    child: Text("Place Order",
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                )
+              ],
+            ),
+          );
+        });
+  }
+
+  static beatSelection({required CartController controller}) {
+    Get.generalDialog(
+        transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 4 * anim1.value,
+                sigmaY: 4 * anim1.value,
+              ),
+              child: FadeTransition(
+                child: child,
+                opacity: anim1,
+              ),
+            ),
+        pageBuilder: (ctx, anim1, anim2) {
+          TextEditingController quanity = TextEditingController();
+          quanity.text = 1.toString();
+
+          return MediaQuery(
+            data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Beat selection",
+                    style: TextStyle(),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      child: Center(
+                          child: Icon(
+                        Icons.close,
+                        color: Colors.red.shade800,
+                        size: 20,
+                      )),
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  )
+                ],
+              ),
+              content: Container(
+                // height: 300,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Obx(() {
+                        return controller.beatList.isEmpty
+                            ? Container()
+                            : Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    // color: Colors.blueGrey.shade200,
+                                    border: Border.all(
+                                        width: 1, color: Colors.grey.shade500),
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 5),
+                                margin: EdgeInsets.only(top: 10),
+                                width: double.maxFinite,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton(
+                                    isExpanded: true,
+                                    alignment: Alignment.center,
+                                    value: controller.dropdownBeatValue.value,
+                                    icon: Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                    elevation: 2,
+                                    style: TextStyle(
+                                        color: Colors.grey.shade700,
+                                        fontWeight: FontWeight.w300),
+                                    onChanged: (String? newValue) {
+                                      controller.DropdownBeatValueUpdater(
+                                          newValue!);
+                                    },
+                                    items: controller.beatList.value
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              );
+                      }),
+                      const SizedBox(height: 10),
+                      Obx(() {
+                        return controller.customersData.isEmpty
+                            ? Container()
+                            : Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    // color: Colors.blueGrey.shade200,
+                                    border: Border.all(
+                                        width: 1, color: Colors.grey.shade500),
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 5),
+                                margin: EdgeInsets.only(top: 10),
+                                width: double.maxFinite,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton(
+                                    isExpanded: true,
+                                    alignment: Alignment.center,
+                                    value:
+                                        controller.dropdownCustomerValue.value,
+                                    icon: Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                    elevation: 2,
+                                    style: TextStyle(
+                                        color: Colors.grey.shade700,
+                                        fontWeight: FontWeight.w300),
+                                    onChanged: (String? newValue) {
+                                      controller.DropdownCustomerValueUpdater(
+                                          newValue!);
+                                    },
+                                    items: controller.customersData.value
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              );
+                      }),
+                    ],
+                  ),
+                ),
               ),
               actionsPadding: EdgeInsets.all(10),
               actions: [
