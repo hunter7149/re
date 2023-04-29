@@ -29,13 +29,13 @@ class ProductView extends GetView<ProductController> {
     List brands = [
       'acnol',
       'blazoskin',
+      'elanvenezia',
       'tylox',
       'herlan',
       'lily',
       'nior',
       'orix',
-      'siodil',
-      'sunbit'
+      // 'sunbit'
     ];
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;

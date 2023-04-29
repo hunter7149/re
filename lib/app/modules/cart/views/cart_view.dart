@@ -155,9 +155,15 @@ class CartView extends GetView<CartController> {
                                                       height: 10,
                                                     ),
                                                     Text(
-                                                        "${controller.cartItems[index].productName}",
+                                                        "${controller.cartItems[index].productName}"
+                                                                    .length >
+                                                                15
+                                                            ? "${controller.cartItems[index].productName}"
+                                                                .substring(
+                                                                    0, 15)
+                                                            : "${controller.cartItems[index].productName}",
                                                         style: TextStyle(
-                                                            fontSize: 20,
+                                                            fontSize: 16,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w500)),
@@ -387,7 +393,7 @@ class CartView extends GetView<CartController> {
                                         fontSize: 14,
                                         color: Colors.grey.shade800,
                                         fontWeight: FontWeight.w500)),
-                                Text("500 TK",
+                                Text("${controller.totalPrice.value}",
                                     style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey.shade800,
@@ -402,7 +408,7 @@ class CartView extends GetView<CartController> {
                                         fontSize: 14,
                                         color: Colors.grey.shade800,
                                         fontWeight: FontWeight.w500)),
-                                Text("100 TK",
+                                Text("0 TK",
                                     style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey.shade800,
@@ -513,7 +519,8 @@ class CartView extends GetView<CartController> {
               actions: [
                 ZoomTapAnimation(
                   onTap: () {
-                    controller.reqRemoveFromCart(index: index);
+                    controller.reqRemoveFromCart(
+                        id: controller.cartItems[index].productId!);
                     Get.back();
                     Get.snackbar(
                         "Item removed!", "The item was removed from your cart!",

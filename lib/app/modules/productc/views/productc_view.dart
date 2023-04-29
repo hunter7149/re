@@ -36,14 +36,48 @@ class ProductcView extends GetView<ProductcController> {
     //final String datat=data[0] as String;
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: COMMONWIDGET.globalAppBar(
-            tittle: "Description",
-            backEnabled: true,
-            backFunction: () {
-              Get.back(
-                id: Constants.nestedNavigationNavigatorId,
-              );
-            }),
+        appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.white,
+            toolbarHeight: 50.0,
+            bottomOpacity: 0.0,
+            elevation: 0.0,
+            titleTextStyle: TextStyle(color: Colors.grey.shade700),
+            title: Text("Description"),
+            actions: [
+              Obx(() => Container(
+                    child: controller.products.isNotEmpty
+                        ? Container(
+                            margin: EdgeInsets.all(5),
+                            padding: EdgeInsets.symmetric(horizontal: 2),
+                            height: 40,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: AppThemes.modernGreen,
+                                borderRadius: BorderRadius.circular(100)),
+                            child: Center(
+                                child: Text(
+                              "${controller.count} / ${controller.products.length}",
+                              style: TextStyle(
+                                  // color: AppThemes.modernSexyRed,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                          )
+                        : Container(),
+                  ))
+            ], //<Widget>[]
+
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              // Image.asset("assets/images/back_arrow.jpg"),
+              color: Colors.grey.shade700,
+              tooltip: 'Click to back',
+              onPressed: () {
+                Get.back(
+                  id: Constants.nestedNavigationNavigatorId,
+                );
+              },
+            )),
         body: SafeArea(
             child: Obx(
           () => controller.products.isNotEmpty
@@ -52,14 +86,18 @@ class ProductcView extends GetView<ProductcController> {
                   width: MediaQuery.of(context).size.width,
 
                   child: PageView.builder(
-
+                      onPageChanged: (a) {
+                        controller.countUpdateR(value: a + 1);
+                      },
                       // child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.products.length,
                       itemBuilder: (context, i) {
-                        List<String> ingredients =
-                            controller.products[i]["ingredients"];
-                        List<String> claims = controller.products[i]["claims"];
+                        double unitprice = 820;
+                        // controller.countUpdateR(value: i);
+                        // List<String> ingredients =
+                        //     controller.products[i]["ingredients"];
+                        // List<String> claims = controller.products[i]["claims"];
                         return Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
@@ -77,8 +115,8 @@ class ProductcView extends GetView<ProductcController> {
                                           bottomRight: Radius.circular(15),
                                           bottomLeft: Radius.circular(15)),
                                       child: CachedNetworkImage(
-                                        imageUrl:
-                                            "${controller.products[i]['img']}",
+                                        imageUrl: "",
+                                        // "${"https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png"}",
                                         // height: 160,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) => Center(
@@ -98,16 +136,18 @@ class ProductcView extends GetView<ProductcController> {
                                     height: 5,
                                   ),
                                   Text(
-                                    '${controller.products[i]['name']}',
+                                    '${controller.products[i]['PRODUCT_NAME']}',
                                     style: TextStyle(
-                                        fontSize: 24.0,
+                                        fontSize: 22.0,
+                                        color: AppThemes.modernPlantation,
                                         fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
                                   ),
                                   SizedBox(
                                     height: 5,
                                   ),
                                   Text(
-                                    'Weight: ${controller.products[i]['weight']}',
+                                    'Weight: ${controller.products[i]['WEIGHT_SIZE']}',
                                     style: TextStyle(
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.w500),
@@ -116,7 +156,7 @@ class ProductcView extends GetView<ProductcController> {
                                     height: 5,
                                   ),
                                   Text(
-                                    'Offers: ${controller.products[i]['offer']}',
+                                    'Manufacturer: ${controller.products[i]['MANUFACTURER']}',
                                     style: TextStyle(
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.w500),
@@ -125,7 +165,16 @@ class ProductcView extends GetView<ProductcController> {
                                     height: 5,
                                   ),
                                   Text(
-                                    'Price: ${controller.products[i]['price']} Tk',
+                                    'Color: ${controller.products[i]['COLOR']} ',
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'Price: ${unitprice} ',
                                     style: TextStyle(
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.w500),
@@ -139,21 +188,19 @@ class ProductcView extends GetView<ProductcController> {
                                         CartItem product = CartItem(
                                             userId: 1,
                                             productId: controller.products[i]
-                                                ["productId"],
+                                                ["SKU_CODE"],
                                             customerName: "",
                                             beatName: "",
                                             productName: controller.products[i]
-                                                ["name"],
+                                                ["PRODUCT_NAME"],
                                             catagory: controller.products[i]
-                                                ["catagory"],
-                                            unit: controller.products[i]
-                                                ["unit"],
-                                            image: controller.products[i]
-                                                ["img"],
-                                            price: controller.products[i]
-                                                ["price"],
+                                                ["CATEGORY"],
+                                            unit: controller.products[i]["UOM"],
+                                            image:
+                                                "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
+                                            price: unitprice,
                                             brand: controller.products[i]
-                                                ["brand"],
+                                                ["BRAND_NAME"],
                                             quantity: 1);
                                         controller.addToCart(data: product);
                                         // addAlert(controller: controller, data: i);
@@ -165,40 +212,40 @@ class ProductcView extends GetView<ProductcController> {
                                     color: Colors.grey.shade300,
                                   ),
 
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'About ${controller.products[i]['name']}',
-                                              style: TextStyle(
-                                                  fontSize: 24.0,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              ' ${controller.products[i]['description']} ',
-                                              style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
+                                  // Padding(
+                                  //   padding:
+                                  //       EdgeInsets.symmetric(horizontal: 16),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.start,
+                                  //     children: [
+                                  //       Column(
+                                  //         crossAxisAlignment:
+                                  //             CrossAxisAlignment.start,
+                                  //         children: [
+                                  //           Text(
+                                  //             'About ${controller.products[i]['name']}',
+                                  //             style: TextStyle(
+                                  //                 fontSize: 24.0,
+                                  //                 fontWeight: FontWeight.bold),
+                                  //           ),
+                                  //           SizedBox(
+                                  //             height: 5,
+                                  //           ),
+                                  //           Text(
+                                  //             ' ${controller.products[i]['description']} ',
+                                  //             style: TextStyle(
+                                  //                 fontSize: 20.0,
+                                  //                 fontWeight: FontWeight.w400),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 20,
+                                  // ),
                                   // Container(
                                   //     height: 235,
                                   //     margin:
@@ -220,133 +267,133 @@ class ProductcView extends GetView<ProductcController> {
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Active Ingredients',
-                                              style: TextStyle(
-                                                  fontSize: 24.0,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: ingredients
-                                                  .map((e) => Container(
-                                                        margin:
-                                                            EdgeInsets.all(5),
-                                                        child: Row(
-                                                          children: [
-                                                            Icon(
-                                                              FontAwesomeIcons
-                                                                  .circleDot,
-                                                              size: 10,
-                                                            ),
-                                                            SizedBox(
-                                                              width: 2,
-                                                            ),
-                                                            Text(
-                                                              e,
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      18.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ))
-                                                  .toList(),
-                                            )
-                                            // Text(
-                                            //   i['ingredients'],
-                                            //   style: TextStyle(
-                                            //       fontSize: 20.0,
-                                            //       fontWeight: FontWeight.w400),
-                                            // ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Speical Claims',
-                                              style: TextStyle(
-                                                  fontSize: 24.0,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: claims
-                                                  .map((e) => Container(
-                                                        margin:
-                                                            EdgeInsets.all(5),
-                                                        child: Row(
-                                                          children: [
-                                                            Icon(
-                                                              FontAwesomeIcons
-                                                                  .circleDot,
-                                                              size: 10,
-                                                            ),
-                                                            SizedBox(
-                                                              width: 2,
-                                                            ),
-                                                            Text(
-                                                              e,
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      18.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ))
-                                                  .toList(),
-                                            )
-                                            // Text(
-                                            //   i['claims'],
-                                            //   style: TextStyle(
-                                            //       fontSize: 20.0,
-                                            //       fontWeight: FontWeight.w400),
-                                            // ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  )
+                                  // Padding(
+                                  //   padding:
+                                  //       EdgeInsets.symmetric(horizontal: 16),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.start,
+                                  //     children: [
+                                  //       Column(
+                                  //         crossAxisAlignment:
+                                  //             CrossAxisAlignment.start,
+                                  //         children: [
+                                  //           Text(
+                                  //             'Active Ingredients',
+                                  //             style: TextStyle(
+                                  //                 fontSize: 24.0,
+                                  //                 fontWeight: FontWeight.bold),
+                                  //           ),
+                                  //           SizedBox(
+                                  //             height: 5,
+                                  //           ),
+                                  //           Column(
+                                  //             crossAxisAlignment:
+                                  //                 CrossAxisAlignment.start,
+                                  //             children: ingredients
+                                  //                 .map((e) => Container(
+                                  //                       margin:
+                                  //                           EdgeInsets.all(5),
+                                  //                       child: Row(
+                                  //                         children: [
+                                  //                           Icon(
+                                  //                             FontAwesomeIcons
+                                  //                                 .circleDot,
+                                  //                             size: 10,
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             width: 2,
+                                  //                           ),
+                                  //                           Text(
+                                  //                             e,
+                                  //                             style: TextStyle(
+                                  //                                 fontSize:
+                                  //                                     18.0,
+                                  //                                 fontWeight:
+                                  //                                     FontWeight
+                                  //                                         .w400),
+                                  //                           ),
+                                  //                         ],
+                                  //                       ),
+                                  //                     ))
+                                  //                 .toList(),
+                                  //           )
+                                  //           // Text(
+                                  //           //   i['ingredients'],
+                                  //           //   style: TextStyle(
+                                  //           //       fontSize: 20.0,
+                                  //           //       fontWeight: FontWeight.w400),
+                                  //           // ),
+                                  //         ],
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 20,
+                                  // ),
+                                  // Padding(
+                                  //   padding:
+                                  //       EdgeInsets.symmetric(horizontal: 16),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.start,
+                                  //     children: [
+                                  //       Column(
+                                  //         crossAxisAlignment:
+                                  //             CrossAxisAlignment.start,
+                                  //         children: [
+                                  //           Text(
+                                  //             'Speical Claims',
+                                  //             style: TextStyle(
+                                  //                 fontSize: 24.0,
+                                  //                 fontWeight: FontWeight.bold),
+                                  //           ),
+                                  //           SizedBox(
+                                  //             height: 5,
+                                  //           ),
+                                  //           Column(
+                                  //             crossAxisAlignment:
+                                  //                 CrossAxisAlignment.start,
+                                  //             children: claims
+                                  //                 .map((e) => Container(
+                                  //                       margin:
+                                  //                           EdgeInsets.all(5),
+                                  //                       child: Row(
+                                  //                         children: [
+                                  //                           Icon(
+                                  //                             FontAwesomeIcons
+                                  //                                 .circleDot,
+                                  //                             size: 10,
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             width: 2,
+                                  //                           ),
+                                  //                           Text(
+                                  //                             e,
+                                  //                             style: TextStyle(
+                                  //                                 fontSize:
+                                  //                                     18.0,
+                                  //                                 fontWeight:
+                                  //                                     FontWeight
+                                  //                                         .w400),
+                                  //                           ),
+                                  //                         ],
+                                  //                       ),
+                                  //                     ))
+                                  //                 .toList(),
+                                  //           )
+                                  //           // Text(
+                                  //           //   i['claims'],
+                                  //           //   style: TextStyle(
+                                  //           //       fontSize: 20.0,
+                                  //           //       fontWeight: FontWeight.w400),
+                                  //           // ),
+                                  //         ],
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ));

@@ -3,25 +3,28 @@ import 'package:floor/floor.dart';
 @entity
 class OrderItem {
   @PrimaryKey(autoGenerate: true)
-  final int? id;
-  final int? orderId;
-  final int? userId;
-  final String? status;
-  final int? totalItem;
-  final String? dateTime;
-  final double? lattitude;
-  final double? longitude;
-  final double? totalPrice;
+  int? id;
+  int? orderId;
+  int? userId;
+  String? status;
+  int? totalItem;
+  String? dateTime;
+  double? lattitude;
+  double? longitude;
+  double? totalPrice;
+  String? beatName;
+  String? CustomerName;
 
-  OrderItem({
-    this.id,
-    this.orderId,
-    this.userId,
-    this.status,
-    this.totalItem,
-    this.totalPrice,
-    this.dateTime,
-    this.lattitude,
-    this.longitude,
-  });
+  OrderItem(
+      {this.id,
+      this.orderId,
+      this.userId,
+      this.status,
+      this.totalItem,
+      this.totalPrice,
+      this.dateTime,
+      this.lattitude,
+      this.longitude,
+      this.beatName,
+      this.CustomerName});
 }

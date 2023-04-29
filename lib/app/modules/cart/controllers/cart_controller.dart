@@ -75,6 +75,7 @@ class CartController extends GetxController {
     //   print("Updated row count->${value}");
     // });
     await cartItemDao.updateCartItem(newItem);
+    loadData();
     totalPriceCounter();
     Update();
   }
@@ -84,11 +85,9 @@ class CartController extends GetxController {
     Update();
   }
 
-  reqRemoveFromCart({required int index}) {
-    cartItemDao.deleteCartItemByID(cartItems[index].id!);
-    cartItems.removeAt(index);
-    cartItems.refresh();
-    Update();
+  reqRemoveFromCart({required String id}) {
+    cartItemDao.deleteCartItemByID(id);
+    loadData();
   }
 
   getLocation() async {
@@ -157,20 +156,22 @@ class CartController extends GetxController {
         status: "Pending",
         totalItem: cartItems.length,
         dateTime: DateTime.now().toString(),
-        totalPrice: totalPrice.value);
+        totalPrice: totalPrice.value,
+        beatName: dropdownBeatValue.value,
+        CustomerName: dropdownCustomerValue.value);
     await orderItemDao.insertOrderItem(orderItem);
     cartItems.forEach((element) async {
       SaleRequisition item = SaleRequisition(
           userId: 1,
           orderId: orderId,
-          productId: element.productId,
+          productId: element.productId.toString(),
           customerName: dropdownCustomerValue.value,
           beatName: dropdownBeatValue.value,
           productName: element.productName,
           catagory: element.catagory,
           unit: element.unit,
           image: element.image,
-          price: element.price,
+          price: element.price! * element.quantity!,
           brand: element.brand,
           quantity: element.quantity);
       await saleRequisitionDao.insertSaleItem(item);

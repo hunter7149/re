@@ -6,8 +6,10 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 
 enum Method { POST, GET, PUT, DELETE, PATCH }
 
-const BASE_URL = 'http://192.168.10.204:8090/dp/';
-// const BASE_URL = 'http://192.168.11.12/8.1/eco_pulse/public';
+// const BASE_URL = 'http://192.168.10.204:8090/dp/';
+const BASE_URL =
+// 'http://192.168.10.112:8090/dp/';
+    'http://182.160.114.100:7171/dp/';
 
 class ApiService extends GetxService {
   late Dio _dio;
@@ -20,6 +22,7 @@ class ApiService extends GetxService {
       };
 
   ApiService({String? token}) {
+    print("Base URL ------------>${BASE_URL}");
     _dio = Dio(BaseOptions(baseUrl: BASE_URL, headers: header(token: token)));
     initInterceptors();
   }

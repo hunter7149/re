@@ -61,14 +61,23 @@ class ProductcController extends GetxController {
     print(a);
   }
 
-  final count = 0.0.obs;
-  RxList<Map<String, dynamic>> products = <Map<String, dynamic>>[].obs;
+  RxInt count = 1.obs;
+  countUpdateR({required int value}) {
+    count.value = value;
+    update();
+  }
+
+  RxList<dynamic> products = <dynamic>[].obs;
   initializeProducts() async {
+    print("${tempData['brand']}");
+    print("${tempData['type']}");
     await Repository().getAllProducts(body: {
       "brand": "${tempData['brand']}",
-      "generic_name": "${tempData['type']}"
+      "generic_name": "${tempData['type']}".toLowerCase()
     }).then((value) {
-      products.value = value;
+      products.value = value["value"];
+      products.refresh();
+      update();
     });
     // products.value = [
     //   {
@@ -151,38 +160,98 @@ class ProductcController extends GetxController {
     } else {
       print("NO INTERNET");
     }
-    CartItem item = data;
-    if (await cartItemDao.insertCartItem(data).then((value) => true)) {
-      totalpriceUpdater();
-      CartCounter.cartCounter();
-      Get.snackbar(
-        "Success",
-        "Product added successfully!",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+
+    // Check if the item already exists in the cart
+    CartItem? existingItem =
+        await cartItemDao.findCartItemById(data.productId!).first;
+
+    if (existingItem != null && data != null) {
+      // If the item already exists, update its quantity
+      CartItem temporaryItem = existingItem;
+
+      existingItem.quantity = (existingItem.quantity! + data.quantity!);
+      existingItem.price = (existingItem.price! + data.price!);
+
+      if (await cartItemDao
+          .updateCartItem(existingItem)
+          .then((value) => true)) {
+        totalpriceUpdater();
+        CartCounter.cartCounter();
+        Get.snackbar(
+          "Success",
+          "Product added successfully!",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        totalpriceUpdater();
+        Get.snackbar(
+          "Failure",
+          "Product quantity was not updated!",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
     } else {
-      totalpriceUpdater();
-      Get.snackbar(
-        "Failure",
-        "Product was not added!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      // If the item does not exist, insert it into the cart
+      if (await cartItemDao.insertCartItem(data).then((value) => true)) {
+        totalpriceUpdater();
+        CartCounter.cartCounter();
+        Get.snackbar(
+          "Success",
+          "Product added successfully!",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        totalpriceUpdater();
+        Get.snackbar(
+          "Failure",
+          "Product was not added!",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
     }
-    ;
-
-    // final data = await cartItemDao.findAllCartItem() as List<CartItem>;
-    print("=======================");
-    // print(data);
-    // isReorder.value = true;
-    // update();
-
-    // Timer(Duration(seconds: 2), () {
-    //   isReorderCompleted.value = true;
-    // update();
-    // });
   }
+  // addToCart({required CartItem data}) async {
+  //   if (await ICHECKER.checkConnection()) {
+  //     print("INTERNET");
+  //   } else {
+  //     print("NO INTERNET");
+  //   }
+  //   CartItem item = data;
+  //   if (await cartItemDao.insertCartItem(data).then((value) => true)) {
+  //     totalpriceUpdater();
+  //     CartCounter.cartCounter();
+  //     Get.snackbar(
+  //       "Success",
+  //       "Product added successfully!",
+  //       backgroundColor: Colors.green,
+  //       colorText: Colors.white,
+  //     );
+  //   } else {
+  //     totalpriceUpdater();
+  //     Get.snackbar(
+  //       "Failure",
+  //       "Product was not added!",
+  //       backgroundColor: Colors.red,
+  //       colorText: Colors.white,
+  //     );
+  //   }
+  //   ;
+
+  //   // final data = await cartItemDao.findAllCartItem() as List<CartItem>;
+  //   print("=======================");
+  //   // print(data);
+  //   // isReorder.value = true;
+  //   // update();
+
+  //   // Timer(Duration(seconds: 2), () {
+  //   //   isReorderCompleted.value = true;
+  //   // update();
+  //   // });
+  // }
 
   late CartItemDao cartItemDao;
 
@@ -190,6 +259,7 @@ class ProductcController extends GetxController {
     final database =
         await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
     cartItemDao = database.cartItemDao;
+    // requestItemCount();
   }
 
   totalpriceUpdater() {
@@ -264,11 +334,25 @@ class ProductcController extends GetxController {
 
 //-----------------------------------------------------------------Online data------------------------------------------------------------//
   RxMap<String, dynamic> tempData = <String, dynamic>{}.obs;
-  setData({required dynamic data}) {
+  setData({required dynamic data}) async {
     tempData.value = data as Map<String, dynamic>;
     tempData.refresh();
     update();
-    initializeProducts();
+    await initializeProducts();
+  }
+
+  RxBool isItemCountLoading = false.obs;
+  requestItemCount() async {
+    isItemCountLoading.value = true;
+    update();
+    await Repository().getAllProducts(body: {'brand': 'nior'}).then((value) {
+      products.clear();
+      products.value = value['value'];
+      products.refresh();
+      isItemCountLoading.value = false;
+
+      update();
+    });
   }
 
   @override

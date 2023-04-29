@@ -90,6 +90,7 @@ class LoginController extends GetxController {
     }
     isLogingIn.value = false;
     update();
+    // onTapLogin();
   }
 
   onTapLogin() {

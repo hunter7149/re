@@ -112,6 +112,20 @@ class OrderpageView extends GetView<OrderpageController> {
                                               fontWeight: FontWeight.w400),
                                         ),
                                         space(),
+                                        Text(
+                                          "Beat name: ${controller.orderItem[index].beatName}",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        space(),
+                                        Text(
+                                          "Customer name: ${controller.orderItem[index].CustomerName}",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        space(),
                                         Row(
                                           children: [
                                             Text(

@@ -89,11 +89,11 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `productId` INTEGER, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `orderId` INTEGER, `productId` INTEGER, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `orderId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` INTEGER, `userId` INTEGER, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL)');
+            'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` INTEGER, `userId` INTEGER, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -177,7 +177,7 @@ class _$CartItemDao extends CartItemDao {
         mapper: (Map<String, Object?> row) => CartItem(
             id: row['id'] as int?,
             userId: row['userId'] as int?,
-            productId: row['productId'] as int?,
+            productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
             productName: row['productName'] as String?,
@@ -190,12 +190,13 @@ class _$CartItemDao extends CartItemDao {
   }
 
   @override
-  Stream<CartItem?> findCartItemById(int id) {
-    return _queryAdapter.queryStream('SELECT * FROM CartItem WHERE userid = ?1',
+  Stream<CartItem?> findCartItemById(String id) {
+    return _queryAdapter.queryStream(
+        'SELECT * FROM CartItem WHERE productId = ?1',
         mapper: (Map<String, Object?> row) => CartItem(
             id: row['id'] as int?,
             userId: row['userId'] as int?,
-            productId: row['productId'] as int?,
+            productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
             productName: row['productName'] as String?,
@@ -211,9 +212,10 @@ class _$CartItemDao extends CartItemDao {
   }
 
   @override
-  Future<void> deleteCartItemByID(int id) async {
-    await _queryAdapter
-        .queryNoReturn('DELETE FROM CartItem WHERE id = ?1', arguments: [id]);
+  Future<void> deleteCartItemByID(String id) async {
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM CartItem WHERE productId = ?1',
+        arguments: [id]);
   }
 
   @override
@@ -274,7 +276,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
             id: row['id'] as int?,
             userId: row['userId'] as int?,
             orderId: row['orderId'] as int?,
-            productId: row['productId'] as int?,
+            productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
             productName: row['productName'] as String?,
@@ -297,7 +299,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
             id: row['id'] as int?,
             userId: row['userId'] as int?,
             orderId: row['orderId'] as int?,
-            productId: row['productId'] as int?,
+            productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
             productName: row['productName'] as String?,
@@ -318,7 +320,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
             id: row['id'] as int?,
             userId: row['userId'] as int?,
             orderId: row['orderId'] as int?,
-            productId: row['productId'] as int?,
+            productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
             productName: row['productName'] as String?,
@@ -357,7 +359,9 @@ class _$OrderItemDao extends OrderItemDao {
                   'dateTime': item.dateTime,
                   'lattitude': item.lattitude,
                   'longitude': item.longitude,
-                  'totalPrice': item.totalPrice
+                  'totalPrice': item.totalPrice,
+                  'beatName': item.beatName,
+                  'CustomerName': item.CustomerName
                 },
             changeListener);
 
@@ -381,7 +385,9 @@ class _$OrderItemDao extends OrderItemDao {
             totalPrice: row['totalPrice'] as double?,
             dateTime: row['dateTime'] as String?,
             lattitude: row['lattitude'] as double?,
-            longitude: row['longitude'] as double?));
+            longitude: row['longitude'] as double?,
+            beatName: row['beatName'] as String?,
+            CustomerName: row['CustomerName'] as String?));
   }
 
   @override
@@ -396,7 +402,9 @@ class _$OrderItemDao extends OrderItemDao {
             totalPrice: row['totalPrice'] as double?,
             dateTime: row['dateTime'] as String?,
             lattitude: row['lattitude'] as double?,
-            longitude: row['longitude'] as double?),
+            longitude: row['longitude'] as double?,
+            beatName: row['beatName'] as String?,
+            CustomerName: row['CustomerName'] as String?),
         arguments: [userId]);
   }
 
@@ -413,7 +421,9 @@ class _$OrderItemDao extends OrderItemDao {
             totalPrice: row['totalPrice'] as double?,
             dateTime: row['dateTime'] as String?,
             lattitude: row['lattitude'] as double?,
-            longitude: row['longitude'] as double?),
+            longitude: row['longitude'] as double?,
+            beatName: row['beatName'] as String?,
+            CustomerName: row['CustomerName'] as String?),
         arguments: [id],
         queryableName: 'OrderItem',
         isView: false);

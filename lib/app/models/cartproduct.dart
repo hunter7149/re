@@ -3,18 +3,18 @@ import 'package:floor/floor.dart';
 @entity
 class CartItem {
   @PrimaryKey(autoGenerate: true)
-  final int? id;
-  final int? userId;
-  final int? productId;
-  final String? customerName;
-  final String? beatName;
-  final String? productName;
-  final String? catagory;
-  final String? unit;
-  final String? image;
-  final double? price;
-  final String? brand;
-  final int? quantity;
+  int? id;
+  int? userId;
+  String? productId;
+  String? customerName;
+  String? beatName;
+  String? productName;
+  String? catagory;
+  String? unit;
+  String? image;
+  double? price;
+  String? brand;
+  int? quantity;
 
   CartItem(
       {this.id,
