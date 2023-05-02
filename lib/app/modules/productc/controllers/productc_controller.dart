@@ -5,14 +5,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:red_tail/app/api/repository/repository.dart';
 import 'package:red_tail/app/components/cart_value.dart';
+import 'package:red_tail/app/components/connection_checker.dart';
 import 'package:red_tail/app/components/internet_connection_checker.dart';
 import 'package:red_tail/app/models/cartproduct.dart';
 import 'package:red_tail/app/modules/index/controllers/index_controller.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../DAO/cartitemdao.dart';
+import '../../../config/app_themes.dart';
 import '../../../database/database.dart';
 import '../../../routes/app_pages.dart';
 
@@ -68,17 +71,49 @@ class ProductcController extends GetxController {
   }
 
   RxList<dynamic> products = <dynamic>[].obs;
+  RxBool isProductLoading = false.obs;
+
   initializeProducts() async {
     print("${tempData['brand']}");
     print("${tempData['type']}");
-    await Repository().getAllProducts(body: {
-      "brand": "${tempData['brand']}",
-      "generic_name": "${tempData['type']}".toLowerCase()
-    }).then((value) {
-      products.value = value["value"];
-      products.refresh();
+    isProductLoading.value = true;
+    update();
+
+    if (await IEchecker.checker()) {
+      try {
+        await Repository().getAllProducts(body: {
+          "brand": "${tempData['brand']}",
+          "generic_name": "${tempData['type']}".toLowerCase()
+        }).then((value) async {
+          products.value = value["value"] ?? [];
+          products.refresh();
+          await GetStorage().write(
+              "${tempData['brand']}-${tempData['type']}", products.value);
+          update();
+        });
+        isProductLoading.value = false;
+        update();
+      } on Exception catch (e) {
+        offlineDataModule();
+        Get.snackbar("Server error", "Data loaded in offline mode!",
+            backgroundColor: AppThemes.modernSexyRed,
+            snackPosition: SnackPosition.TOP,
+            colorText: Colors.white,
+            duration: Duration(seconds: 4));
+        isProductLoading.value = false;
+        update();
+      }
+    } else {
+      offlineDataModule();
+      Get.snackbar("No internet", "Data loaded in offline mode!",
+          backgroundColor: AppThemes.modernSexyRed,
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          duration: Duration(seconds: 4));
+      isProductLoading.value = false;
       update();
-    });
+    }
+
     // products.value = [
     //   {
     //     "productId": 101,
@@ -150,6 +185,14 @@ class ProductcController extends GetxController {
     //     "video": "http://techslides.com/demos/sample-videos/small.mp4"
     //   }
     // ];
+    products.refresh();
+    update();
+  }
+
+  offlineDataModule() async {
+    products.value =
+        await GetStorage().read("${tempData['brand']}-${tempData['type']}") ??
+            [];
     products.refresh();
     update();
   }

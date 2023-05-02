@@ -130,7 +130,8 @@ class IndexView extends GetView<IndexController> {
                   );
                 },
                 child: BottomNavigationBar(
-                  backgroundColor: AppThemes.modernBlue,
+                  type: BottomNavigationBarType.shifting,
+                  backgroundColor: Colors.white,
                   selectedItemColor: AppThemes.modernGreen,
                   unselectedItemColor: Colors.grey.shade800,
                   currentIndex: controller.tabIndex.value,

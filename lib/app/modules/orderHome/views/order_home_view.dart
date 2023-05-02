@@ -360,7 +360,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                             textAlign:
                                                                 TextAlign.left,
                                                             style: TextStyle(
-                                                                fontSize: 18),
+                                                                fontSize: 14),
                                                           ),
                                                           Text(
                                                               controller
