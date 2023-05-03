@@ -1,10 +1,15 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
-import 'package:red_tail/app/components/AppColors.dart';
-import 'package:red_tail/app/config/app_themes.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:sales/app/components/AppColors.dart';
+import 'package:sales/app/config/app_themes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../api/service/prefrences.dart';
 import '../config/app_assets.dart';
+import '../modules/noticescreen/controllers/noticescreen_controller.dart';
 
 class COMMONWIDGET {
   static underDev() {
@@ -97,6 +102,29 @@ class COMMONWIDGET {
         )),
       ),
     );
+  }
+
+  static saveNotification(RemoteMessage message) {
+    RxList<dynamic> noticelist = <dynamic>[].obs;
+    print(
+        "Recieved data type: ---------------- ${GetStorage().read(Pref.NOTICE_LIST)}");
+    noticelist.value = GetStorage().read(Pref.NOTICE_LIST) ?? [];
+
+    noticelist.refresh();
+    if (message.notification != null) {
+      Map<String, dynamic> data = {
+        "title": message.notification!.title ?? "",
+        "body": message.notification!.body ?? "",
+      };
+
+      noticelist.add(data);
+      noticelist.refresh();
+      // GetStorage().remove(Pref.NOTICE_LIST);
+      GetStorage().write(Pref.NOTICE_LIST, noticelist);
+    }
+    Get.put(NoticescreenController());
+    Get.find<NoticescreenController>().loadNotices();
+    print(noticelist);
   }
 
   static globalAppBar(

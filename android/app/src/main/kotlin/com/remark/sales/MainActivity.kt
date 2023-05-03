@@ -1,4 +1,4 @@
-package com.example.red_tail
+package com.remark.sales
 
 import io.flutter.embedding.android.FlutterActivity
 

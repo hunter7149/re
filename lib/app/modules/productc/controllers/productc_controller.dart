@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:red_tail/app/api/repository/repository.dart';
-import 'package:red_tail/app/components/cart_value.dart';
-import 'package:red_tail/app/components/connection_checker.dart';
-import 'package:red_tail/app/components/internet_connection_checker.dart';
-import 'package:red_tail/app/models/cartproduct.dart';
-import 'package:red_tail/app/modules/index/controllers/index_controller.dart';
+import 'package:sales/app/api/repository/repository.dart';
+import 'package:sales/app/components/cart_value.dart';
+import 'package:sales/app/components/connection_checker.dart';
+import 'package:sales/app/components/internet_connection_checker.dart';
+import 'package:sales/app/models/cartproduct.dart';
+import 'package:sales/app/modules/index/controllers/index_controller.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../DAO/cartitemdao.dart';

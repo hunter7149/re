@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:floor/floor.dart';
-import 'package:red_tail/app/DAO/orderItemDao.dart';
-import 'package:red_tail/app/DAO/saleRequisitionDao.dart';
-import 'package:red_tail/app/models/cartproduct.dart';
-import 'package:red_tail/app/models/orderItem.dart';
-import 'package:red_tail/app/models/saleRequisition.dart';
+import 'package:sales/app/DAO/orderItemDao.dart';
+import 'package:sales/app/DAO/saleRequisitionDao.dart';
+import 'package:sales/app/models/cartproduct.dart';
+import 'package:sales/app/models/orderItem.dart';
+import 'package:sales/app/models/saleRequisition.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import '../DAO/cartitemdao.dart';
 part 'database.g.dart';

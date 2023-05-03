@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
-import 'package:red_tail/app/components/common_widgets.dart';
-import 'package:red_tail/app/config/app_themes.dart';
+import 'package:sales/app/components/common_widgets.dart';
+import 'package:sales/app/config/app_themes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../constants.dart';
@@ -354,9 +354,24 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                         children: [
                                                           Text(
                                                             controller
-                                                                .itemList[index]
-                                                                .productName
-                                                                .toString(),
+                                                                        .itemList[
+                                                                            index]
+                                                                        .productName
+                                                                        .toString()!
+                                                                        .length >
+                                                                    15
+                                                                ? controller
+                                                                    .itemList[
+                                                                        index]
+                                                                    .productName
+                                                                    .toString()
+                                                                    .substring(
+                                                                        0, 15)
+                                                                : controller
+                                                                    .itemList[
+                                                                        index]
+                                                                    .productName
+                                                                    .toString(),
                                                             textAlign:
                                                                 TextAlign.left,
                                                             style: TextStyle(

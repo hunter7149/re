@@ -14,6 +14,8 @@ import '../modules/leadershippage/bindings/leadershippage_binding.dart';
 import '../modules/leadershippage/views/leadershippage_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/noticescreen/bindings/noticescreen_binding.dart';
+import '../modules/noticescreen/views/noticescreen_view.dart';
 import '../modules/offerinfo/bindings/offerinfo_binding.dart';
 import '../modules/offerinfo/views/offerinfo_view.dart';
 import '../modules/orderHome/bindings/Order_Home_Binding.dart';
@@ -131,6 +133,11 @@ class AppPages {
       name: _Paths.ORDERPAGE,
       page: () => const OrderpageView(),
       binding: OrderpageBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTICESCREEN,
+      page: () => const NoticescreenView(),
+      binding: NoticescreenBinding(),
     ),
   ];
 }

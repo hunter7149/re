@@ -1,5 +1,5 @@
 import 'package:floor/floor.dart';
-import 'package:red_tail/app/models/cartproduct.dart';
+import 'package:sales/app/models/cartproduct.dart';
 
 import '../models/saleRequisition.dart';
 

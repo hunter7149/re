@@ -1,11 +1,11 @@
-import 'package:red_tail/app/components/common_widgets.dart';
-import 'package:red_tail/app/config/app_themes.dart';
-import 'package:red_tail/app/modules/account/views/account_view.dart';
-import 'package:red_tail/app/modules/dashboard/views/dashboard_view.dart';
-import 'package:red_tail/app/modules/index/views/index_view.dart';
-import 'package:red_tail/app/modules/product/controllers/product_controller.dart';
-import 'package:red_tail/app/modules/productc/views/productc_view.dart';
-import 'package:red_tail/app/modules/services/views/services_view.dart';
+import 'package:sales/app/components/common_widgets.dart';
+import 'package:sales/app/config/app_themes.dart';
+import 'package:sales/app/modules/account/views/account_view.dart';
+import 'package:sales/app/modules/dashboard/views/dashboard_view.dart';
+import 'package:sales/app/modules/index/views/index_view.dart';
+import 'package:sales/app/modules/product/controllers/product_controller.dart';
+import 'package:sales/app/modules/productc/views/productc_view.dart';
+import 'package:sales/app/modules/services/views/services_view.dart';
 
 import 'package:flutter/material.dart';
 

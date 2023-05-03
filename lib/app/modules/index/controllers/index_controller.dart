@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:red_tail/app/components/cart_value.dart';
-import 'package:red_tail/app/modules/cart/controllers/cart_controller.dart';
-import 'package:red_tail/app/modules/orderHome/controllers/order_home_controller.dart';
-import 'package:red_tail/app/modules/orderpage/controllers/orderpage_controller.dart';
+import 'package:sales/app/components/cart_value.dart';
+import 'package:sales/app/modules/cart/controllers/cart_controller.dart';
+import 'package:sales/app/modules/orderHome/controllers/order_home_controller.dart';
+import 'package:sales/app/modules/orderpage/controllers/orderpage_controller.dart';
 
 class IndexController extends GetxController {
   RxBool shouldQuit = false.obs;

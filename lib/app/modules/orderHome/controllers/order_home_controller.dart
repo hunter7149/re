@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:red_tail/app/DAO/cartitemdao.dart';
-import 'package:red_tail/app/models/cartproduct.dart';
+import 'package:sales/app/DAO/cartitemdao.dart';
+import 'package:sales/app/models/cartproduct.dart';
 
 import '../../../DAO/orderItemDao.dart';
 import '../../../DAO/saleRequisitionDao.dart';

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:red_tail/app/DAO/cartitemdao.dart';
-import 'package:red_tail/app/modules/index/controllers/index_controller.dart';
+import 'package:sales/app/DAO/cartitemdao.dart';
+import 'package:sales/app/modules/index/controllers/index_controller.dart';
 
 import '../database/database.dart';
 

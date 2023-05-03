@@ -2,9 +2,9 @@ import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:red_tail/app/api/repository/repository.dart';
-import 'package:red_tail/app/components/connection_checker.dart';
-import 'package:red_tail/app/config/app_themes.dart';
+import 'package:sales/app/api/repository/repository.dart';
+import 'package:sales/app/components/connection_checker.dart';
+import 'package:sales/app/config/app_themes.dart';
 
 class ProductbController extends GetxController {
   final count = 0.0.obs;

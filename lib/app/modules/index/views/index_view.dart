@@ -1,21 +1,23 @@
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:red_tail/app/modules/dashboard/bindings/dashboard_binding.dart';
-import 'package:red_tail/app/modules/leadershippage/bindings/leadershippage_binding.dart';
-import 'package:red_tail/app/modules/leadershippage/views/leadershippage_view.dart';
-import 'package:red_tail/app/modules/offerinfo/views/offerinfo_view.dart';
-import 'package:red_tail/app/modules/orderHome/bindings/Order_Home_Binding.dart';
-import 'package:red_tail/app/modules/orderHome/views/order_home_view.dart';
-import 'package:red_tail/app/modules/orderpage/views/orderpage_view.dart';
-import 'package:red_tail/app/modules/product/bindings/product_binding.dart';
-import 'package:red_tail/app/modules/product/views/product_view.dart';
-import 'package:red_tail/app/modules/productb/bindings/productb_binding.dart';
-import 'package:red_tail/app/modules/productb/views/productb_view.dart';
-import 'package:red_tail/app/modules/promotionalads/bindings/promotionalads_binding.dart';
-import 'package:red_tail/app/modules/promotionalads/views/promotionalads_view.dart';
-import 'package:red_tail/app/modules/statisticspage/bindings/statisticspage_binding.dart';
-import 'package:red_tail/app/modules/statisticspage/views/statisticspage_view.dart';
+import 'package:sales/app/modules/dashboard/bindings/dashboard_binding.dart';
+import 'package:sales/app/modules/leadershippage/bindings/leadershippage_binding.dart';
+import 'package:sales/app/modules/leadershippage/views/leadershippage_view.dart';
+import 'package:sales/app/modules/noticescreen/bindings/noticescreen_binding.dart';
+import 'package:sales/app/modules/noticescreen/views/noticescreen_view.dart';
+import 'package:sales/app/modules/offerinfo/views/offerinfo_view.dart';
+import 'package:sales/app/modules/orderHome/bindings/Order_Home_Binding.dart';
+import 'package:sales/app/modules/orderHome/views/order_home_view.dart';
+import 'package:sales/app/modules/orderpage/views/orderpage_view.dart';
+import 'package:sales/app/modules/product/bindings/product_binding.dart';
+import 'package:sales/app/modules/product/views/product_view.dart';
+import 'package:sales/app/modules/productb/bindings/productb_binding.dart';
+import 'package:sales/app/modules/productb/views/productb_view.dart';
+import 'package:sales/app/modules/promotionalads/bindings/promotionalads_binding.dart';
+import 'package:sales/app/modules/promotionalads/views/promotionalads_view.dart';
+import 'package:sales/app/modules/statisticspage/bindings/statisticspage_binding.dart';
+import 'package:sales/app/modules/statisticspage/views/statisticspage_view.dart';
 import '../../../../constants.dart';
 import '../../../routes/app_pages.dart';
 import '../../account/views/account_view.dart';
@@ -112,6 +114,13 @@ class IndexView extends GetView<IndexController> {
                                 argument: routeSettings.arguments,
                               ),
                           binding: ProductbBinding());
+                    } else if (routeSettings.name == Routes.NOTICESCREEN) {
+                      return GetPageRoute(
+                          routeName: Routes.NOTICESCREEN,
+                          page: () => NoticescreenView(
+                              // argument: routeSettings.arguments,
+                              ),
+                          binding: NoticescreenBinding());
                     }
                   },
                 ),

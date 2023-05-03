@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:get/get.dart';
-import 'package:red_tail/app/components/common_widgets.dart';
-import 'package:red_tail/app/config/app_themes.dart';
+import 'package:sales/app/components/common_widgets.dart';
+import 'package:sales/app/config/app_themes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../constants.dart';

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:red_tail/app/config/app_themes.dart';
+import 'package:sales/app/config/app_themes.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
@@ -125,6 +125,15 @@ class DashboardView extends GetView<DashboardController> {
                                 //     result == null
                                 //         ? 'No argument'
                                 //         : (result as double).toStringAsFixed(0);
+                              }),
+                          menuItem(
+                              icon: Icons.notifications_active_rounded,
+                              color: Colors.green,
+                              title: "Notice",
+                              valid: true,
+                              function: () {
+                                Get.toNamed(Routes.NOTICESCREEN,
+                                    id: Constants.nestedNavigationNavigatorId);
                               }),
                           menuItem(
                               icon: Icons.discount,

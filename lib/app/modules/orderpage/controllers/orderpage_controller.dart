@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:red_tail/app/models/orderItem.dart';
-import 'package:red_tail/app/models/saleRequisition.dart';
+import 'package:sales/app/models/orderItem.dart';
+import 'package:sales/app/models/saleRequisition.dart';
 
 import '../../../DAO/orderItemDao.dart';
 import '../../../DAO/saleRequisitionDao.dart';

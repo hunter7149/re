@@ -1,5 +1,5 @@
-import 'package:red_tail/app/components/AppColors.dart';
-import 'package:red_tail/app/components/common_widgets.dart';
+import 'package:sales/app/components/AppColors.dart';
+import 'package:sales/app/components/common_widgets.dart';
 
 import '../../../components/custom_text_field.dart';
 import '../../../components/login_top_shape.dart';

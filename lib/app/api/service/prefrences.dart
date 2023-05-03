@@ -2,7 +2,7 @@ import 'package:get_storage/get_storage.dart';
 
 class Pref {
   static final box = GetStorage();
-
+  static var FCM_TOKEN = "fcm_token";
   static var DEVICE_ID = 'device-id';
   static var LOGIN_INFORMATION = 'login_information';
   static var USER_ID = 'user_id';
@@ -10,6 +10,7 @@ class Pref {
   static var DEVICE_IDENTITY = 'device-identity';
   static var BEAT_NAME = 'beat_name';
   static var CUSTOMER_NAME = 'customer_name';
+  static var NOTICE_LIST = "notice_list";
 
   static void writeData({required String key, required dynamic value}) =>
       box.write(key, value);

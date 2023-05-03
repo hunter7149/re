@@ -1,6 +1,6 @@
 {
-    "name": "red_tail",
-    "short_name": "red_tail",
+    "name": "sales",
+    "short_name": "sales",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#hexcode",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:red_tail/app/components/common_widgets.dart';
+import 'package:sales/app/components/common_widgets.dart';
 
 import '../controllers/services_controller.dart';
 

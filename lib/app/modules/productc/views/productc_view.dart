@@ -7,10 +7,10 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:red_tail/app/components/common_widgets.dart';
-import 'package:red_tail/app/components/custom_image_catalog.dart';
-import 'package:red_tail/app/components/custom_image_val.dart';
-import 'package:red_tail/app/models/cartproduct.dart';
+import 'package:sales/app/components/common_widgets.dart';
+import 'package:sales/app/components/custom_image_catalog.dart';
+import 'package:sales/app/components/custom_image_val.dart';
+import 'package:sales/app/models/cartproduct.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
