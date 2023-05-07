@@ -147,7 +147,7 @@ class CartController extends GetxController {
     // print(_locationData.latitude);
     LocationData locationData = _locationData;
     Random random = Random();
-    int orderId = random.nextInt(9999);
+    int orderId = random.nextInt(99999);
     OrderItem orderItem = OrderItem(
         orderId: orderId,
         userId: 1,
