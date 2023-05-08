@@ -220,27 +220,29 @@ class ProductcView extends GetView<ProductcController> {
                                                 title: "Add to cart",
                                                 funtion: () {
                                                   CartItem product = CartItem(
-                                                      userId: 1,
-                                                      productId:
-                                                          controller.products[i]
-                                                              ["SKU_CODE"],
-                                                      customerName: "",
-                                                      beatName: "",
-                                                      productName:
-                                                          controller.products[i]
-                                                              ["PRODUCT_NAME"],
-                                                      catagory:
-                                                          controller.products[i]
-                                                              ["CATEGORY"],
-                                                      unit: controller
-                                                          .products[i]["UOM"],
-                                                      image:
-                                                          "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
-                                                      price: unitprice,
-                                                      brand:
-                                                          controller.products[i]
-                                                              ["BRAND_NAME"],
-                                                      quantity: 1);
+                                                    userId: 1,
+                                                    productId:
+                                                        controller.products[i]
+                                                            ["SKU_CODE"],
+                                                    customerName: "",
+                                                    beatName: "",
+                                                    productName:
+                                                        controller.products[i]
+                                                            ["PRODUCT_NAME"],
+                                                    catagory:
+                                                        controller.products[i]
+                                                            ["CATEGORY"],
+                                                    unit: controller.products[i]
+                                                        ["UOM"],
+                                                    image:
+                                                        "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
+                                                    price: unitprice,
+                                                    brand:
+                                                        controller.products[i]
+                                                            ["BRAND_NAME"],
+                                                    quantity: 1,
+                                                    unitPrice: unitprice,
+                                                  );
                                                   controller.addToCart(
                                                       data: product);
                                                   // addAlert(controller: controller, data: i);
@@ -1218,7 +1220,8 @@ class ProductcView extends GetView<ProductcController> {
                           image: data["img"],
                           price: data["price"],
                           brand: data["brand"],
-                          quantity: int.parse(quanity.text));
+                          quantity: int.parse(quanity.text),
+                          unitPrice: data["price"]);
                       controller.addToCart(data: product);
                     }
                   },
@@ -1237,3 +1240,37 @@ class ProductcView extends GetView<ProductcController> {
         });
   }
 }
+
+
+{"orderId": "ORD68136",
+ "lattitude": 37.4220936, 
+ "longitude": -122.083922,
+  "totalItemCount": 3,
+ "dateTime": "2023-05-08 12:33:19.700091", 
+ "totalPrice": "3280.0", "beatName":" Kothakoli Market", 
+ "CustomerName": "Fashoin Word",
+  "items":
+  [
+    {
+      "brand": NIOR, 
+    "productId": "NRCC-2001-DESCH", 
+    "quantity": 2, 
+    "totalPrice": 3280.0, 
+    "unitPrice": 820.0
+    },
+
+   {
+    "brand": "NIOR", 
+   "productId": "NRCC-3105-KRHLB", 
+   "quantity": 1, 
+   "totalPrice": 820.0, 
+   "unitPrice": 820.0
+   }, 
+   {
+    "brand": "HERLAN", 
+    "productId": "HNCC-1004-DEFBC",
+     "quantity": 1,
+      "totalPrice": 820.0,
+       "unitPrice": 820.0
+       }
+       ]}

@@ -17,6 +17,7 @@ class SaleRequisition {
   double? price;
   String? brand;
   int? quantity;
+  double? unitprice;
 
   SaleRequisition(
       {this.id,
@@ -31,5 +32,6 @@ class SaleRequisition {
       this.image,
       this.price,
       this.brand,
-      this.quantity});
+      this.quantity,
+      this.unitprice});
 }

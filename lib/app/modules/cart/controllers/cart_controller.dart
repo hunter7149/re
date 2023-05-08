@@ -148,6 +148,29 @@ class CartController extends GetxController {
     LocationData locationData = _locationData;
     Random random = Random();
     int orderId = random.nextInt(99999);
+    RxList<dynamic> allItems = <dynamic>[].obs;
+    cartItems.forEach((element) async {
+      allItems.add({
+        "brand": element.brand,
+        "productId": element.productId.toString(),
+        "quantity": element.quantity,
+        "totalPrice": element.price,
+        "unitPrice": element.unitPrice,
+      });
+    });
+    RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
+    saleRequisation.value = {
+      "orderId": "ORD${orderId}",
+      "lattitude": locationData.latitude ?? 0.0,
+      "longitude": locationData.longitude ?? 0.0,
+      "totalItemCount": cartItems.length,
+      "dateTime": DateTime.now().toString(),
+      "totalPrice": totalPrice.value,
+      "beatName": dropdownBeatValue.value,
+      "CustomerName": dropdownCustomerValue.value,
+      "items": allItems.length == 0 ? [] : allItems,
+    };
+    print("ORDER REQ----->${saleRequisation}");
     OrderItem orderItem = OrderItem(
         orderId: orderId,
         userId: 1,

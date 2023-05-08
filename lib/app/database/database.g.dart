@@ -89,7 +89,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitPrice` REAL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `orderId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER)');
         await database.execute(
@@ -138,7 +138,8 @@ class _$CartItemDao extends CartItemDao {
                   'image': item.image,
                   'price': item.price,
                   'brand': item.brand,
-                  'quantity': item.quantity
+                  'quantity': item.quantity,
+                  'unitPrice': item.unitPrice
                 },
             changeListener),
         _cartItemUpdateAdapter = UpdateAdapter(
@@ -157,7 +158,8 @@ class _$CartItemDao extends CartItemDao {
                   'image': item.image,
                   'price': item.price,
                   'brand': item.brand,
-                  'quantity': item.quantity
+                  'quantity': item.quantity,
+                  'unitPrice': item.unitPrice
                 },
             changeListener);
 
@@ -186,7 +188,8 @@ class _$CartItemDao extends CartItemDao {
             image: row['image'] as String?,
             price: row['price'] as double?,
             brand: row['brand'] as String?,
-            quantity: row['quantity'] as int?));
+            quantity: row['quantity'] as int?,
+            unitPrice: row['unitPrice'] as double?));
   }
 
   @override
@@ -205,7 +208,8 @@ class _$CartItemDao extends CartItemDao {
             image: row['image'] as String?,
             price: row['price'] as double?,
             brand: row['brand'] as String?,
-            quantity: row['quantity'] as int?),
+            quantity: row['quantity'] as int?,
+            unitPrice: row['unitPrice'] as double?),
         arguments: [id],
         queryableName: 'CartItem',
         isView: false);

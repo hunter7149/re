@@ -15,6 +15,7 @@ class CartItem {
   double? price;
   String? brand;
   int? quantity;
+  double? unitPrice;
 
   CartItem(
       {this.id,
@@ -28,5 +29,6 @@ class CartItem {
       this.image,
       this.price,
       this.brand,
-      this.quantity});
+      this.quantity,
+      this.unitPrice});
 }
