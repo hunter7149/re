@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
+import 'package:sales/app/DAO/saleRequisitionDao.dart';
 import 'package:sales/app/models/orderItem.dart';
 import 'package:sales/app/models/saleRequisition.dart';
 
-import '../../../DAO/orderItemDao.dart';
-import '../../../DAO/saleRequisitionDao.dart';
-import '../../../database/database.dart';
+import '../database/database.dart';
+import 'orderItemDao.dart';
 
 class OrderpageController extends GetxController {
   late OrderItemDao orderItemDao;

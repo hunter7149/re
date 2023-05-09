@@ -292,7 +292,7 @@ class CartController extends GetxController {
         });
       }
     });
-
+//lets see
     Get.snackbar("SYNC SUCCESS", "Sync with cloud done",
         backgroundColor: Colors.green, colorText: Colors.white);
   }
