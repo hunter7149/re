@@ -353,7 +353,7 @@ class OrderHomeController extends GetxController {
   RxList<OrderItem> orderItem = <OrderItem>[].obs;
 //-----------------------Get Main Order List----------------------//
   reqOrderList() async {
-    await orderItemDao.findAllOrderItemBySaleId(1).then((value) async {
+    await orderItemDao.findAllOrderItem().then((value) async {
       orderItem.clear();
       orderItem.refresh();
 
@@ -375,7 +375,7 @@ class OrderHomeController extends GetxController {
 
 //---------------------Get Detailed Order List------------------------//
   RxList<SaleRequisition> itemList = <SaleRequisition>[].obs;
-  reqOrderedItemsList({required int orderId}) async {
+  reqOrderedItemsList({required String orderId}) async {
     saleRequisitionDao.findAllSaleItemBySaleId(orderId, 1).then((value) {
       itemList.clear();
       itemList.refresh();

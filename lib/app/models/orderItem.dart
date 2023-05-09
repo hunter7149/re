@@ -4,7 +4,7 @@ import 'package:floor/floor.dart';
 class OrderItem {
   @PrimaryKey(autoGenerate: true)
   int? id;
-  int? orderId;
+  String? orderId;
   int? userId;
   String? status;
   int? totalItem;

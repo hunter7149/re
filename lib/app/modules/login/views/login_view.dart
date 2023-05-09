@@ -1,9 +1,4 @@
-import 'package:sales/app/components/AppColors.dart';
 import 'package:sales/app/components/common_widgets.dart';
-
-import '../../../components/custom_text_field.dart';
-import '../../../components/login_top_shape.dart';
-import '../../../components/primary_button.dart';
 import '../../../config/app_assets.dart';
 import '../../../config/app_themes.dart';
 import 'package:flutter/material.dart';

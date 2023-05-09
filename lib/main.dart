@@ -34,7 +34,7 @@ Future<void> main() async {
 
   await GetStorage.init();
   String synctime = await GetStorage().read("lastSyncTime") ?? "0";
-  if (synctime == "0") {
+  if (synctime == " 0") {
     print("Never synced");
   } else {
     print("Synced before");

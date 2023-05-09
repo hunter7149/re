@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:sales/app/components/cart_value.dart';
 import 'package:sales/app/modules/cart/controllers/cart_controller.dart';
 import 'package:sales/app/modules/orderHome/controllers/order_home_controller.dart';
@@ -8,7 +10,7 @@ import 'package:sales/app/modules/orderpage/controllers/orderpage_controller.dar
 
 class IndexController extends GetxController {
   RxBool shouldQuit = false.obs;
-
+  RxBool isDeviceConnected = false.obs;
   updateShouldQuit() {
     shouldQuit.value = !shouldQuit.value;
     Timer(Duration(seconds: 2), () {
@@ -62,9 +64,35 @@ class IndexController extends GetxController {
     tabIndex(newTabs);
   }
 
+  internetChecker() {
+    var subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      print("${result}");
+      if (result != ConnectivityResult.none) {
+        isDeviceConnected.value =
+            await InternetConnectionChecker().hasConnection;
+        update();
+        Get.find<CartController>()
+            .connectionUpdater(status: isDeviceConnected.value);
+        Get.find<CartController>().onlineSync();
+        print(
+            "Has internet----${await InternetConnectionChecker().hasConnection}");
+      } else {
+        isDeviceConnected.value =
+            await InternetConnectionChecker().hasConnection;
+        update();
+        Get.find<CartController>()
+            .connectionUpdater(status: isDeviceConnected.value);
+        print("Has internet----${isDeviceConnected.value}");
+      }
+    });
+  }
+
   @override
   void onInit() {
     super.onInit();
+    internetChecker();
   }
 
   @override

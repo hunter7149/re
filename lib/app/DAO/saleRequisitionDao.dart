@@ -11,10 +11,10 @@ abstract class SaleRequisitionDao {
   @Query(
       'SELECT * FROM SaleRequisition WHERE orderId = :orderId AND userId =:userId')
   Future<List<SaleRequisition>> findAllSaleItemBySaleId(
-      int orderId, int userId);
+      String orderId, int userId);
 
-  @Query('SELECT * FROM SaleRequisition WHERE userid = :id')
-  Stream<SaleRequisition?> findSaleItemById(int id);
+  @Query('SELECT * FROM SaleRequisition WHERE orderId = :id')
+  Stream<SaleRequisition?> findSaleItemById(String id);
 
   @insert
   Future<void> insertSaleItem(SaleRequisition item);

@@ -67,6 +67,8 @@ class _$AppDatabase extends AppDatabase {
 
   OrderItemDao? _orderItemDaoInstance;
 
+  OfflineOrderDao? _offlineOrderDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -91,9 +93,11 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitPrice` REAL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `orderId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitprice` REAL)');
+            'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `orderId` TEXT, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitprice` REAL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` INTEGER, `userId` INTEGER, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `userId` INTEGER, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `OfflineOrder` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `status` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -115,6 +119,12 @@ class _$AppDatabase extends AppDatabase {
   @override
   OrderItemDao get orderItemDao {
     return _orderItemDaoInstance ??= _$OrderItemDao(database, changeListener);
+  }
+
+  @override
+  OfflineOrderDao get offlineOrderDao {
+    return _offlineOrderDaoInstance ??=
+        _$OfflineOrderDao(database, changeListener);
   }
 }
 
@@ -280,7 +290,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
         mapper: (Map<String, Object?> row) => SaleRequisition(
             id: row['id'] as int?,
             userId: row['userId'] as int?,
-            orderId: row['orderId'] as int?,
+            orderId: row['orderId'] as String?,
             productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
@@ -296,7 +306,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
 
   @override
   Future<List<SaleRequisition>> findAllSaleItemBySaleId(
-    int orderId,
+    String orderId,
     int userId,
   ) async {
     return _queryAdapter.queryList(
@@ -304,7 +314,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
         mapper: (Map<String, Object?> row) => SaleRequisition(
             id: row['id'] as int?,
             userId: row['userId'] as int?,
-            orderId: row['orderId'] as int?,
+            orderId: row['orderId'] as String?,
             productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
@@ -320,13 +330,13 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
   }
 
   @override
-  Stream<SaleRequisition?> findSaleItemById(int id) {
+  Stream<SaleRequisition?> findSaleItemById(String id) {
     return _queryAdapter.queryStream(
-        'SELECT * FROM SaleRequisition WHERE userid = ?1',
+        'SELECT * FROM SaleRequisition WHERE orderId = ?1',
         mapper: (Map<String, Object?> row) => SaleRequisition(
             id: row['id'] as int?,
             userId: row['userId'] as int?,
-            orderId: row['orderId'] as int?,
+            orderId: row['orderId'] as String?,
             productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
@@ -386,7 +396,7 @@ class _$OrderItemDao extends OrderItemDao {
     return _queryAdapter.queryList('SELECT * FROM OrderItem',
         mapper: (Map<String, Object?> row) => OrderItem(
             id: row['id'] as int?,
-            orderId: row['orderId'] as int?,
+            orderId: row['orderId'] as String?,
             userId: row['userId'] as int?,
             status: row['status'] as String?,
             totalItem: row['totalItem'] as int?,
@@ -399,11 +409,11 @@ class _$OrderItemDao extends OrderItemDao {
   }
 
   @override
-  Future<List<OrderItem>> findAllOrderItemBySaleId(int userId) async {
-    return _queryAdapter.queryList('SELECT * FROM OrderItem WHERE userId=?1',
+  Future<List<OrderItem>> findAllOrderItemByOrderId(String orderid) async {
+    return _queryAdapter.queryList('SELECT * FROM OrderItem WHERE orderId=?1',
         mapper: (Map<String, Object?> row) => OrderItem(
             id: row['id'] as int?,
-            orderId: row['orderId'] as int?,
+            orderId: row['orderId'] as String?,
             userId: row['userId'] as int?,
             status: row['status'] as String?,
             totalItem: row['totalItem'] as int?,
@@ -413,16 +423,16 @@ class _$OrderItemDao extends OrderItemDao {
             longitude: row['longitude'] as double?,
             beatName: row['beatName'] as String?,
             CustomerName: row['CustomerName'] as String?),
-        arguments: [userId]);
+        arguments: [orderid]);
   }
 
   @override
-  Stream<OrderItem?> findOrderItemById(int id) {
+  Stream<OrderItem?> findOrderItemById(String id) {
     return _queryAdapter.queryStream(
         'SELECT * FROM OrderItem WHERE orderId = ?1',
         mapper: (Map<String, Object?> row) => OrderItem(
             id: row['id'] as int?,
-            orderId: row['orderId'] as int?,
+            orderId: row['orderId'] as String?,
             userId: row['userId'] as int?,
             status: row['status'] as String?,
             totalItem: row['totalItem'] as int?,
@@ -440,5 +450,93 @@ class _$OrderItemDao extends OrderItemDao {
   @override
   Future<void> insertOrderItem(OrderItem item) async {
     await _orderItemInsertionAdapter.insert(item, OnConflictStrategy.abort);
+  }
+}
+
+class _$OfflineOrderDao extends OfflineOrderDao {
+  _$OfflineOrderDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database, changeListener),
+        _offlineOrderInsertionAdapter = InsertionAdapter(
+            database,
+            'OfflineOrder',
+            (OfflineOrder item) => <String, Object?>{
+                  'id': item.id,
+                  'orderId': item.orderId,
+                  'status': item.status
+                },
+            changeListener),
+        _offlineOrderUpdateAdapter = UpdateAdapter(
+            database,
+            'OfflineOrder',
+            ['id'],
+            (OfflineOrder item) => <String, Object?>{
+                  'id': item.id,
+                  'orderId': item.orderId,
+                  'status': item.status
+                },
+            changeListener);
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<OfflineOrder> _offlineOrderInsertionAdapter;
+
+  final UpdateAdapter<OfflineOrder> _offlineOrderUpdateAdapter;
+
+  @override
+  Future<List<OfflineOrder>> findAllOfflineOrder() async {
+    return _queryAdapter.queryList('SELECT * FROM OfflineOrder',
+        mapper: (Map<String, Object?> row) => OfflineOrder(
+            id: row['id'] as int?,
+            orderId: row['orderId'] as String?,
+            status: row['status'] as String?));
+  }
+
+  @override
+  Stream<OfflineOrder?> findorderItemById(String id) {
+    return _queryAdapter.queryStream(
+        'SELECT * FROM OfflineOrder WHERE orderId = ?1',
+        mapper: (Map<String, Object?> row) => OfflineOrder(
+            id: row['id'] as int?,
+            orderId: row['orderId'] as String?,
+            status: row['status'] as String?),
+        arguments: [id],
+        queryableName: 'OfflineOrder',
+        isView: false);
+  }
+
+  @override
+  Future<void> deleteAllOfflineOrder() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM OfflineOrder');
+  }
+
+  @override
+  Future<void> deleteCartItemByID(String id) async {
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM OfflineOrder WHERE orderId = ?1',
+        arguments: [id]);
+  }
+
+  @override
+  Future<void> deleteCartItemByuserID(String status) async {
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM OfflineOrder WHERE status = ?1',
+        arguments: [status]);
+  }
+
+  @override
+  Future<void> insertCartItem(OfflineOrder item) async {
+    await _offlineOrderInsertionAdapter.insert(item, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<int> updateCartItem(OfflineOrder item) {
+    return _offlineOrderUpdateAdapter.updateAndReturnChangedRows(
+        item, OnConflictStrategy.abort);
   }
 }

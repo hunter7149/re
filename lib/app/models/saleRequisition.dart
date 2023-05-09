@@ -5,7 +5,7 @@ class SaleRequisition {
   @PrimaryKey(autoGenerate: true)
   int? id;
   int? userId;
-  int? orderId;
+  String? orderId;
   String? productId;
 
   String? customerName;

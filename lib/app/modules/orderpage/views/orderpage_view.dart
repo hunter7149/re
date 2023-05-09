@@ -57,7 +57,7 @@ class OrderpageView extends GetView<OrderpageController> {
                                 controller.reqOrderedItemsList(
                                     orderId:
                                         controller.orderItem[index].orderId ??
-                                            0);
+                                            "");
                                 confirmAlert(data: controller.itemList);
                               },
                               child: Container(

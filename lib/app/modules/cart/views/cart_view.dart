@@ -53,6 +53,7 @@ class CartView extends GetView<CartController> {
                     children: [
                       Positioned(
                           child: Container(
+                        // width: double.maxFinite,
                         // color: AppThemes.modernGreen,
 
                         height: 40,
@@ -63,11 +64,14 @@ class CartView extends GetView<CartController> {
                                 Icons.location_pin,
                                 color: AppThemes.modernGreen,
                               ),
-                              Obx(() => Text(
-                                    "${controller.address.value}",
-                                    style: TextStyle(
-                                        color: AppThemes.modernGreen,
-                                        fontSize: 20),
+                              Obx(() => Flexible(
+                                    child: Text(
+                                      "${controller.address.value}",
+                                      style: TextStyle(
+                                          color: AppThemes.modernGreen,
+                                          fontSize: 16),
+                                      overflow: TextOverflow.fade,
+                                    ),
                                   ))
                             ]),
                       )),

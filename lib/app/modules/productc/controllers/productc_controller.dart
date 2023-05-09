@@ -2,7 +2,7 @@
 import 'dart:async';
 
 import 'package:chewie/chewie.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
