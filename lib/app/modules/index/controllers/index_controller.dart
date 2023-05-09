@@ -42,6 +42,7 @@ class IndexController extends GetxController {
       Get.put(CartController());
       // Get.find<CartController>().onInit();
       // Get.find<CartController>().initialDropdownValue();
+      Get.find<CartController>().getlocation();
       Get.find<CartController>().loadData();
       hasNewValueUpdater(value: false);
     } else {

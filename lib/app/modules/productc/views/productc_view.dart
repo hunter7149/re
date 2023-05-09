@@ -254,7 +254,7 @@ class ProductcView extends GetView<ProductcController> {
                                                   },
                                                   color: controller
                                                           .isAdded.value
-                                                      ? AppThemes.modernBlue
+                                                      ? AppThemes.modernCoolPink
                                                       : AppThemes.modernGreen),
                                             ),
                                             Container(

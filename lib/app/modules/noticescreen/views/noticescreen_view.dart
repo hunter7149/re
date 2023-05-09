@@ -22,7 +22,8 @@ class NoticescreenView extends GetView<NoticescreenController> {
           },
         ),
         body: SafeArea(
-          child: Obx(() => controller.notices.isEmpty
+          child: Obx(() => controller.notices.isEmpty ||
+                  controller.notices[0].isEmpty
               ? Center(
                   child: Container(
                     child: Column(

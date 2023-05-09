@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:get/get.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -40,7 +41,7 @@ class CartController extends GetxController {
       totalPriceCounter();
       print("dta length -> ${cartItems.length}");
     });
-    await getlocation();
+    // await getlocation();
     Update();
   }
 
@@ -92,62 +93,8 @@ class CartController extends GetxController {
     loadData();
   }
 
-  getLocation() async {
-    Location location = new Location();
-
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return LocationData;
-      }
-    }
-
-    _locationData = await location.getLocation();
-    // print(_locationData.latitude);
-    LocationData locationData = _locationData;
-    return locationData;
-  }
-
+  //Paste  unused codes for location here
   requestCheckout() async {
-    //--------------------lOCATION ZONE------------------//
-    Location location = new Location();
-
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return LocationData;
-      }
-    }
-
-    _locationData = await location.getLocation();
-    // print(_locationData.latitude);
-    LocationData locationData = _locationData;
     Random random = Random();
     int orderId = random.nextInt(99999);
     RxList<dynamic> allItems = <dynamic>[].obs;
@@ -163,8 +110,8 @@ class CartController extends GetxController {
     RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
     saleRequisation.value = {
       "orderId": "ORD${orderId}",
-      "lattitude": locationData.latitude ?? 0.0,
-      "longitude": locationData.longitude ?? 0.0,
+      "lattitude": lattitude ?? 0.0,
+      "longitude": longitude ?? 0.0,
       "totalItemCount": cartItems.length,
       "dateTime": DateTime.now().toString(),
       "totalPrice": totalPrice.value,
@@ -176,8 +123,8 @@ class CartController extends GetxController {
     OrderItem orderItem = OrderItem(
         orderId: orderId,
         userId: 1,
-        lattitude: locationData.latitude ?? 0.0,
-        longitude: locationData.longitude ?? 0.0,
+        lattitude: lattitude.value,
+        longitude: longitude.value,
         status: "Pending",
         totalItem: cartItems.length,
         dateTime: DateTime.now().toString(),
@@ -196,7 +143,7 @@ class CartController extends GetxController {
           catagory: element.catagory,
           unit: element.unit,
           image: element.image,
-          price: element.price! * element.quantity!,
+          price: element.price!,
           brand: element.brand,
           quantity: element.quantity);
       await saleRequisitionDao.insertSaleItem(item);
@@ -230,11 +177,6 @@ class CartController extends GetxController {
     });
     Update();
   }
-  // RxDouble totalPrice = 0.0.obs;
-  // calculation({required double price, required int quantity}) {
-  //   totalPrice.value = price * quantity;
-  //   update();
-  // }
 
   RxDouble lattitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
@@ -654,3 +596,57 @@ class CartController extends GetxController {
   @override
   void onClose() {}
 }
+// getLocation() async {
+//   Location location = new Location();
+
+//   bool _serviceEnabled;
+//   PermissionStatus _permissionGranted;
+//   LocationData _locationData;
+
+//   _serviceEnabled = await location.serviceEnabled();
+//   if (!_serviceEnabled) {
+//     _serviceEnabled = await location.requestService();
+//     if (!_serviceEnabled) {
+//       return;
+//     }
+//   }
+
+//   _permissionGranted = await location.hasPermission();
+//   if (_permissionGranted == PermissionStatus.denied) {
+//     _permissionGranted = await location.requestPermission();
+//     if (_permissionGranted != PermissionStatus.granted) {
+//       return LocationData;
+//     }
+//   }
+
+//   _locationData = await location.getLocation();
+//   // print(_locationData.latitude);
+//   LocationData locationData = _locationData;
+//   return locationData;
+// }
+//--------------------lOCATION ZONE------------------//
+// Location location = new Location();
+
+// bool _serviceEnabled;
+// PermissionStatus _permissionGranted;
+// LocationData _locationData;
+
+// _serviceEnabled = await location.serviceEnabled();
+// if (!_serviceEnabled) {
+//   _serviceEnabled = await location.requestService();
+//   if (!_serviceEnabled) {
+//     return;
+//   }
+// }
+
+// _permissionGranted = await location.hasPermission();
+// if (_permissionGranted == PermissionStatus.denied) {
+//   _permissionGranted = await location.requestPermission();
+//   if (_permissionGranted != PermissionStatus.granted) {
+//     return LocationData;
+//   }
+// }
+
+// _locationData = await location.getLocation();
+// // print(_locationData.latitude);
+// LocationData locationData = _locationData;
