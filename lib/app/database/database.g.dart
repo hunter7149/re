@@ -91,7 +91,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitPrice` REAL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `orderId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `orderId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitprice` REAL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` INTEGER, `userId` INTEGER, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT)');
 
@@ -261,7 +261,8 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
                   'image': item.image,
                   'price': item.price,
                   'brand': item.brand,
-                  'quantity': item.quantity
+                  'quantity': item.quantity,
+                  'unitprice': item.unitprice
                 },
             changeListener);
 
@@ -289,7 +290,8 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
             image: row['image'] as String?,
             price: row['price'] as double?,
             brand: row['brand'] as String?,
-            quantity: row['quantity'] as int?));
+            quantity: row['quantity'] as int?,
+            unitprice: row['unitprice'] as double?));
   }
 
   @override
@@ -312,7 +314,8 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
             image: row['image'] as String?,
             price: row['price'] as double?,
             brand: row['brand'] as String?,
-            quantity: row['quantity'] as int?),
+            quantity: row['quantity'] as int?,
+            unitprice: row['unitprice'] as double?),
         arguments: [orderId, userId]);
   }
 
@@ -333,7 +336,8 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
             image: row['image'] as String?,
             price: row['price'] as double?,
             brand: row['brand'] as String?,
-            quantity: row['quantity'] as int?),
+            quantity: row['quantity'] as int?,
+            unitprice: row['unitprice'] as double?),
         arguments: [id],
         queryableName: 'SaleRequisition',
         isView: false);

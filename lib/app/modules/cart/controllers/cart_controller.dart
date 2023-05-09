@@ -40,6 +40,8 @@ class CartController extends GetxController {
       totalPriceCounter();
       print("dta length -> ${cartItems.length}");
     });
+    await getlocation();
+    Update();
   }
 
   priceQuantiyUpdater(

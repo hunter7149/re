@@ -63,11 +63,12 @@ class CartView extends GetView<CartController> {
                                 Icons.location_pin,
                                 color: AppThemes.modernGreen,
                               ),
-                              Text(
-                                "Simpletree anarkali,Gulshan,Dhaka",
-                                style: TextStyle(
-                                    color: AppThemes.modernGreen, fontSize: 20),
-                              )
+                              Obx(() => Text(
+                                    "${controller.address.value}",
+                                    style: TextStyle(
+                                        color: AppThemes.modernGreen,
+                                        fontSize: 20),
+                                  ))
                             ]),
                       )),
                       Positioned(

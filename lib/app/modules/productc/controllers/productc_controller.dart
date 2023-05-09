@@ -1,4 +1,6 @@
 // import 'package:chewie/chewie.dart';
+import 'dart:async';
+
 import 'package:chewie/chewie.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -197,6 +199,16 @@ class ProductcController extends GetxController {
     update();
   }
 
+  RxBool isAdded = false.obs;
+  isAddedUpdater() {
+    isAdded.value = true;
+    update();
+    Timer(Duration(seconds: 1), () {
+      isAdded.value = false;
+      update();
+    });
+  }
+
   addToCart({required CartItem data}) async {
     if (await ICHECKER.checkConnection()) {
       print("INTERNET");
@@ -220,12 +232,13 @@ class ProductcController extends GetxController {
           .then((value) => true)) {
         totalpriceUpdater();
         CartCounter.cartCounter();
-        Get.snackbar(
-          "Success",
-          "Product added successfully!",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
+        isAddedUpdater();
+        // Get.snackbar(
+        //   "Success",
+        //   "Product added successfully!",
+        //   backgroundColor: Colors.green,
+        //   colorText: Colors.white,
+        // );
       } else {
         totalpriceUpdater();
         Get.snackbar(
@@ -240,12 +253,13 @@ class ProductcController extends GetxController {
       if (await cartItemDao.insertCartItem(data).then((value) => true)) {
         totalpriceUpdater();
         CartCounter.cartCounter();
-        Get.snackbar(
-          "Success",
-          "Product added successfully!",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
+        isAddedUpdater();
+        // Get.snackbar(
+        //   "Success",
+        //   "Product added successfully!",
+        //   backgroundColor: Colors.green,
+        //   colorText: Colors.white,
+        // );
       } else {
         totalpriceUpdater();
         Get.snackbar(

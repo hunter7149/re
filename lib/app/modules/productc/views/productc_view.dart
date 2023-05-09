@@ -7,6 +7,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sales/app/components/AppColors.dart';
 import 'package:sales/app/components/common_widgets.dart';
 import 'package:sales/app/components/custom_image_catalog.dart';
 import 'package:sales/app/components/custom_image_val.dart';
@@ -216,38 +217,46 @@ class ProductcView extends GetView<ProductcController> {
                                             SizedBox(
                                               height: 10,
                                             ),
-                                            COMMONWIDGET.addtoCart(
-                                                title: "Add to cart",
-                                                funtion: () {
-                                                  CartItem product = CartItem(
-                                                    userId: 1,
-                                                    productId:
-                                                        controller.products[i]
-                                                            ["SKU_CODE"],
-                                                    customerName: "",
-                                                    beatName: "",
-                                                    productName:
-                                                        controller.products[i]
-                                                            ["PRODUCT_NAME"],
-                                                    catagory:
-                                                        controller.products[i]
-                                                            ["CATEGORY"],
-                                                    unit: controller.products[i]
-                                                        ["UOM"],
-                                                    image:
-                                                        "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
-                                                    price: unitprice,
-                                                    brand:
-                                                        controller.products[i]
-                                                            ["BRAND_NAME"],
-                                                    quantity: 1,
-                                                    unitPrice: unitprice,
-                                                  );
-                                                  controller.addToCart(
-                                                      data: product);
-                                                  // addAlert(controller: controller, data: i);
-                                                },
-                                                color: AppThemes.modernGreen),
+                                            Obx(
+                                              () => COMMONWIDGET.addtoCart(
+                                                  title:
+                                                      controller.isAdded.value
+                                                          ? "Added!"
+                                                          : "Add to cart",
+                                                  funtion: () {
+                                                    CartItem product = CartItem(
+                                                      userId: 1,
+                                                      productId:
+                                                          controller.products[i]
+                                                              ["SKU_CODE"],
+                                                      customerName: "",
+                                                      beatName: "",
+                                                      productName:
+                                                          controller.products[i]
+                                                              ["PRODUCT_NAME"],
+                                                      catagory:
+                                                          controller.products[i]
+                                                              ["CATEGORY"],
+                                                      unit: controller
+                                                          .products[i]["UOM"],
+                                                      image:
+                                                          "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
+                                                      price: unitprice,
+                                                      brand:
+                                                          controller.products[i]
+                                                              ["BRAND_NAME"],
+                                                      quantity: 1,
+                                                      unitPrice: unitprice,
+                                                    );
+                                                    controller.addToCart(
+                                                        data: product);
+                                                    // addAlert(controller: controller, data: i);
+                                                  },
+                                                  color: controller
+                                                          .isAdded.value
+                                                      ? AppThemes.modernBlue
+                                                      : AppThemes.modernGreen),
+                                            ),
                                             Container(
                                               margin: EdgeInsets.symmetric(
                                                   vertical: 20),
@@ -1242,35 +1251,35 @@ class ProductcView extends GetView<ProductcController> {
 }
 
 
-{"orderId": "ORD68136",
- "lattitude": 37.4220936, 
- "longitude": -122.083922,
-  "totalItemCount": 3,
- "dateTime": "2023-05-08 12:33:19.700091", 
- "totalPrice": "3280.0", "beatName":" Kothakoli Market", 
- "CustomerName": "Fashoin Word",
-  "items":
-  [
-    {
-      "brand": NIOR, 
-    "productId": "NRCC-2001-DESCH", 
-    "quantity": 2, 
-    "totalPrice": 3280.0, 
-    "unitPrice": 820.0
-    },
+// {"orderId": "ORD68136",
+//  "lattitude": 37.4220936, 
+//  "longitude": -122.083922,
+//   "totalItemCount": 3,
+//  "dateTime": "2023-05-08 12:33:19.700091", 
+//  "totalPrice": "3280.0", "beatName":" Kothakoli Market", 
+//  "CustomerName": "Fashoin Word",
+//   "items":
+//   [
+//     {
+//       "brand": NIOR, 
+//     "productId": "NRCC-2001-DESCH", 
+//     "quantity": 2, 
+//     "totalPrice": 3280.0, 
+//     "unitPrice": 820.0
+//     },
 
-   {
-    "brand": "NIOR", 
-   "productId": "NRCC-3105-KRHLB", 
-   "quantity": 1, 
-   "totalPrice": 820.0, 
-   "unitPrice": 820.0
-   }, 
-   {
-    "brand": "HERLAN", 
-    "productId": "HNCC-1004-DEFBC",
-     "quantity": 1,
-      "totalPrice": 820.0,
-       "unitPrice": 820.0
-       }
-       ]}
+//    {
+//     "brand": "NIOR", 
+//    "productId": "NRCC-3105-KRHLB", 
+//    "quantity": 1, 
+//    "totalPrice": 820.0, 
+//    "unitPrice": 820.0
+//    }, 
+//    {
+//     "brand": "HERLAN", 
+//     "productId": "HNCC-1004-DEFBC",
+//      "quantity": 1,
+//       "totalPrice": 820.0,
+//        "unitPrice": 820.0
+//        }
+//        ]}

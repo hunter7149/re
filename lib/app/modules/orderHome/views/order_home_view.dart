@@ -357,7 +357,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                                         .itemList[
                                                                             index]
                                                                         .productName
-                                                                        .toString()!
+                                                                        .toString()
                                                                         .length >
                                                                     15
                                                                 ? controller

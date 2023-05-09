@@ -40,8 +40,9 @@ class IndexController extends GetxController {
   void onTabClick(int newTab) {
     if (newTab == 2) {
       Get.put(CartController());
-      Get.find<CartController>().onInit();
-      Get.find<CartController>().initialDropdownValue();
+      // Get.find<CartController>().onInit();
+      // Get.find<CartController>().initialDropdownValue();
+      Get.find<CartController>().loadData();
       hasNewValueUpdater(value: false);
     } else {
       CartCounter.cartCounter();
