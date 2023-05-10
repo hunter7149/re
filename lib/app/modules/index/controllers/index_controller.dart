@@ -75,7 +75,10 @@ class IndexController extends GetxController {
         update();
         Get.find<CartController>()
             .connectionUpdater(status: isDeviceConnected.value);
-        Get.find<CartController>().onlineSync();
+        if (await InternetConnectionChecker().hasConnection) {
+          Get.find<CartController>().onlineSync();
+        }
+
         print(
             "Has internet----${await InternetConnectionChecker().hasConnection}");
       } else {

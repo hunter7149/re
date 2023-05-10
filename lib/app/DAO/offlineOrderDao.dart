@@ -13,12 +13,12 @@ abstract class OfflineOrderDao {
   @Query('DELETE FROM OfflineOrder')
   Future<void> deleteAllOfflineOrder();
   @insert
-  Future<void> insertCartItem(OfflineOrder item);
+  Future<void> insertOfflineOrdertItem(OfflineOrder item);
 
   @Query('DELETE FROM OfflineOrder WHERE orderId = :id')
-  Future<void> deleteCartItemByID(String id);
+  Future<void> deleteOrderItemByID(String id);
   @Query('DELETE FROM OfflineOrder WHERE status = :status')
-  Future<void> deleteCartItemByuserID(String status);
+  Future<void> deleteOrderItemByStatus(String status);
   @update
-  Future<int?> updateCartItem(OfflineOrder item);
+  Future<int?> updateOrderItem(OfflineOrder item);
 }

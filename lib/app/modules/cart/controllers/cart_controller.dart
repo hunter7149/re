@@ -119,17 +119,21 @@ class CartController extends GetxController {
           "unitPrice": element.unitPrice,
         });
       });
+      //Created a structured list of products
       RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
       saleRequisation.value = {
-        "orderId": "ORD${orderId}",
-        "lattitude": lattitude ?? 0.0,
-        "longitude": longitude ?? 0.0,
-        "totalItemCount": cartItems.length,
-        "dateTime": DateTime.now().toString(),
-        "totalPrice": totalPrice.value,
-        "beatName": dropdownBeatValue.value,
-        "CustomerName": dropdownCustomerValue.value,
-        "items": allItems.length == 0 ? [] : allItems,
+        "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
+        "lattitude": lattitude, //looks like 20.1234
+        "longitude": longitude, //looks like 20.1234
+        "totalItemCount": cartItems.length, // in number like 3 or 4
+        "dateTime":
+            DateTime.now().toString(), // looks like 2023-05-10 09:55:06.602402
+        "totalPrice": totalPrice.value, // like 2034.23
+        "beatName": dropdownBeatValue.value, //String
+        "CustomerName": dropdownCustomerValue.value, //String
+        "items": allItems.length == 0
+            ? []
+            : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
       };
       print("ORDER REQ----->${saleRequisation}");
       OrderItem orderItem = OrderItem(
@@ -143,7 +147,8 @@ class CartController extends GetxController {
           totalPrice: totalPrice.value,
           beatName: dropdownBeatValue.value,
           CustomerName: dropdownCustomerValue.value);
-      await orderItemDao.insertOrderItem(orderItem);
+      await orderItemDao.insertOrderItem(
+          orderItem); //Saving a single order info where order Id is the primary key
       cartItems.forEach((element) async {
         SaleRequisition item = SaleRequisition(
             userId: 1,
@@ -160,6 +165,7 @@ class CartController extends GetxController {
             quantity: element.quantity);
         await saleRequisitionDao.insertSaleItem(item);
       });
+      //Inserting products agains order id one by one.A single order can have multiple products
       await cartItemDao.deleteCartItemByuserID(1).then((value) {
         cartItems.clear();
         cartItems.refresh();
@@ -167,14 +173,16 @@ class CartController extends GetxController {
           confirmBtnColor: AppThemes.modernGreen,
           context: Get.context!,
           type: QuickAlertType.success,
+          autoCloseDuration: Duration(seconds: 2),
         );
       });
-
       Update();
     } else {
+      //If there is no internet, this proceedure will be called
       OfflineOrder item =
           OfflineOrder(orderId: "ORD${orderId}", status: "offline");
-      await offlineOrderDao.insertCartItem(item);
+      await offlineOrderDao.insertOfflineOrdertItem(
+          item); //Saving this info in offline sync list database
       await offlineOrderDao
           .findAllOfflineOrder()
           .then((value) => print(value[0].orderId));
@@ -230,7 +238,8 @@ class CartController extends GetxController {
     await offlineOrderDao.findAllOfflineOrder().then((value) {
       orderList.clear();
       orderList.value = value;
-      orderList.refresh();
+      orderList
+          .refresh(); //Assigned a list of offline order [id,orderId,status]
       if (orderList.isNotEmpty) {
         orderList.forEach((element) async {
           RxList<OrderItem> orderItem = <OrderItem>[].obs;
@@ -239,6 +248,7 @@ class CartController extends GetxController {
           await orderItemDao
               .findAllOrderItemByOrderId(element.orderId!)
               .then((value) {
+            //Requesting info of a this order from Order table
             orderItem.clear();
             orderItem.refresh();
 
@@ -253,7 +263,8 @@ class CartController extends GetxController {
           RxList<SaleRequisition> itemList = <SaleRequisition>[].obs;
 
           saleRequisitionDao
-              .findAllSaleItemBySaleId(element.orderId!, 1)
+              .findAllSaleItemBySaleId(element.orderId!,
+                  1) //Requesting product list of this specific order from sale requisation table
               .then((value) {
             itemList.clear();
             itemList.refresh();
@@ -271,7 +282,7 @@ class CartController extends GetxController {
               "totalPrice": elmnt.price,
               "unitPrice": elmnt.unitprice,
             });
-          });
+          }); //Generating global structure for order placement
           RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
           saleRequisation.value = {
             "orderId": orderItem[0].orderId,
@@ -283,18 +294,21 @@ class CartController extends GetxController {
             "beatName": orderItem[0].beatName,
             "CustomerName": orderItem[0]..CustomerName,
             "items": itemList.length == 0 ? [] : itemList,
-          };
+          }; //Final json for order placement
           print("ORDER REQ----->${saleRequisation}");
           itemList.clear();
           orderItem.clear();
           itemList.refresh();
           orderItem.refresh();
+
+          await offlineOrderDao.deleteOrderItemByID(element.orderId!);
         });
+
+        Get.snackbar("SYNC SUCCESS", "Sync with cloud done",
+            backgroundColor: Colors.green, colorText: Colors.white);
       }
     });
 //lets see
-    Get.snackbar("SYNC SUCCESS", "Sync with cloud done",
-        backgroundColor: Colors.green, colorText: Colors.white);
   }
 
   RxDouble totalPrice = 0.0.obs;

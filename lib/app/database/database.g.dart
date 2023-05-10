@@ -516,26 +516,26 @@ class _$OfflineOrderDao extends OfflineOrderDao {
   }
 
   @override
-  Future<void> deleteCartItemByID(String id) async {
+  Future<void> deleteOrderItemByID(String id) async {
     await _queryAdapter.queryNoReturn(
         'DELETE FROM OfflineOrder WHERE orderId = ?1',
         arguments: [id]);
   }
 
   @override
-  Future<void> deleteCartItemByuserID(String status) async {
+  Future<void> deleteOrderItemByStatus(String status) async {
     await _queryAdapter.queryNoReturn(
         'DELETE FROM OfflineOrder WHERE status = ?1',
         arguments: [status]);
   }
 
   @override
-  Future<void> insertCartItem(OfflineOrder item) async {
+  Future<void> insertOfflineOrdertItem(OfflineOrder item) async {
     await _offlineOrderInsertionAdapter.insert(item, OnConflictStrategy.abort);
   }
 
   @override
-  Future<int> updateCartItem(OfflineOrder item) {
+  Future<int> updateOrderItem(OfflineOrder item) {
     return _offlineOrderUpdateAdapter.updateAndReturnChangedRows(
         item, OnConflictStrategy.abort);
   }
