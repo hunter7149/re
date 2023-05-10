@@ -69,10 +69,12 @@ class IndexController extends GetxController {
         .onConnectivityChanged
         .listen((ConnectivityResult result) async {
       print("${result}");
+      Get.lazyPut(() => CartController());
       if (result != ConnectivityResult.none) {
         isDeviceConnected.value =
             await InternetConnectionChecker().hasConnection;
         update();
+
         Get.find<CartController>()
             .connectionUpdater(status: isDeviceConnected.value);
         if (await InternetConnectionChecker().hasConnection) {

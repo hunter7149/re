@@ -105,11 +105,16 @@ class CartController extends GetxController {
   }
 
   //Paste  unused codes for location here
+
+  RxBool isRequesting = false.obs;
+
   requestCheckout() async {
     Random random = Random();
     int orderId = random.nextInt(99999);
     if (isDeviceConnected.value) {
       RxList<dynamic> allItems = <dynamic>[].obs;
+
+      // -----------------Running old code-------//
       cartItems.forEach((element) async {
         allItems.add({
           "brand": element.brand,
@@ -135,7 +140,44 @@ class CartController extends GetxController {
             ? []
             : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
       };
-      print("ORDER REQ----->${saleRequisation}");
+      // await Repository()
+      //     .testpro(body: {"data": "${saleRequisation.value}"}).then((value) {
+      //   isRequesting.value = false;
+      //   Update();
+      //   print(value);
+      // });
+
+      // try {
+      //   isRequesting.value = true;
+      //   Update();
+      // } on Exception catch (e) {
+      //   print(e);
+      // }
+      // print("ORDER REQ----->${saleRequisation}");
+
+      //-------One array code---------//
+      // cartItems.forEach((element) async {
+      //   allItems.add({
+      //     "brand": element.brand,
+      //     "productId": element.productId.toString(),
+      //     "quantity": element.quantity,
+      //     "totalPrice": element.price,
+      //     "unitPrice": element.unitPrice,
+      //     "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
+      //     "lattitude": lattitude, //looks like 20.1234
+      //     "longitude": longitude, //looks like 20.1234
+      //     "totalItemCount": cartItems.length, // in number like 3 or 4
+      //     "dateTime": DateTime.now()
+      //         .toString()
+      //         .split(".")[0]
+      //         .toString(), // looks like 2023-05-10 09:55:06.602402
+      //     "totalPrice": totalPrice.value, // like 2034.23
+      //     "beatName": dropdownBeatValue.value, //String
+      //     "CustomerName": dropdownCustomerValue.value,
+      //   });
+      // });
+      // print("ORDER REQ----->${allItems}}");
+      //-----One array code ends here-----//
       OrderItem orderItem = OrderItem(
           orderId: "ORD${orderId}",
           userId: 1,
@@ -173,7 +215,7 @@ class CartController extends GetxController {
           confirmBtnColor: AppThemes.modernGreen,
           context: Get.context!,
           type: QuickAlertType.success,
-          autoCloseDuration: Duration(seconds: 2),
+          // autoCloseDuration: Duration(seconds: 2),
         );
       });
       Update();
@@ -231,9 +273,9 @@ class CartController extends GetxController {
 
   //sync//
   onlineSync() async {
-    final database =
-        await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
-    offlineOrderDao = database.offlineOrderDao;
+    // final database =
+    //     await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
+    // offlineOrderDao = database.offlineOrderDao;
     RxList<OfflineOrder> orderList = <OfflineOrder>[].obs;
     await offlineOrderDao.findAllOfflineOrder().then((value) {
       orderList.clear();
@@ -262,7 +304,7 @@ class CartController extends GetxController {
 //---------------------Get Detailed Order List------------------------//
           RxList<SaleRequisition> itemList = <SaleRequisition>[].obs;
 
-          saleRequisitionDao
+          await saleRequisitionDao
               .findAllSaleItemBySaleId(element.orderId!,
                   1) //Requesting product list of this specific order from sale requisation table
               .then((value) {
@@ -282,6 +324,7 @@ class CartController extends GetxController {
               "totalPrice": elmnt.price,
               "unitPrice": elmnt.unitprice,
             });
+            allItems.refresh();
           }); //Generating global structure for order placement
           RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
           saleRequisation.value = {
@@ -292,15 +335,15 @@ class CartController extends GetxController {
             "dateTime": orderItem[0].dateTime,
             "totalPrice": orderItem[0].totalPrice,
             "beatName": orderItem[0].beatName,
-            "CustomerName": orderItem[0]..CustomerName,
-            "items": itemList.length == 0 ? [] : itemList,
+            "CustomerName": orderItem[0].CustomerName,
+            "items": allItems.length == 0 ? [] : allItems,
           }; //Final json for order placement
           print("ORDER REQ----->${saleRequisation}");
           itemList.clear();
           orderItem.clear();
           itemList.refresh();
           orderItem.refresh();
-
+          print("Sync done of order id: ${element.orderId}");
           await offlineOrderDao.deleteOrderItemByID(element.orderId!);
         });
 

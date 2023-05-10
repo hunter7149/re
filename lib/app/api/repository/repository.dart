@@ -21,6 +21,7 @@ class Repository extends Providers {
       await tokenBaseApi(endPoint: "", method: Method.GET, map: {})
           .then((value) => value);
 
+  ///------------------------Product api---------------------------------//
   Future<dynamic> getAllProducts({required Map<String, dynamic> body}) async =>
       await tokenBaseApi(
               endPoint: AppUrl.productSpecificList,
@@ -32,6 +33,18 @@ class Repository extends Providers {
           {required Map<String, dynamic> body}) async =>
       await tokenBaseApi(
               endPoint: AppUrl.productList, method: Method.POST, map: body)
+          .then((value) => value);
+
+  Future<dynamic> testpro({required Map<String, dynamic> body}) async =>
+      await tokenBaseApi(
+              endPoint: AppUrl.saleRequisition, method: Method.POST, map: body)
+          .then((value) => value);
+//----------------------------Cloude sync------------------------------//
+
+  Future<dynamic> requestSaleRequistion(
+          {required Map<String, dynamic> body}) async =>
+      await tokenBaseApi(
+              endPoint: AppUrl.saleRequisition, method: Method.POST, map: body)
           .then((value) => value);
 
   Future<dynamic> requestWeather(

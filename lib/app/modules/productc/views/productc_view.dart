@@ -223,35 +223,42 @@ class ProductcView extends GetView<ProductcController> {
                                                       controller.isAdded.value
                                                           ? "Added!"
                                                           : "Add to cart",
-                                                  funtion: () {
-                                                    CartItem product = CartItem(
-                                                      userId: 1,
-                                                      productId:
-                                                          controller.products[i]
-                                                              ["SKU_CODE"],
-                                                      customerName: "",
-                                                      beatName: "",
-                                                      productName:
-                                                          controller.products[i]
-                                                              ["PRODUCT_NAME"],
-                                                      catagory:
-                                                          controller.products[i]
-                                                              ["CATEGORY"],
-                                                      unit: controller
-                                                          .products[i]["UOM"],
-                                                      image:
-                                                          "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
-                                                      price: unitprice,
-                                                      brand:
-                                                          controller.products[i]
-                                                              ["BRAND_NAME"],
-                                                      quantity: 1,
-                                                      unitPrice: unitprice,
-                                                    );
-                                                    controller.addToCart(
-                                                        data: product);
-                                                    // addAlert(controller: controller, data: i);
-                                                  },
+                                                  funtion: controller
+                                                          .isAdded.value
+                                                      ? () {}
+                                                      : () {
+                                                          CartItem product =
+                                                              CartItem(
+                                                            userId: 1,
+                                                            productId: controller
+                                                                    .products[i]
+                                                                ["SKU_CODE"],
+                                                            customerName: "",
+                                                            beatName: "",
+                                                            productName: controller
+                                                                    .products[i]
+                                                                [
+                                                                "PRODUCT_NAME"],
+                                                            catagory: controller
+                                                                    .products[i]
+                                                                ["CATEGORY"],
+                                                            unit: controller
+                                                                    .products[i]
+                                                                ["UOM"],
+                                                            image:
+                                                                "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
+                                                            price: unitprice,
+                                                            brand: controller
+                                                                    .products[i]
+                                                                ["BRAND_NAME"],
+                                                            quantity: 1,
+                                                            unitPrice:
+                                                                unitprice,
+                                                          );
+                                                          controller.addToCart(
+                                                              data: product);
+                                                          // addAlert(controller: controller, data: i);
+                                                        },
                                                   color: controller
                                                           .isAdded.value
                                                       ? AppThemes.modernCoolPink
