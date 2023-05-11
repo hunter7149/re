@@ -209,6 +209,82 @@ class ProductcController extends GetxController {
     });
   }
 
+  imageLinkReturn(
+      {required String brand,
+      required String category,
+      required String productid}) {
+    if (brand == 'lily' &&
+        category.toLowerCase() == 'face care' &&
+        productid.toString() == '3000077') {
+      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/c77ab8168198481.6436822b7611f.jpg";
+    } else if (brand == 'lily' &&
+        category.toLowerCase() == 'face care' &&
+        productid.toString() == '3000078') {
+      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/30522e168198481.6436822b754e6.jpg";
+    } else if (brand.toLowerCase() == 'lily' &&
+        category.toLowerCase() == 'face care' &&
+        productid.toString() == '3000079') {
+      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e689c3168198481.6436822b76b2b.jpg";
+    } else if (brand.toLowerCase() == 'lily' &&
+        category.toLowerCase() == 'face care' &&
+        productid.toString() == '3000080') {
+      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e87ac8168198481.6436822b7320e.jpg";
+    } else if (brand.toLowerCase() == 'lily' &&
+        category.toLowerCase() == 'face care') {
+      return "https://herlan.com/wp-content/uploads/2023/04/Lily-Banner-Image-1.png";
+    } else if (brand.toLowerCase() == 'lily' &&
+        category.toLowerCase() == 'colour Cosmetics') {
+      return "https://herlan.com/wp-content/uploads/2023/04/Lily-Banner-Image-1.png";
+    } else if (brand.toLowerCase() == 'herlan' &&
+        category.toLowerCase() == 'colour cosmetics') {
+      return "https://herlan.com/wp-content/uploads/2023/04/Harlan-Eye-Color32.png";
+    } else if (brand.toLowerCase() == 'nior') {
+      return "https://scontent-ccu1-1.cdninstagram.com/v/t51.2885-15/292994728_5280264228754532_2416232431058552638_n.jpg?stp=dst-jpg_e35_p1080x1080&_nc_ht=scontent-ccu1-1.cdninstagram.com&_nc_cat=108&_nc_ohc=a2GSOAHawQoAX-pU9Ao&edm=AP_V10EBAAAA&ccb=7-5&oh=00_AfAZoLGndq7ZCEzXEI0muT3T49objuKbNwGGeX4RZ_mRYw&oe=64624A91&_nc_sid=4f375e";
+    } else {
+      return "htasda";
+    }
+  }
+
+  returnPrice({required String productCode}) {
+    RxDouble price = 500.00.obs;
+    if (productCode == '3000077') {
+      price.value = 110.00;
+      update();
+    } else if (productCode == "3000078") {
+      price.value = 110.00;
+      update();
+    } else if (productCode == "3000079") {
+      price.value = 110.00;
+      update();
+    } else if (productCode == "3000080") {
+      price.value = 110.00;
+      update();
+    } else if (productCode == "3000082") {
+      price.value = 222.22;
+      update();
+    } else if (productCode == "3000083") {
+      price.value = 222.22;
+      update();
+    } else if (productCode == "3000099") {
+      price.value = 675.00;
+      update();
+    } else if (productCode == "3000100") {
+      price.value = 675.00;
+      update();
+    } else if (productCode == "3000101") {
+      price.value = 675.00;
+      update();
+    } else if (productCode == "3000102") {
+      price.value = 675.00;
+      update();
+    } else if (productCode == "3000103") {
+      price.value = 675.00;
+      update();
+    }
+
+    return price.value;
+  }
+
   addToCart({required CartItem data}) async {
     if (await ICHECKER.checkConnection()) {
       print("INTERNET");

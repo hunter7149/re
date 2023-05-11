@@ -419,7 +419,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                     //     height: 50,
                                     //     decoration: BoxDecoration(
                                     //         color: Colors.green.shade300,
-                                    //         // border: Border.all(color: Colors.grey.shade500),
+                                    //         ./÷/// // border: Border.all(color: Colors.grey.shade500),
                                     //         borderRadius: BorderRadius.only(
                                     //             bottomLeft: Radius.circular(10),
                                     //             bottomRight:
@@ -482,43 +482,43 @@ class OrderHomeView extends GetView<OrderHomeController> {
                   ),
                 ),
                 SizedBox(height: 20),
-                // ListView.builder(
-                //   shrinkWrap: true,
-                //   itemCount: menus.length,
-                //   itemBuilder: (BuildContext context, int index) {
-                //     MenuModel menu = menus[index];
-                //     return Padding(
-                //       padding: EdgeInsets.only(bottom: 8.0),
-                //       child: Container(
-                //         padding: EdgeInsets.symmetric(horizontal: 16),
-                //         decoration: BoxDecoration(
-                //             // color: Colors.blueGrey.shade200,
-                //             border: Border.all(
-                //                 width: 1, color: Colors.grey.shade500),
-                //             borderRadius: BorderRadius.circular(10)),
-                //         child: Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //           children: [
-                //             Text(
-                //               menu.tittle ?? '',
-                //               style: TextStyle(fontSize: 24),
-                //             ),
-                //             Image.asset(
-                //               menu.image ?? AppAssets.ASSET_EMPTY_IMAGE,
-                //               errorBuilder: (context, error, stackTrace) {
-                //                 return Image.asset(
-                //                   AppAssets.ASSET_BRAND_IMAGE,
-                //                   height: 40,
-                //                 );
-                //               },
-                //               height: 64,
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // ),
+                ListView.builder(
+                  shrinkWrap: true, //beauty and cosmetic
+                  itemCount: menus.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    MenuModel menu = menus[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 8.0),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                            // color: Colors.blueGrey.shade200,
+                            border: Border.all(
+                                width: 1, color: Colors.grey.shade500),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              menu.tittle ?? '',
+                              style: TextStyle(fontSize: 24),
+                            ),
+                            Image.asset(
+                              menu.image ?? AppAssets.ASSET_EMPTY_IMAGE,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  AppAssets.ASSET_BRAND_IMAGE,
+                                  height: 40,
+                                );
+                              },
+                              height: 64,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

@@ -118,7 +118,9 @@ class ProductcView extends GetView<ProductcController> {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: controller.products.length,
                                 itemBuilder: (context, i) {
-                                  double unitprice = 820;
+                                  double unitprice = controller.returnPrice(
+                                      productCode:
+                                          '${controller.products[i]['PRODUCT_CODE']}');
                                   // controller.countUpdateR(value: i);
                                   // List<String> ingredients =
                                   //     controller.products[i]["ingredients"];
@@ -146,7 +148,17 @@ class ProductcView extends GetView<ProductcController> {
                                                     bottomLeft:
                                                         Radius.circular(15)),
                                                 child: CachedNetworkImage(
-                                                  imageUrl: "",
+                                                  imageUrl: controller
+                                                      .imageLinkReturn(
+                                                          brand: controller
+                                                                  .products[i][
+                                                              'BRAND_NAME'],
+                                                          category: controller
+                                                                  .products[i]
+                                                              ['CATEGORY'],
+                                                          productid: controller
+                                                                  .products[i]
+                                                              ['PRODUCT_CODE']),
                                                   // "${"https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png"}",
                                                   // height: 160,
                                                   fit: BoxFit.cover,
@@ -209,7 +221,7 @@ class ProductcView extends GetView<ProductcController> {
                                               height: 10,
                                             ),
                                             Text(
-                                              'Price: ${unitprice} ',
+                                              'Price: ${unitprice} Tk',
                                               style: TextStyle(
                                                   fontSize: 20.0,
                                                   fontWeight: FontWeight.w500),
