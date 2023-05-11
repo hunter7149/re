@@ -1,20 +1,11 @@
 import 'package:sales/app/components/common_widgets.dart';
 import 'package:sales/app/config/app_themes.dart';
-import 'package:sales/app/modules/account/views/account_view.dart';
-import 'package:sales/app/modules/dashboard/views/dashboard_view.dart';
-import 'package:sales/app/modules/index/views/index_view.dart';
 import 'package:sales/app/modules/product/controllers/product_controller.dart';
-import 'package:sales/app/modules/productc/views/productc_view.dart';
-import 'package:sales/app/modules/services/views/services_view.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
-
 import '../../../../constants.dart';
 import '../../../routes/app_pages.dart';
-import '../controllers/product_controller.dart';
 
 class ProductView extends GetView<ProductController> {
   final String argument;
@@ -35,7 +26,8 @@ class ProductView extends GetView<ProductController> {
       'lily',
       'nior',
       'orix',
-      // 'sunbit'
+      'siodil',
+      'sunbit',
     ];
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -64,7 +56,7 @@ class ProductView extends GetView<ProductController> {
                   crossAxisCount: 2,
                   childAspectRatio: 1.2,
                   shrinkWrap: true,
-                  children: List.generate(8, (index) {
+                  children: List.generate(10, (index) {
                     return ZoomTapAnimation(
                       onTap: () {
                         // print("Tapped a Container");

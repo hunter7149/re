@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
@@ -20,19 +23,21 @@ class OrderHomeView extends GetView<OrderHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final items = ["item 1", "item 2", "item 3"];
+    List brands = [
+      'acnol',
+      'blazoskin',
+      'elanvenezia',
+      'tylox',
+      'herlan',
+      'lily',
+      'nior',
+      'orix',
+      'siodil',
+      'sunbit',
+    ];
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final List<String> ditems = [
-      'Item1',
-      'Item2',
-      'Item3',
-      'Item4',
-      'Item5',
-      'Item6',
-      'Item7',
-      'Item8',
-    ];
+
     String? selectedValue;
     return Scaffold(
         backgroundColor: Colors.white,
@@ -42,301 +47,229 @@ class OrderHomeView extends GetView<OrderHomeController> {
                   result: controller.count.value,
                   id: Constants.nestedNavigationNavigatorId,
                 )),
-
-        // AppBar(
-        //   automaticallyImplyLeading: false,
-        //   backgroundColor: Colors.white,
-        //   toolbarHeight: 50.0,
-        //   bottomOpacity: 0.0,
-        //   elevation: 0.0,
-        //   title: Text(
-        //     "Order management",
-        //   ),
-        //   titleTextStyle: TextStyle(color: Colors.black87),
-        //   leading: IconButton(
-        //     icon: Icon(Icons.arrow_back),
-        //     // Image.asset("assets/images/back_arrow.jpg"),
-        //     color: Colors.black87,
-        //     tooltip: 'Click home icon twice to back!',
-        //     onPressed: () => Get.back(
-        //       result: controller.count.value,
-        //       id: Constants.nestedNavigationNavigatorId,
-        //     ),
-        //   ),
-        // ),
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: ListView(
-              children: [
-                //  Padding(height: 1,color:Colors.grey ),
-                // Container(
-                //   decoration: BoxDecoration(
-                //     color: Colors.white,
-                //     border: Border(
-                //       right: BorderSide( //                   <--- right side
-                //         color: Colors.grey,
-                //         width: 3.0,
-                //       ),
-                //         left: BorderSide( //                   <--- right side
-                //           color: Colors.grey,
-                //           width: 3.0,
-                //         ),
-                //         top: BorderSide( //                   <--- right side
-                //           color: Colors.grey,
-                //           width: 1.0,
-                //         ),
-                //         bottom: BorderSide( //                   <--- right side
-                //           color: Colors.grey,
-                //           width: 1.0,
-                //         ),),
-                //     shape: BoxShape.rectangle,
-                //   ),
-                //   child: Row(
-                //       children: [
-                // Text("Beat",),
-                // const    TextField(
-                //       decoration: InputDecoration(
-                //           contentPadding: EdgeInsets.only(left: 16),
-                //           hintText: 'Search Beat',
-                //           border: OutlineInputBorder(
-                //             borderRadius: BorderRadius.all(
-                //               Radius.circular(10.0),
-                //             ),
-                //           )),
-                //       style: TextStyle(color: Colors.black),
-                //     ),
-                // ],
-
-                // ),
-                // ),
-
-                Obx(() {
-                  return controller.beatData.isEmpty
-                      ? Container()
-                      : Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              // color: Colors.blueGrey.shade200,
-                              border: Border.all(
-                                  width: 1, color: Colors.grey.shade500),
-                              borderRadius: BorderRadius.circular(10)),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 24, vertical: 5),
-                          margin: EdgeInsets.only(top: 10),
-                          width: double.maxFinite,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              isExpanded: true,
-                              alignment: Alignment.center,
-                              value: controller.dropdownBeatValue.value,
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.grey.shade700,
-                              ),
-                              elevation: 2,
-                              style: TextStyle(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Obx(() {
+                    return controller.beatData.isEmpty
+                        ? Container()
+                        : Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                // color: Colors.blueGrey.shade200,
+                                border: Border.all(
+                                    width: 1, color: Colors.grey.shade500),
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 5),
+                            margin: EdgeInsets.only(top: 10),
+                            width: double.maxFinite,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                isExpanded: true,
+                                alignment: Alignment.center,
+                                value: controller.dropdownBeatValue.value,
+                                icon: Icon(
+                                  Icons.arrow_drop_down,
                                   color: Colors.grey.shade700,
-                                  fontWeight: FontWeight.w300),
-                              onChanged: (String? newValue) {
-                                controller.DropdownBeatValueUpdater(newValue!);
-                              },
-                              items: controller.beatData.value
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        );
-                }),
-                const SizedBox(height: 10),
-                Obx(() {
-                  return controller.customerList.isEmpty
-                      ? Container()
-                      : Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              // color: Colors.blueGrey.shade200,
-                              border: Border.all(
-                                  width: 1, color: Colors.grey.shade500),
-                              borderRadius: BorderRadius.circular(10)),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 24, vertical: 5),
-                          margin: EdgeInsets.only(top: 10),
-                          width: double.maxFinite,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              isExpanded: true,
-                              alignment: Alignment.center,
-                              value: controller.dropdownCustomerValue.value,
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.grey.shade700,
+                                ),
+                                elevation: 2,
+                                style: TextStyle(
+                                    color: Colors.grey.shade700,
+                                    fontWeight: FontWeight.w300),
+                                onChanged: (String? newValue) {
+                                  controller.DropdownBeatValueUpdater(
+                                      newValue!);
+                                },
+                                items: controller.beatData.value
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
                               ),
-                              elevation: 2,
-                              style: TextStyle(
+                            ),
+                          );
+                  }),
+                  const SizedBox(height: 10),
+                  Obx(() {
+                    return controller.customerList.isEmpty
+                        ? Container()
+                        : Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                // color: Colors.blueGrey.shade200,
+                                border: Border.all(
+                                    width: 1, color: Colors.grey.shade500),
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 5),
+                            margin: EdgeInsets.only(top: 10),
+                            width: double.maxFinite,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                isExpanded: true,
+                                alignment: Alignment.center,
+                                value: controller.dropdownCustomerValue.value,
+                                icon: Icon(
+                                  Icons.arrow_drop_down,
                                   color: Colors.grey.shade700,
-                                  fontWeight: FontWeight.w300),
-                              onChanged: (String? newValue) {
-                                controller.DropdownCustomerValueUpdater(
-                                    newValue!);
-                              },
-                              items: controller.customerList.value
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
+                                ),
+                                elevation: 2,
+                                style: TextStyle(
+                                    color: Colors.grey.shade700,
+                                    fontWeight: FontWeight.w300),
+                                onChanged: (String? newValue) {
+                                  controller.DropdownCustomerValueUpdater(
+                                      newValue!);
+                                },
+                                items: controller.customerList.value
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
                             ),
-                          ),
-                        );
-                }), // const TextField(
-                //   decoration: InputDecoration(
-                //       contentPadding: EdgeInsets.only(left: 16),
-                //       hintText: 'Search Customer',
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.all(
-                //           Radius.circular(10.0),
-                //         ),
-                //       )),
-                //   style: TextStyle(color: Colors.black),
-                // ),
-                const SizedBox(height: 20),
-                Obx(
-                  () => controller.isReorderCompleted.value
-                      ? Container()
-                      : controller.itemList.length == 0
-                          ? Container()
-                          : Text(
-                              'Last order',
-                              style: TextStyle(
-                                  fontSize: 22, color: Colors.grey.shade700),
-                            ),
-                ),
-                const SizedBox(height: 10),
-                //---------------------Last order option---------------//
+                          );
+                  }),
+                  const SizedBox(height: 20),
+                  Obx(
+                    () => controller.isReorderCompleted.value
+                        ? Container()
+                        : controller.itemList.length == 0
+                            ? Container()
+                            : Row(
+                                children: [
+                                  Text(
+                                    'Last order',
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        color: Colors.grey.shade700),
+                                  ),
+                                ],
+                              ),
+                  ),
+                  const SizedBox(height: 10),
+                  //---------------------Last order option---------------//
 
-                Obx(
-                  () => controller.isReorderCompleted.value
-                      ? Container()
-                      : controller.isReorder.value
-                          ? Container(
-                              height: 250,
-                              decoration: BoxDecoration(
-                                  color: Colors.green.shade300,
-                                  border:
-                                      Border.all(color: Colors.grey.shade500),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(
-                                      FontAwesomeIcons.check,
-                                      color: Colors.white,
-                                      size: 100,
-                                    ),
-                                    Text(
-                                      'Products added to cart!',
-                                      style: TextStyle(
-                                          fontSize: 26,
-                                          color: Colors.grey.shade100),
-                                    ),
-                                  ]),
-                            )
-                          : controller.itemList.isEmpty
-                              ? Container()
-                              : Column(
-                                  children: [
-                                    ZoomTapAnimation(
-                                      onTap: () {
-                                        controller.addAllToCart();
-                                      },
-                                      child: Container(
-                                        height: 250,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 0, horizontal: 10),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.grey.shade500),
-                                            borderRadius:
-                                                BorderRadius.circular(10)
-                                            // borderRadius: const BorderRadius.only(
-                                            //     topLeft: Radius.circular(10),
-                                            //     topRight: Radius.circular(10))
-
-                                            ),
-                                        child: GridView.builder(
-                                          shrinkWrap: true,
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 10, 0, 0),
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: context.isPhone
-                                                ? 2
-                                                : context.isSmallTablet
-                                                    ? 3
-                                                    : 4,
-                                            childAspectRatio: 4 / 2.6,
-                                            mainAxisSpacing: 5,
-                                            crossAxisSpacing: 5,
-                                          ),
-                                          itemCount: controller.itemList.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Container(
+                  Obx(
+                    () => controller.isReorderCompleted.value
+                        ? Container()
+                        : controller.isReorder.value
+                            ? Container(
+                                height: 250,
+                                width: double.maxFinite,
+                                decoration: BoxDecoration(
+                                    color: Colors.green.shade300,
+                                    border:
+                                        Border.all(color: Colors.grey.shade500),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.check,
+                                        color: Colors.white,
+                                        size: 100,
+                                      ),
+                                      Text(
+                                        'Products added to cart!',
+                                        style: TextStyle(
+                                            fontSize: 26,
+                                            color: Colors.grey.shade100),
+                                      ),
+                                    ]),
+                              )
+                            : controller.itemList.isEmpty
+                                ? Container()
+                                : Column(
+                                    children: [
+                                      ZoomTapAnimation(
+                                        onTap: () {
+                                          // controller.addAllToCart();
+                                          confirmAlert(controller: controller);
+                                        },
+                                        child: Container(
+                                          height: 250,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                controller.itemList.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Container(
+                                                height: 80,
+                                                width: 150,
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 10),
                                                 decoration: BoxDecoration(
                                                     border: Border.all(
-                                                        color: Colors
-                                                            .grey.shade500),
+                                                        width: 1,
+                                                        color: AppThemes
+                                                            .modernGreen),
                                                     borderRadius:
                                                         const BorderRadius.all(
                                                             Radius.circular(
-                                                                10))),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                                15))),
+                                                child: Column(
                                                   children: [
                                                     Expanded(
-                                                      flex: 1,
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.only(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        width: double.maxFinite,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        13),
                                                                 topRight: Radius
                                                                     .circular(
-                                                                        15),
-                                                                bottomRight: Radius
-                                                                    .circular(
-                                                                        15)),
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          imageUrl: controller
-                                                              .itemList[index]
-                                                              .image
-                                                              .toString(),
-                                                          // height: 160,
-                                                          fit: BoxFit.cover,
-                                                          placeholder: (context,
-                                                                  url) =>
-                                                              Center(
-                                                                  child:
-                                                                      CircularProgressIndicator()),
-                                                          errorWidget:
-                                                              (ctx, url, err) =>
-                                                                  Image.asset(
-                                                            'assets/images/noprev.png',
-                                                            height: 70,
+                                                                        13)),
+                                                            border: Border.all(
+                                                                width: 1,
+                                                                color: AppThemes
+                                                                    .modernGreen)),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          13),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          13)),
+                                                          child:
+                                                              CachedNetworkImage(
+                                                            imageUrl: controller
+                                                                .itemList[index]
+                                                                .image
+                                                                .toString(),
+                                                            // height: 160,
+                                                            fit: BoxFit.cover,
+                                                            placeholder: (context,
+                                                                    url) =>
+                                                                Center(
+                                                                    child:
+                                                                        CircularProgressIndicator()),
+                                                            errorWidget: (ctx,
+                                                                    url, err) =>
+                                                                Image.asset(
+                                                              'assets/images/noprev.png',
+                                                              height: 70,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
@@ -375,7 +308,10 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                             textAlign:
                                                                 TextAlign.left,
                                                             style: TextStyle(
-                                                                fontSize: 14),
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
                                                           ),
                                                           Text(
                                                               controller
@@ -385,7 +321,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                      10)),
+                                                                      14)),
                                                           Text(
                                                               controller
                                                                   .itemList[
@@ -394,134 +330,235 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                      10)),
+                                                                      14)),
                                                           Text(
                                                             'Unit Tk ${controller.itemList[index].price.toString()}',
                                                             style: TextStyle(
-                                                                fontSize: 10),
+                                                                fontSize: 14),
                                                           )
                                                         ],
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            );
-                                          },
+                                              );
+                                            },
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    // InkWell(
-                                    //   onTap: () {
-                                    //     controller.addAllToCart();
-                                    //   },
-                                    //   child: Container(
-                                    //     height: 50,
-                                    //     decoration: BoxDecoration(
-                                    //         color: Colors.green.shade300,
-                                    //         ./÷/// // border: Border.all(color: Colors.grey.shade500),
-                                    //         borderRadius: BorderRadius.only(
-                                    //             bottomLeft: Radius.circular(10),
-                                    //             bottomRight:
-                                    //                 Radius.circular(10))),
-                                    //     child: Center(
-                                    //         child: Text(
-                                    //       "ADD TO CART",
-                                    //       style: TextStyle(
-                                    //           fontSize: 20,
-                                    //           fontWeight: FontWeight.w500,
-                                    //           color: Colors.white),
-                                    //     )),
-                                    //   ),
-                                    // )
-                                  ],
-                                ),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'Our brands',
-                  style: TextStyle(fontSize: 22, color: Colors.grey.shade700),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  padding: EdgeInsets.all(5),
-                  height: 300,
-                  // decoration: BoxDecoration(
-                  //     // color: Colors.blueGrey.shade200,
-                  //     border: Border.all(width: 1, color: Colors.grey.shade500),
-                  //     borderRadius: BorderRadius.circular(10)),
-                  child: GridView.count(
-                    scrollDirection: Axis.horizontal,
-                    crossAxisCount: 2,
-                    children: List.generate(10, (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Get.toNamed(Routes.PRODUCTC,
-                              arguments: index.toString(),
-                              id: Constants.nestedNavigationNavigatorId);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  bottomRight: Radius.circular(15)),
-                              border: Border.all(
-                                  width: 1, color: AppThemes.modernGreen)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image(
-                              image: AssetImage("assets/images/${index}.png"),
-                              fit: BoxFit.contain,
+                                      // InkWell(
+                                      //   onTap: () {
+                                      //     controller.addAllToCart();
+                                      //   },
+                                      //   child: Container(
+                                      //     height: 50,
+                                      //     decoration: BoxDecoration(
+                                      //         color: Colors.green.shade300,
+                                      //         ./÷/// // border: Border.all(color: Colors.grey.shade500),
+                                      //         borderRadius: BorderRadius.only(
+                                      //             bottomLeft: Radius.circular(10),
+                                      //             bottomRight:
+                                      //                 Radius.circular(10))),
+                                      //     child: Center(
+                                      //         child: Text(
+                                      //       "ADD TO CART",
+                                      //       style: TextStyle(
+                                      //           fontSize: 20,
+                                      //           fontWeight: FontWeight.w500,
+                                      //           color: Colors.white),
+                                      //     )),
+                                      //   ),
+                                      // )
+                                    ],
+                                  ),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Text(
+                        'Our brands',
+                        style: TextStyle(
+                            fontSize: 22, color: Colors.grey.shade700),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    // padding: EdgeInsets.symmetric(horizontal: 16),
+                    height: 300,
+                    // decoration: BoxDecoration(
+                    //     // color: Colors.blueGrey.shade200,
+                    //     border: Border.all(width: 1, color: Colors.grey.shade500),
+                    //     borderRadius: BorderRadius.circular(10)),
+                    child: GridView.count(
+                      scrollDirection: Axis.horizontal,
+                      crossAxisCount: 2,
+                      children: List.generate(10, (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.PRODUCTB,
+                                arguments: {"brand": brands[index]},
+                                id: Constants.nestedNavigationNavigatorId);
+                            // Get.toNamed(Routes.PRODUCTC,
+                            //     arguments: index.toString(),
+                            //     id: Constants.nestedNavigationNavigatorId);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(15)),
+                                border: Border.all(
+                                    width: 1, color: AppThemes.modernGreen)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image(
+                                image: AssetImage("assets/images/${index}.png"),
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                ListView.builder(
-                  shrinkWrap: true, //beauty and cosmetic
-                  itemCount: menus.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    MenuModel menu = menus[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                            // color: Colors.blueGrey.shade200,
-                            border: Border.all(
-                                width: 1, color: Colors.grey.shade500),
-                            borderRadius: BorderRadius.circular(10)),
+                  SizedBox(height: 20),
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true, //beauty and cosmetic
+                    itemCount: menus.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        // height: 60,
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              menu.tittle ?? '',
-                              style: TextStyle(fontSize: 24),
+                            Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      bottomLeft: Radius.circular(15)),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: AppThemes.modernPlantation,
+                                      width: 2)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(14),
+                                    bottomLeft: Radius.circular(14)),
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      "${"https://scontent-ccu1-1.cdninstagram.com/v/t51.2885-15/325289651_2946866608954628_6340848112285354329_n.webp?stp=dst-jpg_e35&_nc_ht=scontent-ccu1-1.cdninstagram.com&_nc_cat=108&_nc_ohc=PgvsCB1kMggAX_1jRz-&edm=AP_V10EBAAAA&ccb=7-5&oh=00_AfBsOJTXuPw96r2d3jcic43F2-ZUceU7FeqLUTAxtwUhxA&oe=6461D616&_nc_sid=4f375e"}",
+                                  // height: 160,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Center(
+                                      child: SpinKitRipple(
+                                    color: AppThemes.modernGreen,
+                                    size: 50.0,
+                                  )),
+                                  errorWidget: (ctx, url, err) => Image.asset(
+                                    'assets/images/noprev.png',
+                                    height: 70,
+                                  ),
+                                ),
+                              ),
                             ),
-                            Image.asset(
-                              menu.image ?? AppAssets.ASSET_EMPTY_IMAGE,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  AppAssets.ASSET_BRAND_IMAGE,
-                                  height: 40,
-                                );
-                              },
-                              height: 64,
+                            Expanded(
+                              child: Container(
+                                height: 60,
+                                decoration: BoxDecoration(
+                                    color: AppThemes.modernPlantation),
+                              ),
                             )
                           ],
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ));
+  }
+
+  static confirmAlert({required OrderHomeController controller}) {
+    Get.generalDialog(
+        transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 4 * anim1.value,
+                sigmaY: 4 * anim1.value,
+              ),
+              child: FadeTransition(
+                child: child,
+                opacity: anim1,
+              ),
+            ),
+        pageBuilder: (ctx, anim1, anim2) {
+          TextEditingController quanity = TextEditingController();
+          quanity.text = 1.toString();
+
+          return MediaQuery(
+            data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Confirmation",
+                    style: TextStyle(),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      child: Center(
+                          child: Icon(
+                        Icons.close,
+                        color: Colors.red.shade800,
+                        size: 20,
+                      )),
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  )
+                ],
+              ),
+              content: Container(
+                // height: 80,
+                child: Text("Are you sure to palce this order again?"),
+              ),
+              actionsPadding: EdgeInsets.all(10),
+              actions: [
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                    controller.addAllToCart();
+                  },
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: AppThemes.modernGreen,
+                        borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.center,
+                    child: Text("Place Order",
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                )
+              ],
+            ),
+          );
+        });
   }
 }
