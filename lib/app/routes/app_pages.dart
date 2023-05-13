@@ -28,6 +28,8 @@ import '../modules/productb/bindings/productb_binding.dart';
 import '../modules/productb/views/productb_view.dart';
 import '../modules/productc/bindings/productc_binding.dart';
 import '../modules/productc/views/productc_view.dart';
+import '../modules/productinfo/bindings/productinfo_binding.dart';
+import '../modules/productinfo/views/productinfo_view.dart';
 import '../modules/promotionalads/bindings/promotionalads_binding.dart';
 import '../modules/promotionalads/views/promotionalads_view.dart';
 import '../modules/services/bindings/services_binding.dart';
@@ -138,6 +140,13 @@ class AppPages {
       name: _Paths.NOTICESCREEN,
       page: () => const NoticescreenView(),
       binding: NoticescreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRODUCTINFO,
+      page: () => ProductinfoView(
+        argument: '',
+      ),
+      binding: ProductinfoBinding(),
     ),
   ];
 }

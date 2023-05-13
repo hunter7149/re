@@ -14,6 +14,8 @@ import 'package:sales/app/modules/product/bindings/product_binding.dart';
 import 'package:sales/app/modules/product/views/product_view.dart';
 import 'package:sales/app/modules/productb/bindings/productb_binding.dart';
 import 'package:sales/app/modules/productb/views/productb_view.dart';
+import 'package:sales/app/modules/productinfo/bindings/productinfo_binding.dart';
+import 'package:sales/app/modules/productinfo/views/productinfo_view.dart';
 import 'package:sales/app/modules/promotionalads/bindings/promotionalads_binding.dart';
 import 'package:sales/app/modules/promotionalads/views/promotionalads_view.dart';
 import 'package:sales/app/modules/statisticspage/bindings/statisticspage_binding.dart';
@@ -82,6 +84,13 @@ class IndexView extends GetView<IndexController> {
                                 argument: routeSettings.arguments,
                               ),
                           binding: ProductcBinding());
+                    } else if (routeSettings.name == Routes.PRODUCTINFO) {
+                      return GetPageRoute(
+                          routeName: Routes.PRODUCTINFO,
+                          page: () => ProductinfoView(
+                                argument: routeSettings.arguments,
+                              ),
+                          binding: ProductinfoBinding());
                     } else if (routeSettings.name == Routes.ORDERHOME) {
                       return GetPageRoute(
                           routeName: Routes.ORDERHOME,

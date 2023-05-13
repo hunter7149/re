@@ -149,32 +149,38 @@ class OrderpageView extends GetView<OrderpageController> {
                                         )
                                       ],
                                     ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Total Items",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        Container(
-                                          height: 30,
-                                          width: 30,
-                                          margin: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey.shade400,
-                                              borderRadius:
-                                                  BorderRadius.circular(100)),
-                                          child: Center(
-                                            child: Text(
-                                              "${controller.orderItem[index].totalItem}",
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Total Items",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                            textAlign: TextAlign.center,
                                           ),
-                                        )
-                                      ],
+                                          Container(
+                                            height: 30,
+                                            width: 30,
+                                            margin: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey.shade400,
+                                                borderRadius:
+                                                    BorderRadius.circular(100)),
+                                            child: Center(
+                                              child: Text(
+                                                "${controller.orderItem[index].totalItem}",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),

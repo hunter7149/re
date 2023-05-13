@@ -1,29 +1,19 @@
 import 'dart:ffi';
+import 'dart:math';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_options.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:chewie/chewie.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sales/app/components/AppColors.dart';
-import 'package:sales/app/components/common_widgets.dart';
-import 'package:sales/app/components/custom_image_catalog.dart';
-import 'package:sales/app/components/custom_image_val.dart';
 import 'package:sales/app/models/cartproduct.dart';
-import 'package:video_player/video_player.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
-
 import '../../../../constants.dart';
-import '../../../components/bottom_navigation.dart';
-import '../../../components/custom_image_field.dart';
-import '../../../config/app_assets.dart';
 import '../../../config/app_themes.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/productc_controller.dart';
 
 class ProductcView extends GetView<ProductcController> {
@@ -31,6 +21,7 @@ class ProductcView extends GetView<ProductcController> {
   const ProductcView({Key? key, required this.argument}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    int randome = Random().nextInt(5);
     controller.setData(data: argument);
 
     //final  data=Get.arguments;
@@ -44,7 +35,8 @@ class ProductcView extends GetView<ProductcController> {
             bottomOpacity: 0.0,
             elevation: 0.0,
             titleTextStyle: TextStyle(color: Colors.grey.shade700),
-            title: Text("Description"),
+            title: Obx(() => Text(
+                "${controller.tempData['type']}" ?? "Products".toUpperCase())),
             actions: [
               Obx(() => controller.isProductLoading.value
                   ? Container(
@@ -58,15 +50,15 @@ class ProductcView extends GetView<ProductcController> {
                       child: controller.products.isNotEmpty
                           ? Container(
                               margin: EdgeInsets.all(5),
-                              padding: EdgeInsets.symmetric(horizontal: 2),
+                              padding: EdgeInsets.symmetric(horizontal: 10),
                               height: 40,
-                              width: 50,
+                              // width: 50,
                               decoration: BoxDecoration(
-                                  color: AppThemes.modernGreen,
+                                  color: controller.randomeColor[randome],
                                   borderRadius: BorderRadius.circular(100)),
                               child: Center(
                                   child: Text(
-                                "${controller.count} / ${controller.products.length}",
+                                "Total: ${controller.products.length}",
                                 style: TextStyle(
                                     // color: AppThemes.modernSexyRed,
                                     fontWeight: FontWeight.bold),
@@ -110,64 +102,90 @@ class ProductcView extends GetView<ProductcController> {
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
 
-                            child: PageView.builder(
-                                onPageChanged: (a) {
-                                  controller.countUpdateR(value: a + 1);
-                                },
-                                // child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: controller.products.length,
-                                itemBuilder: (context, i) {
-                                  double unitprice = controller.returnPrice(
-                                      productCode:
-                                          '${controller.products[i]['PRODUCT_CODE']}');
-                                  // controller.countUpdateR(value: i);
-                                  // List<String> ingredients =
-                                  //     controller.products[i]["ingredients"];
-                                  // List<String> claims = controller.products[i]["claims"];
-                                  return Container(
-                                      height:
-                                          MediaQuery.of(context).size.height,
-                                      width: MediaQuery.of(context).size.width,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5.0),
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            //-----------------------------Product Image--------------------------------//
-                                            Container(
-                                              height: 250,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              // width: 125,
+                            child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                childAspectRatio: 0.7,
+                                crossAxisCount: 2, // number of columns
+                                mainAxisSpacing: 16, // spacing between rows
+                                crossAxisSpacing: 16, // spacing between columns
+                              ),
+                              padding: EdgeInsets.all(10),
+                              itemCount: controller.products.length,
+                              itemBuilder: (BuildContext context, int i) {
+                                bool status = controller.isAdded.value;
+                                // double unitprice = controller.returnPrice(
+                                //     productCode:
+                                //         '${controller.products[i]['PRODUCT_CODE']}');
+                                // controller.countUpdateR(value: i);
+                                print(
+                                    "${controller.imageLinkReturn(brand: controller.products[i]['BRAND_NAME'], category: controller.products[i]['CATEGORY'], productid: controller.products[i]['PRODUCT_CODE'])}");
+                                return Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            width: 1,
+                                            color: controller
+                                                .randomeColor[randome]),
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: ZoomTapAnimation(
+                                            onTap: () {
+                                              Get.toNamed(Routes.PRODUCTINFO,
+                                                  arguments:
+                                                      controller.products[i],
+                                                  id: Constants
+                                                      .nestedNavigationNavigatorId);
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                  top: 20, left: 20),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      width: 1,
+                                                      color: controller
+                                                          .randomeColor[randome]
+                                                          .withOpacity(0.3)),
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  15),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  15))),
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.only(
-                                                    bottomRight:
-                                                        Radius.circular(15),
+                                                    topLeft:
+                                                        Radius.circular(14),
                                                     bottomLeft:
-                                                        Radius.circular(15)),
+                                                        Radius.circular(14)),
                                                 child: CachedNetworkImage(
-                                                  imageUrl: controller
-                                                      .imageLinkReturn(
+                                                  width: double.maxFinite,
+                                                  imageUrl:
+                                                      // "",
+                                                      controller.imageLinkReturn(
                                                           brand: controller
-                                                                  .products[i][
-                                                              'BRAND_NAME'],
+                                                                  .products[i]
+                                                              ['BRAND_NAME'],
                                                           category: controller
                                                                   .products[i]
                                                               ['CATEGORY'],
                                                           productid: controller
                                                                   .products[i]
                                                               ['PRODUCT_CODE']),
-                                                  // "${"https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png"}",
                                                   // height: 160,
                                                   fit: BoxFit.cover,
                                                   placeholder: (context, url) =>
                                                       Center(
-                                                          child: SpinKitRipple(
-                                                    color:
-                                                        AppThemes.modernGreen,
-                                                    size: 50.0,
+                                                          child:
+                                                              SpinKitThreeBounce(
+                                                    color: controller
+                                                        .randomeColor[randome],
                                                   )),
                                                   errorWidget:
                                                       (ctx, url, err) =>
@@ -178,297 +196,512 @@ class ProductcView extends GetView<ProductcController> {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              '${controller.products[i]['PRODUCT_NAME']}',
-                                              style: TextStyle(
-                                                  fontSize: 22.0,
-                                                  color: AppThemes
-                                                      .modernPlantation,
-                                                  fontWeight: FontWeight.bold),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              'Weight: ${controller.products[i]['WEIGHT_SIZE']}',
-                                              style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              'Manufacturer: ${controller.products[i]['MANUFACTURER']}',
-                                              style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              'Color: ${controller.products[i]['COLOR']} ',
-                                              style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              'Price: ${unitprice} Tk',
-                                              style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Obx(
-                                              () => COMMONWIDGET.addtoCart(
-                                                  title:
-                                                      controller.isAdded.value
-                                                          ? "Added!"
-                                                          : "Add to cart",
-                                                  funtion: controller
-                                                          .isAdded.value
-                                                      ? () {}
-                                                      : () {
-                                                          CartItem product =
-                                                              CartItem(
-                                                            userId: 1,
-                                                            productId: controller
-                                                                    .products[i]
-                                                                ["SKU_CODE"],
-                                                            customerName: "",
-                                                            beatName: "",
-                                                            productName: controller
-                                                                    .products[i]
-                                                                [
-                                                                "PRODUCT_NAME"],
-                                                            catagory: controller
-                                                                    .products[i]
-                                                                ["CATEGORY"],
-                                                            unit: controller
-                                                                    .products[i]
-                                                                ["UOM"],
-                                                            image:
-                                                                "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
-                                                            price: unitprice,
-                                                            brand: controller
-                                                                    .products[i]
-                                                                ["BRAND_NAME"],
-                                                            quantity: 1,
-                                                            unitPrice:
-                                                                unitprice,
-                                                          );
-                                                          controller.addToCart(
-                                                              data: product);
-                                                          // addAlert(controller: controller, data: i);
-                                                        },
-                                                  color: controller
-                                                          .isAdded.value
-                                                      ? AppThemes.modernCoolPink
-                                                      : AppThemes.modernGreen),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 20),
-                                              height: 1,
-                                              color: Colors.grey.shade300,
-                                            ),
-
-                                            // Padding(
-                                            //   padding:
-                                            //       EdgeInsets.symmetric(horizontal: 16),
-                                            //   child: Row(
-                                            //     mainAxisAlignment:
-                                            //         MainAxisAlignment.start,
-                                            //     children: [
-                                            //       Column(
-                                            //         crossAxisAlignment:
-                                            //             CrossAxisAlignment.start,
-                                            //         children: [
-                                            //           Text(
-                                            //             'About ${controller.products[i]['name']}',
-                                            //             style: TextStyle(
-                                            //                 fontSize: 24.0,
-                                            //                 fontWeight: FontWeight.bold),
-                                            //           ),
-                                            //           SizedBox(
-                                            //             height: 5,
-                                            //           ),
-                                            //           Text(
-                                            //             ' ${controller.products[i]['description']} ',
-                                            //             style: TextStyle(
-                                            //                 fontSize: 20.0,
-                                            //                 fontWeight: FontWeight.w400),
-                                            //           ),
-                                            //         ],
-                                            //       ),
-                                            //     ],
-                                            //   ),
-                                            // ),
-                                            // SizedBox(
-                                            //   height: 20,
-                                            // ),
-                                            // Container(
-                                            //     height: 235,
-                                            //     margin:
-                                            //         EdgeInsets.symmetric(horizontal: 16),
-                                            //     // color: Colors.red,
-                                            //     decoration: BoxDecoration(
-                                            //         border: Border.all(
-                                            //             width: 0.7,
-                                            //             color: Colors.grey.shade500),
-                                            //         borderRadius:
-                                            //             BorderRadius.circular(15)),
-                                            //     child: ClipRRect(
-                                            //         borderRadius:
-                                            //             BorderRadius.circular(15),
-                                            //         child: controller.returnPlayer(
-                                            //             productId: controller.products[i]
-                                            //                 ['productId']))),
-
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            // Padding(
-                                            //   padding:
-                                            //       EdgeInsets.symmetric(horizontal: 16),
-                                            //   child: Row(
-                                            //     mainAxisAlignment:
-                                            //         MainAxisAlignment.start,
-                                            //     children: [
-                                            //       Column(
-                                            //         crossAxisAlignment:
-                                            //             CrossAxisAlignment.start,
-                                            //         children: [
-                                            //           Text(
-                                            //             'Active Ingredients',
-                                            //             style: TextStyle(
-                                            //                 fontSize: 24.0,
-                                            //                 fontWeight: FontWeight.bold),
-                                            //           ),
-                                            //           SizedBox(
-                                            //             height: 5,
-                                            //           ),
-                                            //           Column(
-                                            //             crossAxisAlignment:
-                                            //                 CrossAxisAlignment.start,
-                                            //             children: ingredients
-                                            //                 .map((e) => Container(
-                                            //                       margin:
-                                            //                           EdgeInsets.all(5),
-                                            //                       child: Row(
-                                            //                         children: [
-                                            //                           Icon(
-                                            //                             FontAwesomeIcons
-                                            //                                 .circleDot,
-                                            //                             size: 10,
-                                            //                           ),
-                                            //                           SizedBox(
-                                            //                             width: 2,
-                                            //                           ),
-                                            //                           Text(
-                                            //                             e,
-                                            //                             style: TextStyle(
-                                            //                                 fontSize:
-                                            //                                     18.0,
-                                            //                                 fontWeight:
-                                            //                                     FontWeight
-                                            //                                         .w400),
-                                            //                           ),
-                                            //                         ],
-                                            //                       ),
-                                            //                     ))
-                                            //                 .toList(),
-                                            //           )
-                                            //           // Text(
-                                            //           //   i['ingredients'],
-                                            //           //   style: TextStyle(
-                                            //           //       fontSize: 20.0,
-                                            //           //       fontWeight: FontWeight.w400),
-                                            //           // ),
-                                            //         ],
-                                            //       ),
-                                            //     ],
-                                            //   ),
-                                            // ),
-                                            // SizedBox(
-                                            //   height: 20,
-                                            // ),
-                                            // Padding(
-                                            //   padding:
-                                            //       EdgeInsets.symmetric(horizontal: 16),
-                                            //   child: Row(
-                                            //     mainAxisAlignment:
-                                            //         MainAxisAlignment.start,
-                                            //     children: [
-                                            //       Column(
-                                            //         crossAxisAlignment:
-                                            //             CrossAxisAlignment.start,
-                                            //         children: [
-                                            //           Text(
-                                            //             'Speical Claims',
-                                            //             style: TextStyle(
-                                            //                 fontSize: 24.0,
-                                            //                 fontWeight: FontWeight.bold),
-                                            //           ),
-                                            //           SizedBox(
-                                            //             height: 5,
-                                            //           ),
-                                            //           Column(
-                                            //             crossAxisAlignment:
-                                            //                 CrossAxisAlignment.start,
-                                            //             children: claims
-                                            //                 .map((e) => Container(
-                                            //                       margin:
-                                            //                           EdgeInsets.all(5),
-                                            //                       child: Row(
-                                            //                         children: [
-                                            //                           Icon(
-                                            //                             FontAwesomeIcons
-                                            //                                 .circleDot,
-                                            //                             size: 10,
-                                            //                           ),
-                                            //                           SizedBox(
-                                            //                             width: 2,
-                                            //                           ),
-                                            //                           Text(
-                                            //                             e,
-                                            //                             style: TextStyle(
-                                            //                                 fontSize:
-                                            //                                     18.0,
-                                            //                                 fontWeight:
-                                            //                                     FontWeight
-                                            //                                         .w400),
-                                            //                           ),
-                                            //                         ],
-                                            //                       ),
-                                            //                     ))
-                                            //                 .toList(),
-                                            //           )
-                                            //           // Text(
-                                            //           //   i['claims'],
-                                            //           //   style: TextStyle(
-                                            //           //       fontSize: 20.0,
-                                            //           //       fontWeight: FontWeight.w400),
-                                            //           // ),
-                                            //         ],
-                                            //       ),
-                                            //     ],
-                                            //   ),
-                                            // )
-                                          ],
+                                          ),
                                         ),
-                                      ));
-                                }),
+                                        Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "${controller.products[i]['PRODUCT_NAME']}"
+                                                              .toString()
+                                                              .length >
+                                                          15
+                                                      ? "${controller.products[i]['PRODUCT_NAME']}"
+                                                              .toString()
+                                                              .substring(
+                                                                  0, 15) +
+                                                          "..."
+                                                      : "${controller.products[i]['PRODUCT_NAME']}"
+                                                          .toString(),
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade700,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                Text(
+                                                  "Variant: ${controller.products[i]['VARIANT']}",
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade500,
+                                                      // fontWeight:
+                                                      //     FontWeight.w500,
+                                                      fontSize: 12),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                Text(
+                                                  "Size: ${controller.products[i]['WEIGHT_SIZE']}",
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade500,
+                                                      // fontWeight:
+                                                      // FontWeight.w500,
+                                                      fontSize: 12),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                Text(
+                                                  "${'${controller.returnPrice(productCode: '${controller.products[i]['PRODUCT_CODE']}')} Tk'}",
+                                                  style: TextStyle(
+                                                      color: controller
+                                                              .randomeColor[
+                                                          randome],
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 14),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                Obx(() => ZoomTapAnimation(
+                                                      onTap:
+                                                          controller
+                                                                  .isAdded.value
+                                                              ? () {}
+                                                              : () {
+                                                                  CartItem
+                                                                      product =
+                                                                      CartItem(
+                                                                    userId: 1,
+                                                                    productId: controller
+                                                                            .products[i]
+                                                                        [
+                                                                        "SKU_CODE"],
+                                                                    customerName:
+                                                                        "",
+                                                                    beatName:
+                                                                        "",
+                                                                    productName:
+                                                                        controller.products[i]
+                                                                            [
+                                                                            "PRODUCT_NAME"],
+                                                                    catagory: controller
+                                                                            .products[i]
+                                                                        [
+                                                                        "CATEGORY"],
+                                                                    unit: controller
+                                                                            .products[i]
+                                                                        ["UOM"],
+                                                                    image:
+                                                                        "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
+                                                                    price: controller.returnPrice(
+                                                                        productCode:
+                                                                            '${controller.products[i]['PRODUCT_CODE']}'),
+                                                                    brand: controller
+                                                                            .products[i]
+                                                                        [
+                                                                        "BRAND_NAME"],
+                                                                    quantity: 1,
+                                                                    unitPrice: controller.returnPrice(
+                                                                        productCode:
+                                                                            '${controller.products[i]['PRODUCT_CODE']}'),
+                                                                  );
+                                                                  controller
+                                                                      .addToCart(
+                                                                          data:
+                                                                              product);
+
+                                                                  // addAlert(controller: controller, data: i);
+                                                                },
+                                                      child: Container(
+                                                        height: 30,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 20,
+                                                                vertical: 10),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                            color: controller
+                                                                    .randomeColor[
+                                                                randome]),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "Add to cart",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ))
+                                              ],
+                                            ))
+                                      ],
+                                    ));
+                                ;
+                              },
+                            ),
+
+                            // PageView.builder(
+                            //     onPageChanged: (a) {
+                            //       controller.countUpdateR(value: a + 1);
+                            //     },
+                            //     // child: ListView.builder(
+                            //     scrollDirection: Axis.horizontal,
+                            //     itemCount: controller.products.length,
+                            //     itemBuilder: (context, i) {
+                            //       double unitprice = controller.returnPrice(
+                            //           productCode:
+                            //               '${controller.products[i]['PRODUCT_CODE']}');
+                            //       // controller.countUpdateR(value: i);
+                            //       // List<String> ingredients =
+                            //       //     controller.products[i]["ingredients"];
+                            //       // List<String> claims = controller.products[i]["claims"];
+                            //       return Container(
+                            //           height:
+                            //               MediaQuery.of(context).size.height,
+                            //           width: MediaQuery.of(context).size.width,
+                            //           margin:
+                            //               EdgeInsets.symmetric(horizontal: 5.0),
+                            //           child: SingleChildScrollView(
+                            //             child: Column(
+                            //               children: [
+                            //                 //-----------------------------Product Image--------------------------------//
+                            //                 Container(
+                            //                   height: 250,
+                            //                   width: MediaQuery.of(context)
+                            //                       .size
+                            //                       .width,
+                            //                   // width: 125,
+                            //                   child: ClipRRect(
+                            //                     borderRadius: BorderRadius.only(
+                            //                         bottomRight:
+                            //                             Radius.circular(15),
+                            //                         bottomLeft:
+                            //                             Radius.circular(15)),
+                            //                     child: CachedNetworkImage(
+                            //                       imageUrl: controller
+                            //                           .imageLinkReturn(
+                            //                               brand: controller
+                            //                                       .products[i][
+                            //                                   'BRAND_NAME'],
+                            //                               category: controller
+                            //                                       .products[i]
+                            //                                   ['CATEGORY'],
+                            //                               productid: controller
+                            //                                       .products[i]
+                            //                                   ['PRODUCT_CODE']),
+                            //                       // "${"https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png"}",
+                            //                       // height: 160,
+                            //                       fit: BoxFit.cover,
+                            //                       placeholder: (context, url) =>
+                            //                           Center(
+                            //                               child: SpinKitRipple(
+                            //                         color:
+                            //                             AppThemes.modernGreen,
+                            //                         size: 50.0,
+                            //                       )),
+                            //                       errorWidget:
+                            //                           (ctx, url, err) =>
+                            //                               Image.asset(
+                            //                         'assets/images/noprev.png',
+                            //                         height: 70,
+                            //                       ),
+                            //                     ),
+                            //                   ),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   height: 5,
+                            //                 ),
+                            //                 Text(
+                            //                   '${controller.products[i]['PRODUCT_NAME']}',
+                            //                   style: TextStyle(
+                            //                       fontSize: 22.0,
+                            //                       color: AppThemes
+                            //                           .modernPlantation,
+                            //                       fontWeight: FontWeight.bold),
+                            //                   textAlign: TextAlign.center,
+                            //                 ),
+                            //                 SizedBox(
+                            //                   height: 5,
+                            //                 ),
+                            //                 Text(
+                            //                   'Weight: ${controller.products[i]['WEIGHT_SIZE']}',
+                            //                   style: TextStyle(
+                            //                       fontSize: 20.0,
+                            //                       fontWeight: FontWeight.w500),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   height: 5,
+                            //                 ),
+                            //                 Text(
+                            //                   'Manufacturer: ${controller.products[i]['MANUFACTURER']}',
+                            //                   style: TextStyle(
+                            //                       fontSize: 20.0,
+                            //                       fontWeight: FontWeight.w500),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   height: 5,
+                            //                 ),
+                            //                 Text(
+                            //                   'Color: ${controller.products[i]['COLOR']} ',
+                            //                   style: TextStyle(
+                            //                       fontSize: 20.0,
+                            //                       fontWeight: FontWeight.w500),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   height: 10,
+                            //                 ),
+                            //                 Text(
+                            //                   'Price: ${unitprice} Tk',
+                            //                   style: TextStyle(
+                            //                       fontSize: 20.0,
+                            //                       fontWeight: FontWeight.w500),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   height: 10,
+                            //                 ),
+                            //                 Obx(
+                            //                   () => COMMONWIDGET.addtoCart(
+                            //                       title:
+                            //                           controller.isAdded.value
+                            //                               ? "Added!"
+                            //                               : "Add to cart",
+                            //                       funtion: controller
+                            //                               .isAdded.value
+                            //                           ? () {}
+                            //                           :
+                            //() {
+                            //                               CartItem product =
+                            //                                   CartItem(
+                            //                                 userId: 1,
+                            //                                 productId: controller
+                            //                                         .products[i]
+                            //                                     ["SKU_CODE"],
+                            //                                 customerName: "",
+                            //                                 beatName: "",
+                            //                                 productName: controller
+                            //                                         .products[i]
+                            //                                     [
+                            //                                     "PRODUCT_NAME"],
+                            //                                 catagory: controller
+                            //                                         .products[i]
+                            //                                     ["CATEGORY"],
+                            //                                 unit: controller
+                            //                                         .products[i]
+                            //                                     ["UOM"],
+                            //                                 image:
+                            //                                     "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
+                            //                                 price: unitprice,
+                            //                                 brand: controller
+                            //                                         .products[i]
+                            //                                     ["BRAND_NAME"],
+                            //                                 quantity: 1,
+                            //                                 unitPrice:
+                            //                                     unitprice,
+                            //                               );
+                            //                               controller.addToCart(
+                            //                                   data: product);
+                            //                               // addAlert(controller: controller, data: i);
+                            //                             },
+                            //                       color: controller
+                            //                               .isAdded.value
+                            //                           ? AppThemes.modernCoolPink
+                            //                           : AppThemes.modernGreen),
+                            //                 ),
+                            //                 Container(
+                            //                   margin: EdgeInsets.symmetric(
+                            //                       vertical: 20),
+                            //                   height: 1,
+                            //                   color: Colors.grey.shade300,
+                            //                 ),
+
+                            //                 // Padding(
+                            //                 //   padding:
+                            //                 //       EdgeInsets.symmetric(horizontal: 16),
+                            //                 //   child: Row(
+                            //                 //     mainAxisAlignment:
+                            //                 //         MainAxisAlignment.start,
+                            //                 //     children: [
+                            //                 //       Column(
+                            //                 //         crossAxisAlignment:
+                            //                 //             CrossAxisAlignment.start,
+                            //                 //         children: [
+                            //                 //           Text(
+                            //                 //             'About ${controller.products[i]['name']}',
+                            //                 //             style: TextStyle(
+                            //                 //                 fontSize: 24.0,
+                            //                 //                 fontWeight: FontWeight.bold),
+                            //                 //           ),
+                            //                 //           SizedBox(
+                            //                 //             height: 5,
+                            //                 //           ),
+                            //                 //           Text(
+                            //                 //             ' ${controller.products[i]['description']} ',
+                            //                 //             style: TextStyle(
+                            //                 //                 fontSize: 20.0,
+                            //                 //                 fontWeight: FontWeight.w400),
+                            //                 //           ),
+                            //                 //         ],
+                            //                 //       ),
+                            //                 //     ],
+                            //                 //   ),
+                            //                 // ),
+                            //                 // SizedBox(
+                            //                 //   height: 20,
+                            //                 // ),
+                            //                 // Container(
+                            //                 //     height: 235,
+                            //                 //     margin:
+                            //                 //         EdgeInsets.symmetric(horizontal: 16),
+                            //                 //     // color: Colors.red,
+                            //                 //     decoration: BoxDecoration(
+                            //                 //         border: Border.all(
+                            //                 //             width: 0.7,
+                            //                 //             color: Colors.grey.shade500),
+                            //                 //         borderRadius:
+                            //                 //             BorderRadius.circular(15)),
+                            //                 //     child: ClipRRect(
+                            //                 //         borderRadius:
+                            //                 //             BorderRadius.circular(15),
+                            //                 //         child: controller.returnPlayer(
+                            //                 //             productId: controller.products[i]
+                            //                 //                 ['productId']))),
+
+                            //                 SizedBox(
+                            //                   height: 20,
+                            //                 ),
+                            //                 // Padding(
+                            //                 //   padding:
+                            //                 //       EdgeInsets.symmetric(horizontal: 16),
+                            //                 //   child: Row(
+                            //                 //     mainAxisAlignment:
+                            //                 //         MainAxisAlignment.start,
+                            //                 //     children: [
+                            //                 //       Column(
+                            //                 //         crossAxisAlignment:
+                            //                 //             CrossAxisAlignment.start,
+                            //                 //         children: [
+                            //                 //           Text(
+                            //                 //             'Active Ingredients',
+                            //                 //             style: TextStyle(
+                            //                 //                 fontSize: 24.0,
+                            //                 //                 fontWeight: FontWeight.bold),
+                            //                 //           ),
+                            //                 //           SizedBox(
+                            //                 //             height: 5,
+                            //                 //           ),
+                            //                 //           Column(
+                            //                 //             crossAxisAlignment:
+                            //                 //                 CrossAxisAlignment.start,
+                            //                 //             children: ingredients
+                            //                 //                 .map((e) => Container(
+                            //                 //                       margin:
+                            //                 //                           EdgeInsets.all(5),
+                            //                 //                       child: Row(
+                            //                 //                         children: [
+                            //                 //                           Icon(
+                            //                 //                             FontAwesomeIcons
+                            //                 //                                 .circleDot,
+                            //                 //                             size: 10,
+                            //                 //                           ),
+                            //                 //                           SizedBox(
+                            //                 //                             width: 2,
+                            //                 //                           ),
+                            //                 //                           Text(
+                            //                 //                             e,
+                            //                 //                             style: TextStyle(
+                            //                 //                                 fontSize:
+                            //                 //                                     18.0,
+                            //                 //                                 fontWeight:
+                            //                 //                                     FontWeight
+                            //                 //                                         .w400),
+                            //                 //                           ),
+                            //                 //                         ],
+                            //                 //                       ),
+                            //                 //                     ))
+                            //                 //                 .toList(),
+                            //                 //           )
+                            //                 //           // Text(
+                            //                 //           //   i['ingredients'],
+                            //                 //           //   style: TextStyle(
+                            //                 //           //       fontSize: 20.0,
+                            //                 //           //       fontWeight: FontWeight.w400),
+                            //                 //           // ),
+                            //                 //         ],
+                            //                 //       ),
+                            //                 //     ],
+                            //                 //   ),
+                            //                 // ),
+                            //                 // SizedBox(
+                            //                 //   height: 20,
+                            //                 // ),
+                            //                 // Padding(
+                            //                 //   padding:
+                            //                 //       EdgeInsets.symmetric(horizontal: 16),
+                            //                 //   child: Row(
+                            //                 //     mainAxisAlignment:
+                            //                 //         MainAxisAlignment.start,
+                            //                 //     children: [
+                            //                 //       Column(
+                            //                 //         crossAxisAlignment:
+                            //                 //             CrossAxisAlignment.start,
+                            //                 //         children: [
+                            //                 //           Text(
+                            //                 //             'Speical Claims',
+                            //                 //             style: TextStyle(
+                            //                 //                 fontSize: 24.0,
+                            //                 //                 fontWeight: FontWeight.bold),
+                            //                 //           ),
+                            //                 //           SizedBox(
+                            //                 //             height: 5,
+                            //                 //           ),
+                            //                 //           Column(
+                            //                 //             crossAxisAlignment:
+                            //                 //                 CrossAxisAlignment.start,
+                            //                 //             children: claims
+                            //                 //                 .map((e) => Container(
+                            //                 //                       margin:
+                            //                 //                           EdgeInsets.all(5),
+                            //                 //                       child: Row(
+                            //                 //                         children: [
+                            //                 //                           Icon(
+                            //                 //                             FontAwesomeIcons
+                            //                 //                                 .circleDot,
+                            //                 //                             size: 10,
+                            //                 //                           ),
+                            //                 //                           SizedBox(
+                            //                 //                             width: 2,
+                            //                 //                           ),
+                            //                 //                           Text(
+                            //                 //                             e,
+                            //                 //                             style: TextStyle(
+                            //                 //                                 fontSize:
+                            //                 //                                     18.0,
+                            //                 //                                 fontWeight:
+                            //                 //                                     FontWeight
+                            //                 //                                         .w400),
+                            //                 //                           ),
+                            //                 //                         ],
+                            //                 //                       ),
+                            //                 //                     ))
+                            //                 //                 .toList(),
+                            //                 //           )
+                            //                 //           // Text(
+                            //                 //           //   i['claims'],
+                            //                 //           //   style: TextStyle(
+                            //                 //           //       fontSize: 20.0,
+                            //                 //           //       fontWeight: FontWeight.w400),
+                            //                 //           // ),
+                            //                 //         ],
+                            //                 //       ),
+                            //                 //     ],
+                            //                 //   ),
+                            //                 // )
+                            //               ],
+                            //             ),
+                            //           ));
+                            //     }),
+
+                            //-----------------------------------------------------------------------------//
                             // ),
                             // child: SingleChildScrollView(
                             //   scrollDirection: Axis.horizontal,
@@ -1269,33 +1502,32 @@ class ProductcView extends GetView<ProductcController> {
   }
 }
 
-
 // {"orderId": "ORD68136",
-//  "lattitude": 37.4220936, 
+//  "lattitude": 37.4220936,
 //  "longitude": -122.083922,
 //   "totalItemCount": 3,
-//  "dateTime": "2023-05-08 12:33:19.700091", 
-//  "totalPrice": "3280.0", "beatName":" Kothakoli Market", 
+//  "dateTime": "2023-05-08 12:33:19.700091",
+//  "totalPrice": "3280.0", "beatName":" Kothakoli Market",
 //  "CustomerName": "Fashoin Word",
 //   "items":
 //   [
 //     {
-//       "brand": NIOR, 
-//     "productId": "NRCC-2001-DESCH", 
-//     "quantity": 2, 
-//     "totalPrice": 3280.0, 
+//       "brand": NIOR,
+//     "productId": "NRCC-2001-DESCH",
+//     "quantity": 2,
+//     "totalPrice": 3280.0,
 //     "unitPrice": 820.0
 //     },
 
 //    {
-//     "brand": "NIOR", 
-//    "productId": "NRCC-3105-KRHLB", 
-//    "quantity": 1, 
-//    "totalPrice": 820.0, 
+//     "brand": "NIOR",
+//    "productId": "NRCC-3105-KRHLB",
+//    "quantity": 1,
+//    "totalPrice": 820.0,
 //    "unitPrice": 820.0
-//    }, 
+//    },
 //    {
-//     "brand": "HERLAN", 
+//     "brand": "HERLAN",
 //     "productId": "HNCC-1004-DEFBC",
 //      "quantity": 1,
 //       "totalPrice": 820.0,

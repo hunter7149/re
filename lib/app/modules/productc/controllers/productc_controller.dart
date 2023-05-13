@@ -1,10 +1,12 @@
 // import 'package:chewie/chewie.dart';
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:chewie/chewie.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:get_storage/get_storage.dart';
@@ -14,7 +16,9 @@ import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/components/internet_connection_checker.dart';
 import 'package:sales/app/models/cartproduct.dart';
 import 'package:sales/app/modules/index/controllers/index_controller.dart';
+
 import 'package:video_player/video_player.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../DAO/cartitemdao.dart';
 import '../../../config/app_themes.dart';
@@ -22,6 +26,13 @@ import '../../../database/database.dart';
 import '../../../routes/app_pages.dart';
 
 class ProductcController extends GetxController {
+  List<Color> randomeColor = [
+    AppThemes.modernBlue,
+    AppThemes.modernGreen,
+    AppThemes.modernPurple,
+    AppThemes.modernRed,
+    AppThemes.modernCoolPink
+  ];
   // late VideoPlayerController videoPlayerController;
 
   // dynamic argumentData = Get.arguments;
@@ -239,9 +250,9 @@ class ProductcController extends GetxController {
         category.toLowerCase() == 'colour cosmetics') {
       return "https://herlan.com/wp-content/uploads/2023/04/Harlan-Eye-Color32.png";
     } else if (brand.toLowerCase() == 'nior') {
-      return "https://scontent-ccu1-1.cdninstagram.com/v/t51.2885-15/292994728_5280264228754532_2416232431058552638_n.jpg?stp=dst-jpg_e35_p1080x1080&_nc_ht=scontent-ccu1-1.cdninstagram.com&_nc_cat=108&_nc_ohc=a2GSOAHawQoAX-pU9Ao&edm=AP_V10EBAAAA&ccb=7-5&oh=00_AfAZoLGndq7ZCEzXEI0muT3T49objuKbNwGGeX4RZ_mRYw&oe=64624A91&_nc_sid=4f375e";
+      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e87ac8168198481.6436822b7320e.jpg";
     } else {
-      return "htasda";
+      return "https://img.freepik.com/premium-vector/set-beauty-make-up-vector_744040-173.jpg";
     }
   }
 
@@ -309,6 +320,10 @@ class ProductcController extends GetxController {
         totalpriceUpdater();
         CartCounter.cartCounter();
         isAddedUpdater();
+        successAlert();
+        Timer(Duration(seconds: 1), () {
+          Get.back();
+        });
         // Get.snackbar(
         //   "Success",
         //   "Product added successfully!",
@@ -347,6 +362,7 @@ class ProductcController extends GetxController {
       }
     }
   }
+
   // addToCart({required CartItem data}) async {
   //   if (await ICHECKER.checkConnection()) {
   //     print("INTERNET");
@@ -486,6 +502,58 @@ class ProductcController extends GetxController {
 
       update();
     });
+  }
+
+  successAlert() async {
+    await Get.generalDialog(
+        transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 4 * anim1.value,
+                sigmaY: 4 * anim1.value,
+              ),
+              child: FadeTransition(
+                child: child,
+                opacity: anim1,
+              ),
+            ),
+        pageBuilder: (ctx, anim1, anim2) {
+          TextEditingController quanity = TextEditingController();
+          quanity.text = 1.toString();
+
+          return MediaQuery(
+            data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              content: Container(
+                height: 200,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            height: 100,
+                            width: 100,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: Image.asset("assets/images/success.png")),
+                        Text(
+                          "Added to cart!",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 18),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              actionsPadding: EdgeInsets.all(10),
+              actions: [],
+            ),
+          );
+        });
   }
 
   @override

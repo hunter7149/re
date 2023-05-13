@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -406,10 +407,12 @@ class OrderHomeView extends GetView<OrderHomeController> {
                           child: Container(
                             margin: EdgeInsets.all(10),
                             decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    bottomRight: Radius.circular(15)),
+                                // borderRadius: BorderRadius.only(
+                                //     topLeft: Radius.circular(15),
+                                //     bottomRight: Radius.circular(15)
+                                //     ),
                                 border: Border.all(
                                     width: 1, color: AppThemes.modernGreen)),
                             child: ClipRRect(
@@ -428,8 +431,9 @@ class OrderHomeView extends GetView<OrderHomeController> {
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true, //beauty and cosmetic
-                    itemCount: menus.length,
+                    itemCount: controller.bottomMenu.length,
                     itemBuilder: (BuildContext context, int index) {
+                      int random = Random().nextInt(5);
                       return Container(
                         margin: EdgeInsets.symmetric(vertical: 10),
                         // height: 60,
@@ -444,17 +448,16 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(15),
                                       bottomLeft: Radius.circular(15)),
-                                  color: Colors.white,
+                                  color: controller.randomeColor[random],
                                   border: Border.all(
-                                      color: AppThemes.modernPlantation,
-                                      width: 2)),
+                                      color: Colors.grey.shade100, width: 1)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(14),
                                     bottomLeft: Radius.circular(14)),
                                 child: CachedNetworkImage(
-                                  imageUrl:
-                                      "${"https://scontent-ccu1-1.cdninstagram.com/v/t51.2885-15/325289651_2946866608954628_6340848112285354329_n.webp?stp=dst-jpg_e35&_nc_ht=scontent-ccu1-1.cdninstagram.com&_nc_cat=108&_nc_ohc=PgvsCB1kMggAX_1jRz-&edm=AP_V10EBAAAA&ccb=7-5&oh=00_AfBsOJTXuPw96r2d3jcic43F2-ZUceU7FeqLUTAxtwUhxA&oe=6461D616&_nc_sid=4f375e"}",
+                                  imageUrl: controller.bottomMenu[index]
+                                      ['icon'],
                                   // height: 160,
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Center(
@@ -463,17 +466,35 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                     size: 50.0,
                                   )),
                                   errorWidget: (ctx, url, err) => Image.asset(
-                                    'assets/images/noprev.png',
+                                    controller.bottomMenu[index]['icon'],
                                     height: 70,
                                   ),
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
                             Expanded(
                               child: Container(
-                                height: 60,
+                                height: 100,
                                 decoration: BoxDecoration(
-                                    color: AppThemes.modernPlantation),
+                                  color: Colors.grey.shade100,
+                                  // color: AppThemes.modernGreen,
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(15),
+                                      bottomRight: Radius.circular(15)),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      controller.bottomMenu[index]['title'],
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color:
+                                              controller.randomeColor[random]),
+                                    )
+                                  ],
+                                ),
                               ),
                             )
                           ],

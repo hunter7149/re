@@ -5,6 +5,7 @@ import 'package:sales/app/modules/dashboard/controllers/dashboard_controller.dar
 import 'package:sales/app/modules/orderpage/controllers/orderpage_controller.dart';
 import 'package:sales/app/modules/services/controllers/services_controller.dart';
 
+import '../../productinfo/controllers/productinfo_controller.dart';
 import '../controllers/index_controller.dart';
 
 class IndexBinding extends Bindings {
@@ -27,6 +28,9 @@ class IndexBinding extends Bindings {
     );
     Get.lazyPut<OrderpageController>(
       () => OrderpageController(),
+    );
+    Get.lazyPut<ProductinfoController>(
+      () => ProductinfoController(),
     );
   }
 }

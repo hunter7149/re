@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:get/get.dart';
 import 'package:sales/app/DAO/cartitemdao.dart';
+import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/models/cartproduct.dart';
 
 import '../../../DAO/orderItemDao.dart';
@@ -13,6 +15,30 @@ import '../../../models/saleRequisition.dart';
 
 class OrderHomeController extends GetxController {
   final count = 0.0.obs;
+  List<Color> randomeColor = [
+    AppThemes.modernBlue,
+    AppThemes.modernGreen,
+    AppThemes.modernPurple,
+    AppThemes.modernRed,
+    AppThemes.modernCoolPink
+  ];
+  RxList<Map<String, dynamic>> bottomMenu = <Map<String, dynamic>>[
+    {
+      "title": "Cosmetic and Beauty",
+      "icon": "assets/images/makeup-pouch.png",
+      "key": "cosmetic"
+    },
+    {
+      "title": "Hygiene",
+      "icon": "assets/images/skincare.png",
+      "key": "hygiene"
+    },
+    {
+      "title": "Home Care",
+      "icon": "assets/images/hygiene.png",
+      "key": "homecare"
+    },
+  ].obs;
 //-------------------Beat and customer dummy list-------------//
   List<Map<String, dynamic>> beatCustomer = <Map<String, dynamic>>[
     {
