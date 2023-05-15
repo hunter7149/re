@@ -168,6 +168,8 @@ class ProductinfoView extends GetView<ProductinfoController> {
                         width: 80,
                         height: 40,
                         child: TextField(
+                          keyboardType: TextInputType.number,
+                          textAlignVertical: TextAlignVertical.center,
                           textAlign: TextAlign.center,
                           controller: quanity,
                           decoration: InputDecoration(

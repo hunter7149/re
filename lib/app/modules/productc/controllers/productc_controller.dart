@@ -319,11 +319,9 @@ class ProductcController extends GetxController {
           .then((value) => true)) {
         totalpriceUpdater();
         CartCounter.cartCounter();
-        isAddedUpdater();
         successAlert();
-        Timer(Duration(seconds: 1), () {
-          Get.back();
-        });
+        isAddedUpdater();
+
         // Get.snackbar(
         //   "Success",
         //   "Product added successfully!",
@@ -518,8 +516,9 @@ class ProductcController extends GetxController {
             ),
         pageBuilder: (ctx, anim1, anim2) {
           TextEditingController quanity = TextEditingController();
-          quanity.text = 1.toString();
-
+          Timer(Duration(seconds: 1), () {
+            Get.back();
+          });
           return MediaQuery(
             data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
             child: AlertDialog(

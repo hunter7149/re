@@ -127,9 +127,11 @@ class CartView extends GetView<CartController> {
                                                 bottomRight:
                                                     Radius.circular(15)),
                                             child: CachedNetworkImage(
-                                              imageUrl: controller
-                                                  .cartItems[index].image
-                                                  .toString(),
+                                              imageUrl:
+                                                  "https://as2.ftcdn.net/v2/jpg/04/66/23/33/1000_F_466233320_J92tRR3Pq1KPiEoveQGBO40gJFNCCPyz.jpg",
+                                              // controller
+                                              //     .cartItems[index].image
+                                              //     .toString(),
                                               height: 80,
                                               fit: BoxFit.cover,
                                               placeholder: (context, url) => Center(
@@ -182,166 +184,243 @@ class CartView extends GetView<CartController> {
                                                     SizedBox(
                                                       height: 5,
                                                     ),
-                                                    Text(
-                                                        "${controller.cartItems[index].price} TK",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: AppThemes
-                                                                .modernLightBrown)),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        ZoomTapAnimation(
+                                                          onTap: () {
+                                                            int a = int.tryParse(
+                                                                    quantity
+                                                                        .text) ??
+                                                                0;
+                                                            if (a > 1) {
+                                                              a--;
+                                                            } else {
+                                                              a = 1;
+                                                            }
+                                                            if (int.parse(quantity
+                                                                        .text) -
+                                                                    1 ==
+                                                                0) {
+                                                              quantity.text =
+                                                                  "1";
+                                                            }
+                                                            double unitPrice = controller
+                                                                    .cartItems[
+                                                                        index]
+                                                                    .price! /
+                                                                int.parse(
+                                                                    quantity
+                                                                        .text);
+                                                            quantity.text =
+                                                                a.toString();
+
+                                                            String price =
+                                                                (unitPrice * a)
+                                                                    .toStringAsFixed(
+                                                                        2);
+                                                            controller
+                                                                .priceQuantiyUpdater(
+                                                                    index:
+                                                                        index,
+                                                                    quantity:
+                                                                        quantity
+                                                                            .text,
+                                                                    price:
+                                                                        price);
+                                                          },
+                                                          child: Container(
+                                                            height: 25,
+                                                            width: 25,
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    5),
+                                                            child: Center(
+                                                                child: Icon(
+                                                              FontAwesomeIcons
+                                                                  .minus,
+                                                              color: Colors.grey
+                                                                  .shade100,
+                                                              size: 10,
+                                                            )),
+                                                            decoration: BoxDecoration(
+                                                                color: AppThemes
+                                                                    .modernSexyRed,
+                                                                borderRadius: BorderRadius.only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            5),
+                                                                    bottomLeft:
+                                                                        Radius.circular(
+                                                                            5))),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 2,
+                                                        ),
+                                                        Container(
+                                                          width: 60,
+                                                          height: 25,
+                                                          color: Colors
+                                                              .grey.shade600,
+                                                          // decoration: BoxDecoration(
+                                                          //     border: Border.all(
+                                                          //       color: AppThemes.modernGreen
+                                                          //           .withOpacity(0.3),
+                                                          //       width: 0.7,
+                                                          //     ),
+                                                          //     borderRadius:
+                                                          //         BorderRadius.circular(8)),
+
+                                                          child: TextField(
+                                                            textAlignVertical:
+                                                                TextAlignVertical
+                                                                    .center,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade200),
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            onChanged: (Value) {
+                                                              if (quantity.text
+                                                                  .isNotEmpty) {
+                                                                if (int.parse(
+                                                                        quantity
+                                                                            .text) >
+                                                                    0) {
+                                                                  double unitPrice = controller
+                                                                          .cartItems[
+                                                                              index]
+                                                                          .price! /
+                                                                      controller
+                                                                          .cartItems[
+                                                                              index]
+                                                                          .quantity!;
+
+                                                                  String price = (unitPrice *
+                                                                          int.parse(quantity
+                                                                              .text))
+                                                                      .toStringAsFixed(
+                                                                          2);
+                                                                  controller.priceQuantiyUpdater(
+                                                                      index:
+                                                                          index,
+                                                                      quantity:
+                                                                          quantity
+                                                                              .text,
+                                                                      price:
+                                                                          price);
+                                                                }
+                                                              }
+                                                            },
+                                                            controller:
+                                                                quantity,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              border:
+                                                                  OutlineInputBorder(
+                                                                // borderRadius:
+                                                                //     BorderRadius
+                                                                //         .circular(5),
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: AppThemes
+                                                                      .modernGreen,
+                                                                  width: 0.7,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 2,
+                                                        ),
+                                                        ZoomTapAnimation(
+                                                          onTap: () {
+                                                            int a = int.tryParse(
+                                                                    quantity
+                                                                        .text) ??
+                                                                0;
+                                                            a++;
+                                                            double unitPrice = controller
+                                                                    .cartItems[
+                                                                        index]
+                                                                    .price! /
+                                                                int.parse(
+                                                                    quantity
+                                                                        .text);
+                                                            quantity.text =
+                                                                a.toString();
+
+                                                            String price =
+                                                                (unitPrice * a)
+                                                                    .toStringAsFixed(
+                                                                        2);
+                                                            controller
+                                                                .priceQuantiyUpdater(
+                                                                    index:
+                                                                        index,
+                                                                    quantity:
+                                                                        quantity
+                                                                            .text,
+                                                                    price:
+                                                                        price);
+                                                          },
+                                                          child: Container(
+                                                            height: 25,
+                                                            width: 25,
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    5),
+                                                            child: Center(
+                                                                child: Icon(
+                                                              FontAwesomeIcons
+                                                                  .plus,
+                                                              color: Colors.grey
+                                                                  .shade100,
+                                                              size: 10,
+                                                            )),
+                                                            decoration: BoxDecoration(
+                                                                color: AppThemes
+                                                                    .modernGreen,
+                                                                borderRadius: BorderRadius.only(
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            5),
+                                                                    bottomRight:
+                                                                        Radius.circular(
+                                                                            5))),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ],
                                                 ),
                                               ],
                                             )),
                                         Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.center,
                                           children: [
-                                            ZoomTapAnimation(
-                                              onTap: () {
-                                                int a = int.tryParse(
-                                                        quantity.text) ??
-                                                    0;
-                                                a++;
-                                                double unitPrice = controller
-                                                        .cartItems[index]
-                                                        .price! /
-                                                    int.parse(quantity.text);
-                                                quantity.text = a.toString();
-
-                                                String price = (unitPrice * a)
-                                                    .toStringAsFixed(2);
-                                                controller.priceQuantiyUpdater(
-                                                    index: index,
-                                                    quantity: quantity.text,
-                                                    price: price);
-                                              },
-                                              child: Container(
-                                                height: 30,
-                                                width: 30,
-                                                padding: EdgeInsets.all(5),
-                                                child: Center(
-                                                    child: Icon(
-                                                  FontAwesomeIcons.plus,
-                                                  color: Colors.grey.shade800,
-                                                  size: 10,
-                                                )),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey.shade200,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100)),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 70,
-                                              height: 30,
-                                              // decoration: BoxDecoration(
-                                              //     border: Border.all(
-                                              //       color: AppThemes.modernGreen
-                                              //           .withOpacity(0.3),
-                                              //       width: 0.7,
-                                              //     ),
-                                              //     borderRadius:
-                                              //         BorderRadius.circular(8)),
-                                              child: TextField(
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                textAlign: TextAlign.center,
-                                                onChanged: (Value) {
-                                                  if (quantity
-                                                      .text.isNotEmpty) {
-                                                    if (int.parse(
-                                                            quantity.text) >
-                                                        0) {
-                                                      double unitPrice =
-                                                          controller
-                                                                  .cartItems[
-                                                                      index]
-                                                                  .price! /
-                                                              controller
-                                                                  .cartItems[
-                                                                      index]
-                                                                  .quantity!;
-
-                                                      String price = (unitPrice *
-                                                              int.parse(quantity
-                                                                  .text))
-                                                          .toStringAsFixed(2);
-                                                      controller
-                                                          .priceQuantiyUpdater(
-                                                              index: index,
-                                                              quantity:
-                                                                  quantity.text,
-                                                              price: price);
-                                                    }
-                                                  }
-                                                },
-                                                controller: quantity,
-                                                decoration: InputDecoration(
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                    borderSide: BorderSide(
-                                                      color:
-                                                          AppThemes.modernGreen,
-                                                      width: 0.7,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            ZoomTapAnimation(
-                                              onTap: () {
-                                                int a = int.tryParse(
-                                                        quantity.text) ??
-                                                    0;
-                                                if (a > 1) {
-                                                  a--;
-                                                } else {
-                                                  a = 1;
-                                                }
-                                                if (int.parse(quantity.text) -
-                                                        1 ==
-                                                    0) {
-                                                  quantity.text = "1";
-                                                }
-                                                double unitPrice = controller
-                                                        .cartItems[index]
-                                                        .price! /
-                                                    int.parse(quantity.text);
-                                                quantity.text = a.toString();
-
-                                                String price = (unitPrice * a)
-                                                    .toStringAsFixed(2);
-                                                controller.priceQuantiyUpdater(
-                                                    index: index,
-                                                    quantity: quantity.text,
-                                                    price: price);
-                                              },
-                                              child: Container(
-                                                height: 30,
-                                                width: 30,
-                                                padding: EdgeInsets.all(5),
-                                                child: Center(
-                                                    child: Icon(
-                                                  FontAwesomeIcons.minus,
-                                                  color: Colors.grey.shade800,
-                                                  size: 10,
-                                                )),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey.shade200,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100)),
-                                              ),
+                                            Text(
+                                              "${controller.cartItems[index].price} \n TK",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      AppThemes.modernCoolPink),
+                                              textAlign: TextAlign.center,
                                             ),
                                           ],
                                         ),
                                         SizedBox(
-                                          width: 20,
+                                          width: 10,
                                         )
                                       ],
                                     ),
@@ -468,7 +547,9 @@ class CartView extends GetView<CartController> {
               )));
   }
 
-  static deleteAlert({required CartController controller, required int index}) {
+  static deleteAlert(
+      {required CartController controller, required int index}) async {
+    Get.closeAllSnackbars();
     Get.generalDialog(
         transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
               filter: ImageFilter.blur(
@@ -531,7 +612,7 @@ class CartView extends GetView<CartController> {
                         "Item removed!", "The item was removed from your cart!",
                         colorText: Colors.white,
                         backgroundColor: Colors.red,
-                        duration: Duration(seconds: 2));
+                        duration: Duration(seconds: 1));
                   },
                   child: Container(
                     height: 40,

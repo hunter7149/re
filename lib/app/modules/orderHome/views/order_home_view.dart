@@ -333,7 +333,12 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                                   fontSize:
                                                                       14)),
                                                           Text(
-                                                            'Unit Tk ${controller.itemList[index].price.toString()}',
+                                                              "Quantity: ${controller.itemList[index].quantity}",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14)),
+                                                          Text(
+                                                            '${controller.itemList[index].price.toString()} Tk',
                                                             style: TextStyle(
                                                                 fontSize: 14),
                                                           )
