@@ -14,9 +14,7 @@ class SplashView extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     // controller.saveDeviceInfo();
-    Timer(Duration(seconds: 2), () {
-      Get.offNamed(Routes.LOGIN);
-    });
+    controller.navigate();
     return Scaffold(
       body: Center(
         child: Container(

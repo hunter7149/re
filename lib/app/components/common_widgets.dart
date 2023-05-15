@@ -30,6 +30,32 @@ class COMMONWIDGET {
             style: TextStyle(color: Colors.grey.shade700, fontSize: 18),
             textAlign: TextAlign.center,
           ),
+          SizedBox(
+            height: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ZoomTapAnimation(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                      color: AppThemes.PrimaryColor,
+                      borderRadius: BorderRadius.circular(100)),
+                  child: Center(
+                      child: Text(
+                    "OK",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );
@@ -48,7 +74,7 @@ class COMMONWIDGET {
             color: Colors.black,
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide(
               color: AppThemes.modernBlue,
               width: 1,

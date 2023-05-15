@@ -26,6 +26,7 @@ dependencies:
   geocoding: ^2.0.5
   carousel_slider: ^4.2.1
   video_player: ^2.5.1
+  proste_bezier_curve: ^2.0.2
   location: ^4.4.0
   intl: ^0.18.0
   cool_alert: ^1.1.0
@@ -41,6 +42,8 @@ dependencies:
   firebase_core: ^2.7.0
   firebase_messaging: ^14.2.5
   flutter_local_notifications: ^13.0.0
+  cloud_firestore: ^4.7.0
+  platform_device_id: ^1.0.1
 
 
   

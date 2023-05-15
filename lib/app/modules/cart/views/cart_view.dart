@@ -128,10 +128,10 @@ class CartView extends GetView<CartController> {
                                                     Radius.circular(15)),
                                             child: CachedNetworkImage(
                                               imageUrl:
-                                                  "https://as2.ftcdn.net/v2/jpg/04/66/23/33/1000_F_466233320_J92tRR3Pq1KPiEoveQGBO40gJFNCCPyz.jpg",
-                                              // controller
-                                              //     .cartItems[index].image
-                                              //     .toString(),
+                                                  // "https://as2.ftcdn.net/v2/jpg/04/66/23/33/1000_F_466233320_J92tRR3Pq1KPiEoveQGBO40gJFNCCPyz.jpg",
+                                                  controller
+                                                      .cartItems[index].image
+                                                      .toString(),
                                               height: 80,
                                               fit: BoxFit.cover,
                                               placeholder: (context, url) => Center(

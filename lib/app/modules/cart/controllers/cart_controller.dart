@@ -277,6 +277,7 @@ class CartController extends GetxController {
     //     await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
     // offlineOrderDao = database.offlineOrderDao;
     RxList<OfflineOrder> orderList = <OfflineOrder>[].obs;
+
     await offlineOrderDao.findAllOfflineOrder().then((value) {
       orderList.clear();
       orderList.value = value;

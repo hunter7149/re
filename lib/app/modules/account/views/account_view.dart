@@ -85,7 +85,9 @@ class AccountView extends GetView<AccountController> {
                             color: Colors.white, fontWeight: FontWeight.w400),
                       ),
                       ZoomTapAnimation(
-                        onTap: () {},
+                        onTap: () {
+                          controller.logOut();
+                        },
                         child: Container(
                           // height: 40,
                           padding:
@@ -119,68 +121,71 @@ class AccountView extends GetView<AccountController> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 24),
-                  height: 200,
-                  decoration: BoxDecoration(
-                      color: AppThemes.modernBlue,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        AppAssets.ASSET_EDIT_PROFILE,
-                        height: 100,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Text(
-                        "My profile",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                ZoomTapAnimation(
+                  onTap: () {
+                    Get.toNamed("");
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 24),
+                    height: 200,
+                    decoration: BoxDecoration(
+                        color: AppThemes.modernBlue,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          AppAssets.ASSET_EDIT_PROFILE,
+                          height: 100,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Text(
+                          "My profile",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 24),
-                  height: 200,
-                  decoration: BoxDecoration(
-                      color: AppThemes.modernDeepSea,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        AppAssets.ASSET_TASKS,
-                        height: 100,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Text(
-                        "My Tasks",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                ZoomTapAnimation(
+                  onTap: () {
+                    Get.toNamed("");
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 24),
+                    height: 200,
+                    decoration: BoxDecoration(
+                        color: AppThemes.modernDeepSea,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          AppAssets.ASSET_TASKS,
+                          height: 100,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Text(
+                          "My Tasks",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: 20,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 24),
-                  height: 200,
-                  decoration: BoxDecoration(
-                      color: AppThemes.modernPlantation,
-                      borderRadius: BorderRadius.circular(20)),
                 ),
               ],
             ),

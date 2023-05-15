@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:workmanager/workmanager.dart';
 import 'app/api/firebase/pushnotificationservice.dart';
+import 'app/modules/underdevelopment/bindings/underdevelopment_binding.dart';
+import 'app/modules/underdevelopment/views/underdevelopment_view.dart';
 import 'app/routes/app_pages.dart';
 
 @pragma(
@@ -49,6 +51,11 @@ Future<void> main() async {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
+      unknownRoute: GetPage(
+        name: '/underdevelopment',
+        page: () => const UnderdevelopmentView(),
+        binding: UnderdevelopmentBinding(),
+      ),
     ),
   );
 }

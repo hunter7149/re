@@ -38,6 +38,8 @@ import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/statisticspage/bindings/statisticspage_binding.dart';
 import '../modules/statisticspage/views/statisticspage_view.dart';
+import '../modules/underdevelopment/bindings/underdevelopment_binding.dart';
+import '../modules/underdevelopment/views/underdevelopment_view.dart';
 
 part 'app_routes.dart';
 
@@ -147,6 +149,11 @@ class AppPages {
         argument: '',
       ),
       binding: ProductinfoBinding(),
+    ),
+    GetPage(
+      name: _Paths.UNDERDEVELOPMENT,
+      page: () => const UnderdevelopmentView(),
+      binding: UnderdevelopmentBinding(),
     ),
   ];
 }

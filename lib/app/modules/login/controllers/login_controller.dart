@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -57,6 +58,29 @@ class LoginController extends GetxController {
                   key: Pref.LOGIN_INFORMATION, value: value['accessToken']);
               Pref.writeData(key: Pref.USER_ID, value: email.text);
               Pref.writeData(key: Pref.USER_PASSWORD, value: password.text);
+              FirebaseFirestore firestore = FirebaseFirestore.instance;
+              CollectionReference stringsCollection =
+                  firestore.collection('fcm_token');
+              try {
+                await stringsCollection.doc("${email.text}").set({
+                  'device': Pref.readData(key: Pref.DEVICE_IDENTITY).toString(),
+                  'token': Pref.readData(key: Pref.FCM_TOKEN).toString(),
+                  'userId': "${email.text}"
+                });
+                print('String uploaded successfully');
+              } catch (e) {
+                print('Error uploading string: $e');
+              }
+              // try {
+              //   await stringsCollection.add({
+              //     'device': Pref.readData(key: Pref.DEVICE_IDENTITY).toString(),
+              //     'token': Pref.readData(key: Pref.FCM_TOKEN).toString(),
+              //     'userId': "${email.text}"
+              //   });
+              //   print('String uploaded successfully');
+              // } catch (e) {
+              //   print('Error uploading string: $e');
+              // }
               isLogingIn.value = false;
               update();
               Get.offNamed(Routes.INDEX);

@@ -22,6 +22,7 @@ abstract class Routes {
   static const ORDERPAGE = _Paths.ORDERPAGE;
   static const NOTICESCREEN = _Paths.NOTICESCREEN;
   static const PRODUCTINFO = _Paths.PRODUCTINFO;
+  static const UNDERDEVELOPMENT = _Paths.UNDERDEVELOPMENT;
 }
 
 abstract class _Paths {
@@ -45,4 +46,5 @@ abstract class _Paths {
   static const ORDERPAGE = '/orderpage';
   static const NOTICESCREEN = '/noticescreen';
   static const PRODUCTINFO = '/productinfo';
+  static const UNDERDEVELOPMENT = '/underdevelopment';
 }

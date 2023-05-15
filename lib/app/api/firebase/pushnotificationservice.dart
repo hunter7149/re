@@ -1,12 +1,15 @@
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:sales/app/routes/app_pages.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../../../constants.dart';
 import '../../components/common_widgets.dart';
 import '../service/prefrences.dart';
 
@@ -72,9 +75,9 @@ class FirebaseService {
       AndroidNotification? android = message.notification?.android;
 
       if (notification != null && android != null) {
-        // if (notification.title!.toLowerCase().contains("weather")) {
-        //   Get.toNamed(Routes.WEATHERSCREEN);
-        // }
+        Get.toNamed(Routes.NOTICESCREEN,
+            id: Constants.nestedNavigationNavigatorId);
+
         COMMONWIDGET.saveNotification(message);
         showDialog(
             // context: context,
@@ -120,14 +123,21 @@ class FirebaseService {
     token = (await _firebaseMessaging.getToken())!;
 
     print(token);
+
     Pref.writeData(key: Pref.FCM_TOKEN, value: token.toString());
     return token.toString();
   }
 
   static noticeViewer({required RemoteMessage message}) {
-    if (message.notification?.title?.toLowerCase() == "important" ||
-        message.notification?.title?.toLowerCase() == "urgent") {
+    bool isImportantOrUrgent =
+        (message.notification?.title?.toLowerCase()?.contains("important") ??
+                false) ||
+            (message.notification?.title?.toLowerCase()?.contains("urgent") ??
+                false);
+
+    if (isImportantOrUrgent) {
       return showDialog(
+        barrierDismissible: false,
         context: Get.context!,
         builder: (_) {
           return AlertDialog(
@@ -170,6 +180,9 @@ class FirebaseService {
         },
       );
     } else {
+      // Get.toNamed(Routes.NOTICESCREEN,
+      //     id: Constants.nestedNavigationNavigatorId);
+
       return _flutterLocalNotificationsPlugin.show(
           message.notification.hashCode,
           message.notification?.title,
