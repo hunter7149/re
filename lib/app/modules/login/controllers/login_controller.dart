@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,19 +59,7 @@ class LoginController extends GetxController {
                   key: Pref.LOGIN_INFORMATION, value: value['accessToken']);
               Pref.writeData(key: Pref.USER_ID, value: email.text);
               Pref.writeData(key: Pref.USER_PASSWORD, value: password.text);
-              FirebaseFirestore firestore = FirebaseFirestore.instance;
-              CollectionReference stringsCollection =
-                  firestore.collection('fcm_token');
-              try {
-                await stringsCollection.doc("${email.text}").set({
-                  'device': Pref.readData(key: Pref.DEVICE_IDENTITY).toString(),
-                  'token': Pref.readData(key: Pref.FCM_TOKEN).toString(),
-                  'userId': "${email.text}"
-                });
-                print('String uploaded successfully');
-              } catch (e) {
-                print('Error uploading string: $e');
-              }
+
               // try {
               //   await stringsCollection.add({
               //     'device': Pref.readData(key: Pref.DEVICE_IDENTITY).toString(),
@@ -83,6 +72,7 @@ class LoginController extends GetxController {
               // }
               isLogingIn.value = false;
               update();
+              Platform.isAndroid ? firebaseStore() : () {};
               Get.offNamed(Routes.INDEX);
             } else {
               isLogingIn.value = false;
@@ -124,6 +114,21 @@ class LoginController extends GetxController {
     print("Saved last sync date = ${value}");
 
     Get.offNamed(Routes.INDEX);
+  }
+
+  firebaseStore() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference stringsCollection = firestore.collection('fcm_token');
+    try {
+      await stringsCollection.doc("${email.text}").set({
+        'device': Pref.readData(key: Pref.DEVICE_IDENTITY).toString(),
+        'token': Pref.readData(key: Pref.FCM_TOKEN).toString(),
+        'userId': "${email.text}"
+      });
+      print('String uploaded successfully');
+    } catch (e) {
+      print('Error uploading string: $e');
+    }
   }
 
   @override

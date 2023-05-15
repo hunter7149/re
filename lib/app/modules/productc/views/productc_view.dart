@@ -203,7 +203,7 @@ class ProductcView extends GetView<ProductcController> {
                                             child: Column(
                                               children: [
                                                 SizedBox(
-                                                  height: 10,
+                                                  height: 5,
                                                 ),
                                                 Text(
                                                   "${controller.products[i]['PRODUCT_NAME']}"
