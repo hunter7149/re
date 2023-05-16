@@ -91,7 +91,7 @@ class DashboardView extends GetView<DashboardController> {
                     // height: MediaQuery.of(context).size.height / 1.5,
                     child: GridView.count(
                         //scrollDirection: Axis.vertical,
-                        crossAxisCount: 2,
+                        crossAxisCount: _getCrossAxisCount(context),
                         childAspectRatio: (0.88),
                         shrinkWrap: true,
                         children: [
@@ -273,6 +273,13 @@ class DashboardView extends GetView<DashboardController> {
         ),
       ),
     );
+  }
+
+  int _getCrossAxisCount(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final itemWidth = 200; // Adjust this value based on your item's width
+    final crossAxisCount = (screenWidth / itemWidth).floor();
+    return crossAxisCount;
   }
 
   static Widget offerItem({required String dataLink}) {

@@ -12,6 +12,46 @@ import '../../../models/cartproduct.dart';
 
 class ProductinfoController extends GetxController {
   late CartItemDao cartItemDao;
+  returnPrice({required String productCode}) {
+    RxDouble price = 500.00.obs;
+    if (productCode == '3000077') {
+      price.value = 110.00;
+      update();
+    } else if (productCode == "3000078") {
+      price.value = 110.00;
+      update();
+    } else if (productCode == "3000079") {
+      price.value = 110.00;
+      update();
+    } else if (productCode == "3000080") {
+      price.value = 110.00;
+      update();
+    } else if (productCode == "3000082") {
+      price.value = 222.22;
+      update();
+    } else if (productCode == "3000083") {
+      price.value = 222.22;
+      update();
+    } else if (productCode == "3000099") {
+      price.value = 675.00;
+      update();
+    } else if (productCode == "3000100") {
+      price.value = 675.00;
+      update();
+    } else if (productCode == "3000101") {
+      price.value = 675.00;
+      update();
+    } else if (productCode == "3000102") {
+      price.value = 675.00;
+      update();
+    } else if (productCode == "3000103") {
+      price.value = 675.00;
+      update();
+    }
+
+    return price.value;
+  }
+
   RxMap<String, dynamic> products = <String, dynamic>{}.obs;
   RxMap<String, dynamic> tempData = <String, dynamic>{}.obs;
   setData({required dynamic data}) async {
@@ -32,7 +72,9 @@ class ProductinfoController extends GetxController {
   RxDouble totalPrice = 0.0.obs;
   calculation({required double price, required int quanity}) {
     totalPrice.value = price * quanity;
+
     update();
+    return totalPrice;
   }
 
   addToCart({required CartItem data}) async {

@@ -19,7 +19,11 @@ class ProductinfoView extends GetView<ProductinfoController> {
   Widget build(BuildContext context) {
     controller.setData(data: argument);
     TextEditingController quanity = TextEditingController(text: '1');
-    double unitprice = 500.00;
+    controller.calculation(
+        price: controller.returnPrice(
+            productCode: controller.products['PRODUCT_CODE']),
+        quanity: int.parse(quanity.text));
+    double unitprice = controller.totalPrice.value;
     return Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading: false,

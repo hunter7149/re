@@ -322,6 +322,9 @@ class ProductcController extends GetxController {
 
         await isAddedUpdater();
         await successAlert();
+        Timer(Duration(seconds: 1), () {
+          Get.back();
+        });
         // Get.snackbar(
         //   "Success",
         //   "Product added successfully!",
@@ -343,6 +346,10 @@ class ProductcController extends GetxController {
         totalpriceUpdater();
         CartCounter.cartCounter();
         isAddedUpdater();
+        await successAlert();
+        Timer(Duration(seconds: 1), () {
+          Get.back();
+        });
         // Get.snackbar(
         //   "Success",
         //   "Product added successfully!",
@@ -418,6 +425,7 @@ class ProductcController extends GetxController {
   calculation({required double price, required int quanity}) {
     totalPrice.value = price * quanity;
     update();
+    return totalPrice.value;
   }
 
   RxList<Map<int, dynamic>> videoControllerList = <Map<int, dynamic>>[].obs;
@@ -503,8 +511,9 @@ class ProductcController extends GetxController {
   }
 
   successAlert() async {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.generalDialog(
+          barrierDismissible: false,
           transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
                 filter: ImageFilter.blur(
                   sigmaX: 4 * anim1.value,
@@ -517,9 +526,7 @@ class ProductcController extends GetxController {
               ),
           pageBuilder: (ctx, anim1, anim2) {
             TextEditingController quanity = TextEditingController();
-            Timer(Duration(seconds: 1), () {
-              Get.back();
-            });
+
             return MediaQuery(
               data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
               child: AlertDialog(

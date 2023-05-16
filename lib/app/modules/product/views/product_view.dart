@@ -33,16 +33,16 @@ class ProductView extends GetView<ProductController> {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: COMMONWIDGET.globalAppBar(
-        tittle: "Product Catalogue",
-        backEnabled: false,
-        backFunction: () {
-          // Get.back(
-          //   result: controller.count.value,
-          //   id: Constants.nestedNavigationNavigatorId,
-          // );
-        },
-      ),
+      // appBar: COMMONWIDGET.globalAppBar(
+      //   tittle: "Product Catalogue",
+      //   backEnabled: false,
+      //   backFunction: () {
+      //     // Get.back(
+      //     //   result: controller.count.value,
+      //     //   id: Constants.nestedNavigationNavigatorId,
+      //     // );
+      //   },
+      // ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(0.0),
@@ -53,7 +53,7 @@ class ProductView extends GetView<ProductController> {
                 //height: MediaQuery.of(context).size.height/1.5,
                 child: GridView.count(
                   scrollDirection: Axis.vertical,
-                  crossAxisCount: 2,
+                  crossAxisCount: _getCrossAxisCount(context),
                   childAspectRatio: 1.2,
                   shrinkWrap: true,
                   children: List.generate(10, (index) {
@@ -111,5 +111,12 @@ class ProductView extends GetView<ProductController> {
         ),
       ),
     );
+  }
+
+  int _getCrossAxisCount(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final itemWidth = 200; // Adjust this value based on your item's width
+    final crossAxisCount = (screenWidth / itemWidth).floor();
+    return crossAxisCount;
   }
 }
