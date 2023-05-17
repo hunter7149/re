@@ -112,7 +112,8 @@ class ProductcController extends GetxController {
             backgroundColor: AppThemes.modernSexyRed,
             snackPosition: SnackPosition.TOP,
             colorText: Colors.white,
-            duration: Duration(seconds: 4));
+            borderRadius: 0,
+            duration: Duration(seconds: 2));
         isProductLoading.value = false;
         update();
       }
@@ -122,7 +123,8 @@ class ProductcController extends GetxController {
           backgroundColor: AppThemes.modernSexyRed,
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
-          duration: Duration(seconds: 4));
+          borderRadius: 0,
+          duration: Duration(seconds: 2));
       isProductLoading.value = false;
       update();
     }
@@ -322,7 +324,7 @@ class ProductcController extends GetxController {
 
         await isAddedUpdater();
         await successAlert();
-        Timer(Duration(seconds: 1), () {
+        Timer(Duration(seconds: 1), () async {
           Get.back();
         });
         // Get.snackbar(

@@ -181,7 +181,7 @@ class ProductinfoView extends GetView<ProductinfoController> {
                               color: Colors.black,
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(5),
                               borderSide: BorderSide(
                                 color: Colors.grey.shade400,
                                 width: 1,

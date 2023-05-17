@@ -7,6 +7,7 @@ import 'package:sales/app/components/cart_value.dart';
 import 'package:sales/app/modules/cart/controllers/cart_controller.dart';
 import 'package:sales/app/modules/orderHome/controllers/order_home_controller.dart';
 import 'package:sales/app/modules/orderpage/controllers/orderpage_controller.dart';
+import 'package:sales/app/modules/product/controllers/product_controller.dart';
 
 class IndexController extends GetxController {
   RxBool shouldQuit = false.obs;
@@ -69,8 +70,12 @@ class IndexController extends GetxController {
         .onConnectivityChanged
         .listen((ConnectivityResult result) async {
       print("${result}");
-      Get.lazyPut(() => CartController());
+      Get.put(CartController());
       if (result != ConnectivityResult.none) {
+        // Get.put(ProductController());
+        // await Get.find<ProductController>().loadData();
+        // await Get.find<ProductController>().printData();
+
         isDeviceConnected.value =
             await InternetConnectionChecker().hasConnection;
         update();

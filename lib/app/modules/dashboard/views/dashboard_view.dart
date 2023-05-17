@@ -279,7 +279,11 @@ class DashboardView extends GetView<DashboardController> {
     final screenWidth = MediaQuery.of(context).size.width;
     final itemWidth = 200; // Adjust this value based on your item's width
     final crossAxisCount = (screenWidth / itemWidth).floor();
-    return crossAxisCount;
+    if (crossAxisCount == 1) {
+      return 2;
+    } else {
+      return crossAxisCount;
+    }
   }
 
   static Widget offerItem({required String dataLink}) {

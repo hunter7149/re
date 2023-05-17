@@ -17,18 +17,8 @@ class ProductView extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
-    List brands = [
-      'acnol',
-      'blazoskin',
-      'elanvenezia',
-      'tylox',
-      'herlan',
-      'lily',
-      'nior',
-      'orix',
-      'siodil',
-      'sunbit',
-    ];
+    List brands = controller.brands;
+
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
@@ -117,6 +107,10 @@ class ProductView extends GetView<ProductController> {
     final screenWidth = MediaQuery.of(context).size.width;
     final itemWidth = 200; // Adjust this value based on your item's width
     final crossAxisCount = (screenWidth / itemWidth).floor();
-    return crossAxisCount;
+    if (crossAxisCount == 1) {
+      return 2;
+    } else {
+      return crossAxisCount;
+    }
   }
 }

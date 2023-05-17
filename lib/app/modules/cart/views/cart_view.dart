@@ -477,7 +477,9 @@ class CartView extends GetView<CartController> {
                                         fontSize: 14,
                                         color: Colors.grey.shade800,
                                         fontWeight: FontWeight.w500)),
-                                Text("${controller.totalPrice.value}",
+                                Text(
+                                    controller.totalPrice.value
+                                        .toStringAsFixed(2),
                                     style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey.shade800,
@@ -507,7 +509,9 @@ class CartView extends GetView<CartController> {
                                         fontSize: 20,
                                         color: Colors.grey.shade800,
                                         fontWeight: FontWeight.w500)),
-                                Text("${controller.totalPrice.value}",
+                                Text(
+                                    controller.totalPrice.value
+                                        .toStringAsFixed(2),
                                     style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.grey.shade800,

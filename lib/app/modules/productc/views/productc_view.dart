@@ -409,9 +409,15 @@ class ProductcView extends GetView<ProductcController> {
                                                                 ["UOM"],
                                                             image:
                                                                 "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
-                                                            price: controller
-                                                                .totalPrice
-                                                                .value,
+                                                            price: controller.calculation(
+                                                                price: double.parse(controller
+                                                                    .returnPrice(
+                                                                        productCode:
+                                                                            '${controller.products[i]['PRODUCT_CODE']}')
+                                                                    .toString()),
+                                                                quanity: int
+                                                                    .parse(quanity
+                                                                        .text)),
                                                             brand: controller
                                                                     .products[i]
                                                                 ["BRAND_NAME"],
@@ -668,7 +674,11 @@ int _getCrossAxisCount(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
   final itemWidth = 200; // Adjust this value based on your item's width
   final crossAxisCount = (screenWidth / itemWidth).floor();
-  return crossAxisCount;
+  if (crossAxisCount == 1) {
+    return 2;
+  } else {
+    return crossAxisCount;
+  }
 }
 // {"orderId": "ORD68136",
 //  "lattitude": 37.4220936,

@@ -140,20 +140,20 @@ class CartController extends GetxController {
             ? []
             : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
       };
-      // await Repository()
-      //     .testpro(body: {"data": "${saleRequisation.value}"}).then((value) {
-      //   isRequesting.value = false;
-      //   Update();
-      //   print(value);
-      // });
+      await Repository().requestBeatList(
+          body: {"data": "${saleRequisation.value}"}).then((value) {
+        isRequesting.value = false;
+        Update();
+        print(value);
+      });
 
-      // try {
-      //   isRequesting.value = true;
-      //   Update();
-      // } on Exception catch (e) {
-      //   print(e);
-      // }
-      // print("ORDER REQ----->${saleRequisation}");
+      try {
+        isRequesting.value = true;
+        Update();
+      } on Exception catch (e) {
+        print(e);
+      }
+      print("ORDER REQ----->${saleRequisation}");
 
       //-------One array code---------//
       // cartItems.forEach((element) async {

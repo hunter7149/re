@@ -35,7 +35,12 @@ class Repository extends Providers {
               endPoint: AppUrl.productList, method: Method.POST, map: body)
           .then((value) => value);
 
-  Future<dynamic> testpro({required Map<String, dynamic> body}) async =>
+  Future<dynamic> requestBeatList({required Map<String, dynamic> body}) async =>
+      await tokenBaseApi(
+              endPoint: AppUrl.saleRequisition, method: Method.POST, map: body)
+          .then((value) => value);
+  Future<dynamic> requestCustomerList(
+          {required Map<String, dynamic> body}) async =>
       await tokenBaseApi(
               endPoint: AppUrl.saleRequisition, method: Method.POST, map: body)
           .then((value) => value);
