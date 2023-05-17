@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sales/app/api/repository/repository.dart';
+import 'package:sales/app/api/service/prefrences.dart';
 import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/config/app_themes.dart';
 
@@ -35,7 +36,7 @@ class ProductbController extends GetxController {
             products.clear();
             products.value = value['value'] ?? [];
             products.refresh();
-            await GetStorage().write(data['brand'], products.value);
+            // Pref.writeData(key: data['brand'], value: products.value);
             isItemCountLoading.value = false;
 
             Update();
@@ -62,8 +63,22 @@ class ProductbController extends GetxController {
   }
 
   offlineProductsModule() async {
-    products.value = await GetStorage().read('${data['brand']}') ?? [];
-    products.refresh();
+    dynamic offline = Pref.readData(key: 'offlineData');
+    Map<String, List<dynamic>> offline2 = offline['${data['brand']}'] ?? {};
+    List<String> offline2Keys = offline2.keys.toList();
+    products.clear();
+    for (int i = 0; i < offline2.length; i++) {
+      products.add({
+        "GENERIC_NAME": offline2Keys[i],
+        "TTL": offline2[offline2Keys[i]]?.length
+      });
+      products.refresh();
+    }
+    // print(offline.runtimeType);
+    // print(offline['nior'].length);
+
+    // products.value = offline['${data['brand']}'] ?? [];
+    // products.refresh();
     isItemCountLoading.value = false;
     Update();
   }

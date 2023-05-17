@@ -21,6 +21,7 @@ import 'package:video_player/video_player.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../DAO/cartitemdao.dart';
+import '../../../api/service/prefrences.dart';
 import '../../../config/app_themes.dart';
 import '../../../database/database.dart';
 import '../../../routes/app_pages.dart';
@@ -100,8 +101,8 @@ class ProductcController extends GetxController {
         }).then((value) async {
           products.value = value["value"] ?? [];
           products.refresh();
-          await GetStorage().write(
-              "${tempData['brand']}-${tempData['type']}", products.value);
+          // await GetStorage().write(
+          //     "${tempData['brand']}-${tempData['type']}", products.value);
           update();
         });
         isProductLoading.value = false;
@@ -205,9 +206,13 @@ class ProductcController extends GetxController {
   }
 
   offlineDataModule() async {
+    dynamic offline = Pref.readData(key: 'offlineData');
     products.value =
-        await GetStorage().read("${tempData['brand']}-${tempData['type']}") ??
-            [];
+        offline['${tempData['brand']}']['${tempData['type']}'] ?? [];
+
+    // products.value =
+    //     // await GetStorage().read("${tempData['brand']}-${tempData['type']}") ??
+    //     [];
     products.refresh();
     update();
   }
@@ -320,9 +325,11 @@ class ProductcController extends GetxController {
           .updateCartItem(existingItem)
           .then((value) => true)) {
         totalpriceUpdater();
+        Get.closeAllSnackbars();
         CartCounter.cartCounter();
 
         await isAddedUpdater();
+
         await successAlert();
         Timer(Duration(seconds: 1), () async {
           Get.back();

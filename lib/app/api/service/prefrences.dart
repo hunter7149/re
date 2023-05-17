@@ -1,7 +1,7 @@
 import 'package:get_storage/get_storage.dart';
 
 class Pref {
-  static final box = GetStorage();
+  static final box = GetStorage('1234567890');
   static var FCM_TOKEN = "fcm_token";
   static var DEVICE_ID = 'device-id';
   static var LOGIN_INFORMATION = 'login_information';
