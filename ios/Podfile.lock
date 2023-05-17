@@ -801,7 +801,7 @@ DEPENDENCIES:
   - location (from `.symlinks/plugins/location/ios`)
   - orientation (from `.symlinks/plugins/orientation/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - platform_device_id (from `.symlinks/plugins/platform_device_id/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
@@ -859,7 +859,7 @@ EXTERNAL SOURCES:
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/ios"
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   platform_device_id:
     :path: ".symlinks/plugins/platform_device_id/ios"
   sqflite:
@@ -914,4 +914,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 57ad911986821f51fa5cf8fbc1f0e277c1d0b52b
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1
