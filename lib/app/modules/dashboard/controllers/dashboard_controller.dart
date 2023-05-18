@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../constants.dart';
 import '../../../routes/app_pages.dart';
+import '../../../sync/products/offlineproductsync.dart';
 
 class DashboardController extends GetxController {
   RxList<dynamic> data = <dynamic>["as", "bs"].obs;
@@ -69,6 +70,18 @@ class DashboardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    OFFLINEPRODUCTSYNC().offlineDataSync(brands: [
+      'acnol',
+      'blazoskin',
+      'elanvenezia',
+      'tylox',
+      'herlan',
+      'lily',
+      'nior',
+      'orix',
+      'siodil',
+      'sunbit',
+    ]);
   }
 
   @override

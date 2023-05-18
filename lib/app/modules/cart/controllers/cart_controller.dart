@@ -19,6 +19,7 @@ import 'package:sales/app/models/saleRequisition.dart';
 import 'package:geocoding/geocoding.dart' as gcode;
 import '../../../DAO/cartitemdao.dart';
 import '../../../api/repository/repository.dart';
+import '../../../api/service/prefrences.dart';
 import '../../../database/database.dart';
 import '../../../models/cartproduct.dart';
 
@@ -140,7 +141,7 @@ class CartController extends GetxController {
             ? []
             : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
       };
-      await Repository().requestBeatList(
+      await Repository().requestSaleRequistion(
           body: {"data": "${saleRequisation.value}"}).then((value) {
         isRequesting.value = false;
         Update();
@@ -455,313 +456,161 @@ class CartController extends GetxController {
   }
 
   //----------------------------------------Beat customer-------------------------------------------//
-  List<Map<String, dynamic>> beatCustomer = <Map<String, dynamic>>[
-    {
-      "beatname": "Digpait",
-      "customers": [
-        'Allahor Dan Store',
-        'Aporupa Cos.',
-        'Baba mayar Doua store',
-        'Babul Store',
-        'Bai Bai Store',
-        'Bismilla Store',
-        'Eti Store',
-        'Fohad store',
-        'Forid store',
-        'Galava Cosmeticse',
-        'Harun Cosmeticse',
-        'Hassan Ent',
-        'Jahangir Store',
-        'Jonnony Cosmeticse',
-        'Junayet Store',
-        'Khan paper House',
-        'Lija Store',
-        'Ma Cosmeticse',
-        'Maruf Cosmeticse',
-        'Matara store',
-        'Mayer Achol Cos',
-        'Meshok cosmetics',
-        'Mim Store',
-        'Misuk Cos',
-        'Modina store',
-        'Moinal store',
-        'Momin cosmetics',
-        'Mondira store',
-        'Nimay Store',
-        'Nupor Varaitice',
-        'Poran store',
-        'Protasha Con.',
-        'Radoy Cosmeticse',
-        'Raja khan Store',
-        'Rakib Store',
-        'Robiul store',
-        'Rofiqul store',
-        'Rokon Store',
-        'RomaRony store',
-        'Roni store',
-        'Saiful Cosmeticse',
-        'Sakil Store',
-        'Santa store',
-        'Shimul Cosmeticse',
-        'Shohid Store',
-        'Shoriny Traders',
-        'Sithi Store',
-        'Sobus nur store',
-        'Sohag store',
-        'Sojona Cos',
-        'Somun cosmetics',
-        'Sulaiman Store',
-        'Sumi Cosmeticse',
-        'Tanjena store',
-        'uzzal Cosmeticse'
-      ]
-    },
-    {
-      "beatname": "Gupalpur Bazar",
-      "customers": [
-        'AF AM store',
-        'Afaj Store',
-        'Allamin store',
-        'Amdadul store',
-        'Anowar Store',
-        'Bai Bai Store',
-        'Bismillah Store',
-        'Chomot kar Store',
-        'Ebrahim store',
-        'Garments cosmetics',
-        'Karim Store',
-        'Khan cosmetics',
-        'Khan Shopping Store',
-        'Ladys Corner',
-        'Ma Babar Dowa',
-        'Malek store',
-        'Maruf cosmetics',
-        'Mayar Achal store',
-        'Melion store',
-        'Mohi Uddin',
-        'New Bismillah Store',
-        'Nirob Varaitice',
-        'Ria Moni Varaitice',
-        'Rokon Store',
-        'Salam Store',
-        'Shafin store',
-        'Sobuj Cosmetics',
-        'Sohel store',
-        'Sohel Store',
-        'Subhan Store',
-        'Tanvir Store',
-        'Zyaul store'
-      ]
-    },
-    {
-      "beatname": "Kothakoli Market",
-      "customers": [
-        'Abdus Satter Moslagor',
-        'Abu Sama Trades',
-        'Afjal Store',
-        'Amin Store',
-        'Anuwer Rokomary',
-        'Chori Ghor Cos',
-        'Dav Store',
-        'Faria Cosmetics',
-        'Fashoin Word',
-        'Hoqe Varaitice',
-        'Istiak Varaitics',
-        'Jonatar Prethibi',
-        'Kanu Store',
-        'Katbo Cos',
-        'Lipu Corner',
-        'Luva confectionary',
-      ]
-    }
-  ];
+  TextEditingController searchCustomerController = TextEditingController();
+  RxString dropdownBeatValue = 'Select beat'.obs;
+  RxList<String> beatData = <String>['Select beat'].obs;
 
-  //-------------------------Beat Dropdown menu--------------------//
-
-  RxString dropdownBeatValue = 'Select Beat '.obs;
-  RxList<String> beatList = <String>[
-    'Select Beat ',
-  ].obs;
   DropdownBeatValueUpdater(String type) {
     dropdownBeatValue.value = type;
-    // customersData.clear();
-    print("hhhhh -0---------------------> ${beatCustomer}");
-    print(
-        "Hello position -> ${beatCustomer[beatCustomer.indexWhere((element) => element['beatname'] == type)]["customers"]}");
-    customersData.value = beatCustomer[beatCustomer
-        .indexWhere((element) => element['beatname'] == type)]["customers"];
-    // beatCustomer.refresh();
-    // beatCustomer.forEach((element) {
-    //   if (element["beatname"] == type) {
-    //     customersData.value = (element["customers"]);
-    //   }
-    // });
-    customersData.refresh();
-
-    dropdownCustomerValue.value = customersData[0];
-
     Update();
+    Pref.writeData(key: Pref.BEAT_NAME, value: type);
+    customiseCustomerList(beatName: type);
   }
 
-  beatCustomerValueSetterTemporary() async {
-    beatCustomer.clear();
-    beatCustomer = <Map<String, dynamic>>[
-      {
-        "beatname": "Digpait",
-        "customers": [
-          'Allahor Dan Store',
-          'Aporupa Cos.',
-          'Baba mayar Doua store',
-          'Babul Store',
-          'Bai Bai Store',
-          'Bismilla Store',
-          'Eti Store',
-          'Fohad store',
-          'Forid store',
-          'Galava Cosmeticse',
-          'Harun Cosmeticse',
-          'Hassan Ent',
-          'Jahangir Store',
-          'Jonnony Cosmeticse',
-          'Junayet Store',
-          'Khan paper House',
-          'Lija Store',
-          'Ma Cosmeticse',
-          'Maruf Cosmeticse',
-          'Matara store',
-          'Mayer Achol Cos',
-          'Meshok cosmetics',
-          'Mim Store',
-          'Misuk Cos',
-          'Modina store',
-          'Moinal store',
-          'Momin cosmetics',
-          'Mondira store',
-          'Nimay Store',
-          'Nupor Varaitice',
-          'Poran store',
-          'Protasha Con.',
-          'Radoy Cosmeticse',
-          'Raja khan Store',
-          'Rakib Store',
-          'Robiul store',
-          'Rofiqul store',
-          'Rokon Store',
-          'RomaRony store',
-          'Roni store',
-          'Saiful Cosmeticse',
-          'Sakil Store',
-          'Santa store',
-          'Shimul Cosmeticse',
-          'Shohid Store',
-          'Shoriny Traders',
-          'Sithi Store',
-          'Sobus nur store',
-          'Sohag store',
-          'Sojona Cos',
-          'Somun cosmetics',
-          'Sulaiman Store',
-          'Sumi Cosmeticse',
-          'Tanjena store',
-          'uzzal Cosmeticse'
-        ]
-      },
-      {
-        "beatname": "Gupalpur Bazar",
-        "customers": [
-          'AF AM store',
-          'Afaj Store',
-          'Allamin store',
-          'Amdadul store',
-          'Anowar Store',
-          'Bai Bai Store',
-          'Bismillah Store',
-          'Chomot kar Store',
-          'Ebrahim store',
-          'Garments cosmetics',
-          'Karim Store',
-          'Khan cosmetics',
-          'Khan Shopping Store',
-          'Ladys Corner',
-          'Ma Babar Dowa',
-          'Malek store',
-          'Maruf cosmetics',
-          'Mayar Achal store',
-          'Melion store',
-          'Mohi Uddin',
-          'New Bismillah Store',
-          'Nirob Varaitice',
-          'Ria Moni Varaitice',
-          'Rokon Store',
-          'Salam Store',
-          'Shafin store',
-          'Sobuj Cosmetics',
-          'Sohel store',
-          'Sohel Store',
-          'Subhan Store',
-          'Tanvir Store',
-          'Zyaul store'
-        ]
-      },
-      {
-        "beatname": "Kothakoli Market",
-        "customers": [
-          'Abdus Satter Moslagor',
-          'Abu Sama Trades',
-          'Afjal Store',
-          'Amin Store',
-          'Anuwer Rokomary',
-          'Chori Ghor Cos',
-          'Dav Store',
-          'Faria Cosmetics',
-          'Fashoin Word',
-          'Hoqe Varaitice',
-          'Istiak Varaitics',
-          'Jonatar Prethibi',
-          'Kanu Store',
-          'Katbo Cos',
-          'Lipu Corner',
-          'Luva confectionary',
-        ]
-      }
-    ];
-    Update();
-  }
-
-  //---------------------------Customer dropdown value--------------------//
+  RxString selectedCustomerId = ''.obs;
   RxString dropdownCustomerValue = 'Select Customer'.obs;
-  RxList<String> customersData = <String>[
-    'Select Customer',
-  ].obs;
+  RxList<String> customerData = <String>['Select Customer'].obs;
+
   DropdownCustomerValueUpdater(String type) {
     dropdownCustomerValue.value = type;
-
     Update();
+    Pref.writeData(key: Pref.CUSTOMER_NAME, value: type);
+    final selectedCustomer = customerList.firstWhere(
+      (customer) => customer['CUSTOMER_NAME'] == type.toString().split(" ~")[0],
+      orElse: () => {},
+    );
+    if (selectedCustomer != null) {
+      selectedCustomerId.value = selectedCustomer['ID'].toString();
+      Pref.writeData(key: Pref.CUSTOMER_CODE, value: selectedCustomerId.value);
+      print(selectedCustomerId.value);
+    }
   }
 
-  initialDropdownValue() {
-    beatCustomerValueSetterTemporary();
-    beatList.clear();
-    customersData.clear();
-    beatCustomer.forEach((element) {
-      beatList.add(element['beatname']);
-    });
-    beatList.refresh();
+  RxBool isBeatLoading = false.obs;
+  RxBool isCustomerLoading = false.obs;
+  RxList<dynamic> beatList = <dynamic>[].obs;
+  RxList<dynamic> customerList = <dynamic>[].obs;
+  List<String> filteredCustomers = [];
 
-    dropdownBeatValue.value = beatCustomer[0]["beatname"];
-    // DropdownCustomerValueUpdater(beatCustomer[0]["beatname"]);
+  void UpdateFilteredCustomers(String query) {
+    if (query.isEmpty) {
+      customiseCustomerList(beatName: dropdownBeatValue.value);
+    } else {
+      List<String> filteredResults = customerList
+          .where((customer) => customer['CUSTOMER_NAME']
+              .toLowerCase()
+              .contains(query.toLowerCase()))
+          .map<String>(
+              (customer) => "${customer['CUSTOMER_NAME']} ~${customer['ID']}")
+          .toList();
+      customerData.clear();
 
-    customersData.clear();
-    beatCustomer.forEach((element) {
-      if (element["beatname"] == beatCustomer[0]["beatname"]) {
-        customersData.value = (element["customers"]);
+      if (filteredResults.isEmpty) {
+        customerData.add('No results found');
+        DropdownCustomerValueUpdater('No results found');
+      } else {
+        DropdownCustomerValueUpdater(filteredResults.first);
+        customerData.addAll(filteredResults);
       }
-    });
-    customersData.refresh();
+    }
+  }
 
-    dropdownCustomerValue.value = customersData[0];
+  customiseCustomerList({required String beatName}) {
+    final selectedBeat = beatList.firstWhere(
+      (beat) => beat['BEAT_NAME'] == beatName,
+      orElse: () => {},
+    );
+    if (selectedBeat != null) {
+      final selectedBeatId = selectedBeat['ID'];
+      final filteredCustomers = customerList
+          .where((customer) => customer['BEAT_ID'] == selectedBeatId.toString())
+          .toList();
+      if (filteredCustomers.isNotEmpty) {
+        customerData.assignAll(filteredCustomers.map<String>(
+            (customer) => "${customer['CUSTOMER_NAME']} ~${customer['ID']}"));
+        selectedCustomerId.value = filteredCustomers[0]['ID'].toString();
+        DropdownCustomerValueUpdater(
+            customerData.isNotEmpty ? customerData.first : 'Select Customer');
+      } else {
+        customerData.clear();
+        customerData.add('No customer');
+        DropdownCustomerValueUpdater('No customer');
+      }
+    } else {
+      customerData.clear();
+      customerData.add('No customer');
+      DropdownCustomerValueUpdater('No customer');
+    }
+  }
 
+  initialDropdownValue() async {
+    await requestBeatList();
+    await requestCustomerList();
+    assignBeatData();
+    assignCustomerData();
+  }
+
+  requestBeatList() async {
+    isBeatLoading.value = true;
     Update();
+    try {
+      final value = await Repository().requestBeatList();
+      if (value != null && value['value'] != []) {
+        beatList.clear();
+        beatList.value = value['value'];
+        beatList.refresh();
+        Pref.writeData(key: Pref.BEATLIST, value: beatList.value);
+      }
+      isBeatLoading.value = false;
+      Update();
+    } on Exception catch (e) {
+      isBeatLoading.value = true;
+      Update();
+    }
+  }
+
+  requestCustomerList() async {
+    isCustomerLoading.value = true;
+    Update();
+    try {
+      final value = await Repository().requestCustomerList();
+      if (value != null && value['value'] != []) {
+        customerList.clear();
+        customerList.value = value['value'];
+        customerList.refresh();
+        Pref.writeData(key: Pref.CUSTOMERLIST, value: customerList.value);
+      }
+      isCustomerLoading.value = false;
+      Update();
+    } on Exception catch (e) {
+      isCustomerLoading.value = false;
+      Update();
+    }
+  }
+
+  assignBeatData() {
+    if (beatList.isNotEmpty) {
+      beatData.clear();
+      beatList.forEach((element) {
+        beatData.add(element['BEAT_NAME']);
+      });
+      beatData.refresh();
+
+      DropdownBeatValueUpdater(beatData[0]);
+    }
+  }
+
+  assignCustomerData() {
+    if (customerList.isNotEmpty) {
+      customerData.clear();
+      customerList.forEach((element) {
+        customerData.add("${element['CUSTOMER_NAME']} ~${element['ID']}");
+      });
+      customerData.refresh();
+
+      customiseCustomerList(beatName: beatData[0]);
+      // DropdownCustomerValueUpdater(customerData[0]);
+    }
   }
 
   @override

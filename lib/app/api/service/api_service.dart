@@ -8,8 +8,11 @@ enum Method { POST, GET, PUT, DELETE, PATCH }
 
 // const BASE_URL = 'http://192.168.10.204:8090/dp/';
 const BASE_URL =
-// 'http://192.168.10.212:8090/dp/';
-    'http://182.160.114.100:7171/dp/';
+//LOCAL//
+    'http://192.168.10.208:8090/dp/';
+
+//LIVE//
+// 'http://182.160.114.100:7171/dp/';
 
 class ApiService extends GetxService {
   late Dio _dio;

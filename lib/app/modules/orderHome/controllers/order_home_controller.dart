@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:floor/floor.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sales/app/DAO/cartitemdao.dart';
+import 'package:sales/app/api/repository/repository.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/models/cartproduct.dart';
 
 import '../../../DAO/orderItemDao.dart';
 import '../../../DAO/saleRequisitionDao.dart';
+import '../../../api/service/prefrences.dart';
 import '../../../components/cart_value.dart';
 import '../../../database/database.dart';
 import '../../../models/orderItem.dart';
@@ -39,287 +43,168 @@ class OrderHomeController extends GetxController {
       "key": "homecare"
     },
   ].obs;
-//-------------------Beat and customer dummy list-------------//
-  List<Map<String, dynamic>> beatCustomer = <Map<String, dynamic>>[
-    {
-      "beatname": "Digpait",
-      "customers": [
-        'Allahor Dan Store',
-        'Aporupa Cos.',
-        'Baba mayar Doua store',
-        'Babul Store',
-        'Bai Bai Store',
-        'Bismilla Store',
-        'Eti Store',
-        'Fohad store',
-        'Forid store',
-        'Galava Cosmeticse',
-        'Harun Cosmeticse',
-        'Hassan Ent',
-        'Jahangir Store',
-        'Jonnony Cosmeticse',
-        'Junayet Store',
-        'Khan paper House',
-        'Lija Store',
-        'Ma Cosmeticse',
-        'Maruf Cosmeticse',
-        'Matara store',
-        'Mayer Achol Cos',
-        'Meshok cosmetics',
-        'Mim Store',
-        'Misuk Cos',
-        'Modina store',
-        'Moinal store',
-        'Momin cosmetics',
-        'Mondira store',
-        'Nimay Store',
-        'Nupor Varaitice',
-        'Poran store',
-        'Protasha Con.',
-        'Radoy Cosmeticse',
-        'Raja khan Store',
-        'Rakib Store',
-        'Robiul store',
-        'Rofiqul store',
-        'Rokon Store',
-        'RomaRony store',
-        'Roni store',
-        'Saiful Cosmeticse',
-        'Sakil Store',
-        'Santa store',
-        'Shimul Cosmeticse',
-        'Shohid Store',
-        'Shoriny Traders',
-        'Sithi Store',
-        'Sobus nur store',
-        'Sohag store',
-        'Sojona Cos',
-        'Somun cosmetics',
-        'Sulaiman Store',
-        'Sumi Cosmeticse',
-        'Tanjena store',
-        'uzzal Cosmeticse'
-      ]
-    },
-    {
-      "beatname": "Gupalpur Bazar",
-      "customers": [
-        'AF AM store',
-        'Afaj Store',
-        'Allamin store',
-        'Amdadul store',
-        'Anowar Store',
-        'Bai Bai Store',
-        'Bismillah Store',
-        'Chomot kar Store',
-        'Ebrahim store',
-        'Garments cosmetics',
-        'Karim Store',
-        'Khan cosmetics',
-        'Khan Shopping Store',
-        'Ladys Corner',
-        'Ma Babar Dowa',
-        'Malek store',
-        'Maruf cosmetics',
-        'Mayar Achal store',
-        'Melion store',
-        'Mohi Uddin',
-        'New Bismillah Store',
-        'Nirob Varaitice',
-        'Ria Moni Varaitice',
-        'Rokon Store',
-        'Salam Store',
-        'Shafin store',
-        'Sobuj Cosmetics',
-        'Sohel store',
-        'Sohel Store',
-        'Subhan Store',
-        'Tanvir Store',
-        'Zyaul store'
-      ]
-    },
-    {
-      "beatname": "Kothakoli Market",
-      "customers": [
-        'Abdus Satter Moslagor',
-        'Abu Sama Trades',
-        'Afjal Store',
-        'Amin Store',
-        'Anuwer Rokomary',
-        'Chori Ghor Cos',
-        'Dav Store',
-        'Faria Cosmetics',
-        'Fashoin Word',
-        'Hoqe Varaitice',
-        'Istiak Varaitics',
-        'Jonatar Prethibi',
-        'Kanu Store',
-        'Katbo Cos',
-        'Lipu Corner',
-        'Luva confectionary',
-      ]
-    }
-  ];
 
   //-------------------------Beat Dropdown menu--------------------//
+  TextEditingController searchCustomerController = TextEditingController();
+  RxString dropdownBeatValue = 'Select beat'.obs;
+  RxList<String> beatData = <String>['Select beat'].obs;
 
-  RxString dropdownBeatValue = 'Beat-1'.obs;
-  RxList<String> beatData = <String>[
-    'Beat-1',
-    'Beat-2',
-    'Beat-3',
-  ].obs;
   DropdownBeatValueUpdater(String type) {
     dropdownBeatValue.value = type;
-    // customerList.clear();
-    print("hhhhh -0---------------------> ${beatCustomer}");
-    print(
-        "Hello position -> ${beatCustomer[beatCustomer.indexWhere((element) => element['beatname'] == type)]["customers"]}");
-    customerList.value = beatCustomer[beatCustomer
-        .indexWhere((element) => element['beatname'] == type)]["customers"];
-    // beatCustomer.refresh();
-    // beatCustomer.forEach((element) {
-    //   if (element["beatname"] == type) {
-    //     customerList.value = (element["customers"]);
-    //   }
-    // });
-    customerList.refresh();
-
-    dropdownCustomerValue.value = customerList[0];
-
-    update();
+    Update();
+    Pref.writeData(key: Pref.BEAT_NAME, value: type);
+    customiseCustomerList(beatName: type);
   }
 
-  //---------------------------Customer dropdown value--------------------//
-  RxString dropdownCustomerValue = 'Shop-123'.obs;
-  RxList<String> customerList = <String>[
-    'Shop-123',
-    'Shop-452',
-    'Shop-875',
-  ].obs;
+  RxString selectedCustomerId = ''.obs;
+  RxString dropdownCustomerValue = 'Select Customer'.obs;
+  RxList<String> customerData = <String>['Select Customer'].obs;
+
   DropdownCustomerValueUpdater(String type) {
     dropdownCustomerValue.value = type;
-
-    update();
+    Update();
+    Pref.writeData(key: Pref.CUSTOMER_NAME, value: type);
+    final selectedCustomer = customerList.firstWhere(
+      (customer) => customer['CUSTOMER_NAME'] == type.toString().split(" ~")[0],
+      orElse: () => {},
+    );
+    if (selectedCustomer != null) {
+      selectedCustomerId.value = selectedCustomer['ID'].toString();
+      Pref.writeData(key: Pref.CUSTOMER_CODE, value: selectedCustomerId.value);
+      print(selectedCustomerId.value);
+    }
   }
 
-  initialDropdownValue() {
-    beatData.clear();
-    beatCustomer.forEach((element) {
-      beatData.add(element['beatname']);
-    });
-    beatData.refresh();
+  RxBool isBeatLoading = false.obs;
+  RxBool isCustomerLoading = false.obs;
+  RxList<dynamic> beatList = <dynamic>[].obs;
+  RxList<dynamic> customerList = <dynamic>[].obs;
+  List<String> filteredCustomers = [];
 
-    dropdownBeatValue.value = beatCustomer[0]["beatname"];
-    // DropdownCustomerValueUpdater(beatCustomer[0]["beatname"]);
+  void UpdateFilteredCustomers(String query) {
+    if (query.isEmpty) {
+      customiseCustomerList(beatName: dropdownBeatValue.value);
+    } else {
+      List<String> filteredResults = customerList
+          .where((customer) => customer['CUSTOMER_NAME']
+              .toLowerCase()
+              .contains(query.toLowerCase()))
+          .map<String>(
+              (customer) => "${customer['CUSTOMER_NAME']} ~${customer['ID']}")
+          .toList();
+      customerData.clear();
 
-    customerList.clear();
-    beatCustomer.forEach((element) {
-      if (element["beatname"] == beatCustomer[0]["beatname"]) {
-        customerList.value = (element["customers"]);
+      if (filteredResults.isEmpty) {
+        customerData.add('No results found');
+        DropdownCustomerValueUpdater('No results found');
+      } else {
+        DropdownCustomerValueUpdater(filteredResults.first);
+        customerData.addAll(filteredResults);
       }
-    });
-    customerList.refresh();
-    dropdownCustomerValue.value = customerList[0];
-
-    update();
+    }
   }
 
-//----------------Previous order dummy data------------------//
-  RxList<Map<String, dynamic>> previousOrder = <Map<String, dynamic>>[].obs;
-  beatCustomerValueSet() {
-    previousOrder.value = [
-      {
-        "customer_name": "customer-1",
-        "beat_name": "beat-1",
-        "user_id": 1,
-        "products": <Map<String, dynamic>>[
-          {
-            "img":
-                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
-            "productId": 101,
-            "name": "Tylox",
-            "catagory": "Toilet Cleaner",
-            "unit": "pcs",
-            "price": 99.5,
-            "brand": "Remark",
-            "quantity": 5
-          },
-          {
-            "img":
-                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
-            "productId": 101,
-            "name": "Nior Lipgel",
-            "catagory": "Lip care",
-            "unit": "pcs",
-            "price": 120,
-            "brand": "Remark",
-            "quantity": 10
-          },
-          {
-            "img":
-                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
-            "productId": 101,
-            "name": "Blazor facepowder",
-            "catagory": "Face care",
-            "unit": "pcs",
-            "price": 599.5,
-            "brand": "Remark",
-            "quantity": 2
-          }
-        ]
-      },
-      {
-        "customer_name": "customer-1",
-        "beat_name": "beat-1",
-        "user_id": 1,
-        "products": <Map<String, dynamic>>[
-          {
-            "img":
-                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
-            "productId": 101,
-            "name": "Tylox",
-            "catagory": "Toilet Cleaner",
-            "unit": "pcs",
-            "price": 99.5,
-            "brand": "Remark",
-            "quantity": 5
-          },
-          {
-            "img":
-                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
-            "productId": 101,
-            "name": "Nior Lipgel",
-            "catagory": "Lip care",
-            "unit": "pcs",
-            "price": 120,
-            "brand": "Remark",
-            "quantity": 10
-          },
-          {
-            "img":
-                "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
-            "productId": 101,
-            "name": "Blazor cream",
-            "catagory": "Face care",
-            "unit": "pcs",
-            "price": 599.5,
-            "brand": "Remark",
-            "quantity": 2
-          }
-        ]
+  customiseCustomerList({required String beatName}) {
+    final selectedBeat = beatList.firstWhere(
+      (beat) => beat['BEAT_NAME'] == beatName,
+      orElse: () => {},
+    );
+    if (selectedBeat != null) {
+      final selectedBeatId = selectedBeat['ID'];
+      final filteredCustomers = customerList
+          .where((customer) => customer['BEAT_ID'] == selectedBeatId.toString())
+          .toList();
+      if (filteredCustomers.isNotEmpty) {
+        customerData.assignAll(filteredCustomers.map<String>(
+            (customer) => "${customer['CUSTOMER_NAME']} ~${customer['ID']}"));
+        selectedCustomerId.value = filteredCustomers[0]['ID'].toString();
+        DropdownCustomerValueUpdater(
+            customerData.isNotEmpty ? customerData.first : 'Select Customer');
+      } else {
+        customerData.clear();
+        customerData.add('No customer');
+        DropdownCustomerValueUpdater('No customer');
       }
-    ];
-    previousOrder.refresh();
-    // beatCustomer.clear();
-    // beatCustomer.value = ;
-    // beatCustomer.refresh();
-    // update();
+    } else {
+      customerData.clear();
+      customerData.add('No customer');
+      DropdownCustomerValueUpdater('No customer');
+    }
+  }
+
+  initialDropdownValue() async {
+    await requestBeatList();
+    await requestCustomerList();
+    assignBeatData();
+    assignCustomerData();
+  }
+
+  requestBeatList() async {
+    isBeatLoading.value = true;
+    Update();
+    try {
+      final value = await Repository().requestBeatList();
+      if (value != null && value['value'] != []) {
+        beatList.clear();
+        beatList.value = value['value'];
+        beatList.refresh();
+        Pref.writeData(key: Pref.BEATLIST, value: beatList.value);
+      }
+      isBeatLoading.value = false;
+      Update();
+    } on Exception catch (e) {
+      isBeatLoading.value = true;
+      Update();
+    }
+  }
+
+  requestCustomerList() async {
+    isCustomerLoading.value = true;
+    Update();
+    try {
+      final value = await Repository().requestCustomerList();
+      if (value != null && value['value'] != []) {
+        customerList.clear();
+        customerList.value = value['value'];
+        customerList.refresh();
+        Pref.writeData(key: Pref.CUSTOMERLIST, value: customerList.value);
+      }
+      isCustomerLoading.value = false;
+      Update();
+    } on Exception catch (e) {
+      isCustomerLoading.value = false;
+      Update();
+    }
+  }
+
+  assignBeatData() {
+    if (beatList.isNotEmpty) {
+      beatData.clear();
+      beatList.forEach((element) {
+        beatData.add(element['BEAT_NAME']);
+      });
+      beatData.refresh();
+
+      DropdownBeatValueUpdater(beatData[0]);
+    }
+  }
+
+  assignCustomerData() {
+    if (customerList.isNotEmpty) {
+      customerData.clear();
+      customerList.forEach((element) {
+        customerData.add("${element['CUSTOMER_NAME']} ~${element['ID']}");
+      });
+      customerData.refresh();
+
+      customiseCustomerList(beatName: beatData[0]);
+      // DropdownCustomerValueUpdater(customerData[0]);
+    }
   }
 
   RxBool isReorder = false.obs;
   RxBool isReorderCompleted = false.obs;
-
+  RxList<Map<String, dynamic>> previousOrder = <Map<String, dynamic>>[].obs;
   addAllToCart() async {
     final tempList = previousOrder[0]["products"];
     itemList.forEach((element) async {
@@ -342,11 +227,11 @@ class OrderHomeController extends GetxController {
     print("=======================");
     // print(data);
     isReorder.value = true;
-    update();
+    Update();
     loadData();
     Timer(Duration(seconds: 2), () {
       isReorderCompleted.value = true;
-      update();
+      Update();
     });
   }
 
@@ -369,7 +254,6 @@ class OrderHomeController extends GetxController {
     saleRequisitionDao = database.saleRequisitionDao;
     await reqOrderList();
 
-    beatCustomerValueSet();
     initialDropdownValue();
   }
 
@@ -385,7 +269,7 @@ class OrderHomeController extends GetxController {
 
       orderItem.value = value;
       orderItem.refresh();
-      update();
+      Update();
       if (orderItem.length != 0) {
         if (orderItem.length == 1) {
           await reqOrderedItemsList(orderId: orderItem[0].orderId!);
@@ -395,7 +279,7 @@ class OrderHomeController extends GetxController {
         }
       }
       print(orderItem.length);
-      update();
+      Update();
     });
   }
 
@@ -407,7 +291,7 @@ class OrderHomeController extends GetxController {
       itemList.refresh();
       itemList.value = value;
       itemList.refresh();
-      update();
+      Update();
     });
   }
 

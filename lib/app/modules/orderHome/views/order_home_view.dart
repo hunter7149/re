@@ -5,17 +5,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:get/get.dart';
 import 'package:sales/app/components/common_widgets.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
-
 import '../../../../constants.dart';
-import '../../../components/custom_dropdown.dart';
-import '../../../config/app_assets.dart';
-import '../../../data/menus.dart';
-import '../../../models/menu.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/order_home_controller.dart';
 
@@ -55,91 +49,123 @@ class OrderHomeView extends GetView<OrderHomeController> {
               child: Column(
                 children: [
                   Obx(() {
-                    return controller.beatData.isEmpty
-                        ? Container()
-                        : Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                                // color: Colors.blueGrey.shade200,
-                                border: Border.all(
-                                    width: 1, color: Colors.grey.shade500),
-                                borderRadius: BorderRadius.circular(10)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 5),
-                            margin: EdgeInsets.only(top: 10),
-                            width: double.maxFinite,
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                isExpanded: true,
-                                alignment: Alignment.center,
-                                value: controller.dropdownBeatValue.value,
-                                icon: Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.grey.shade700,
+                    return controller.isBeatLoading.value
+                        ? SpinKitThreeBounce(
+                            color: AppThemes.modernBlue,
+                          )
+                        : controller.beatData.isEmpty
+                            ? Container()
+                            : Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    // color: Colors.blueGrey.shade200,
+                                    border: Border.all(
+                                        width: 1, color: Colors.grey.shade500),
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 5),
+                                margin: EdgeInsets.only(top: 10),
+                                width: double.maxFinite,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton(
+                                    isExpanded: true,
+                                    alignment: Alignment.center,
+                                    value: controller.dropdownBeatValue.value,
+                                    icon: Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                    elevation: 2,
+                                    style: TextStyle(
+                                        color: Colors.grey.shade700,
+                                        fontWeight: FontWeight.w300),
+                                    onChanged: (String? newValue) {
+                                      controller.DropdownBeatValueUpdater(
+                                          newValue!);
+                                    },
+                                    items: controller.beatData.value
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
                                 ),
-                                elevation: 2,
-                                style: TextStyle(
-                                    color: Colors.grey.shade700,
-                                    fontWeight: FontWeight.w300),
-                                onChanged: (String? newValue) {
-                                  controller.DropdownBeatValueUpdater(
-                                      newValue!);
-                                },
-                                items: controller.beatData.value
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          );
+                              );
                   }),
                   const SizedBox(height: 10),
                   Obx(() {
-                    return controller.customerList.isEmpty
-                        ? Container()
-                        : Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                                // color: Colors.blueGrey.shade200,
-                                border: Border.all(
-                                    width: 1, color: Colors.grey.shade500),
-                                borderRadius: BorderRadius.circular(10)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 5),
-                            margin: EdgeInsets.only(top: 10),
-                            width: double.maxFinite,
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                isExpanded: true,
-                                alignment: Alignment.center,
-                                value: controller.dropdownCustomerValue.value,
-                                icon: Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.grey.shade700,
-                                ),
-                                elevation: 2,
-                                style: TextStyle(
-                                    color: Colors.grey.shade700,
-                                    fontWeight: FontWeight.w300),
-                                onChanged: (String? newValue) {
-                                  controller.DropdownCustomerValueUpdater(
-                                      newValue!);
-                                },
-                                items: controller.customerList.value
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
+                    return controller.isCustomerLoading.value
+                        ? Container(
+                            height: 30,
+                            child: SpinKitThreeBounce(
+                              color: AppThemes.modernBlue,
                             ),
-                          );
+                          )
+                        : controller.customerData.isEmpty
+                            ? Container()
+                            : Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 1, color: Colors.grey.shade500),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 5),
+                                margin: EdgeInsets.only(top: 10),
+                                width: double.maxFinite,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextField(
+                                      controller:
+                                          controller.searchCustomerController,
+                                      onChanged: (value) {
+                                        Future.delayed(
+                                                Duration(milliseconds: 500))
+                                            .then((v) {
+                                          controller.UpdateFilteredCustomers(
+                                              value);
+                                        });
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: 'Search Customer',
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        isExpanded: true,
+                                        value: controller
+                                            .dropdownCustomerValue.value,
+                                        icon: Icon(
+                                          Icons.arrow_drop_down,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                        elevation: 2,
+                                        style: TextStyle(
+                                          color: Colors.grey.shade700,
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                        onChanged: (String? newValue) {
+                                          controller
+                                              .DropdownCustomerValueUpdater(
+                                                  newValue!);
+                                        },
+                                        items: controller.customerData
+                                            .map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
                   }),
                   const SizedBox(height: 20),
                   Obx(

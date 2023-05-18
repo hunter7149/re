@@ -49,12 +49,14 @@ class ProductbController extends GetxController {
         Get.snackbar("Server error", "Data loaded in offline mode!",
             backgroundColor: AppThemes.modernSexyRed,
             snackPosition: SnackPosition.TOP,
+            borderRadius: 0,
             colorText: Colors.white,
             duration: Duration(seconds: 4));
       }
     } else {
       offlineProductsModule();
       Get.snackbar("No internet", "Data loaded in offline mode!",
+          borderRadius: 0,
           backgroundColor: AppThemes.modernSexyRed,
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,

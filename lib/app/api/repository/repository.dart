@@ -35,15 +35,14 @@ class Repository extends Providers {
               endPoint: AppUrl.productList, method: Method.POST, map: body)
           .then((value) => value);
 
-  Future<dynamic> requestBeatList({required Map<String, dynamic> body}) async =>
-      await tokenBaseApi(
-              endPoint: AppUrl.saleRequisition, method: Method.POST, map: body)
-          .then((value) => value);
-  Future<dynamic> requestCustomerList(
-          {required Map<String, dynamic> body}) async =>
-      await tokenBaseApi(
-              endPoint: AppUrl.saleRequisition, method: Method.POST, map: body)
-          .then((value) => value);
+  Future<dynamic> requestBeatList() async => await tokenBaseApi(
+      endPoint: AppUrl.beatinfoView,
+      method: Method.POST,
+      map: {}).then((value) => value);
+  Future<dynamic> requestCustomerList() async => await tokenBaseApi(
+      endPoint: AppUrl.customerInfoD,
+      method: Method.POST,
+      map: {}).then((value) => value);
 //----------------------------Cloude sync------------------------------//
 
   Future<dynamic> requestSaleRequistion(
