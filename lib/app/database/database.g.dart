@@ -95,7 +95,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `orderId` TEXT, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitprice` REAL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `userId` INTEGER, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `userId` INTEGER, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT, `CustomerId` TEXT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `OfflineOrder` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `status` TEXT)');
 
@@ -379,7 +379,8 @@ class _$OrderItemDao extends OrderItemDao {
                   'longitude': item.longitude,
                   'totalPrice': item.totalPrice,
                   'beatName': item.beatName,
-                  'CustomerName': item.CustomerName
+                  'CustomerName': item.CustomerName,
+                  'CustomerId': item.CustomerId
                 },
             changeListener);
 
@@ -398,6 +399,7 @@ class _$OrderItemDao extends OrderItemDao {
             id: row['id'] as int?,
             orderId: row['orderId'] as String?,
             userId: row['userId'] as int?,
+            CustomerId: row['CustomerId'] as String?,
             status: row['status'] as String?,
             totalItem: row['totalItem'] as int?,
             totalPrice: row['totalPrice'] as double?,
@@ -415,6 +417,7 @@ class _$OrderItemDao extends OrderItemDao {
             id: row['id'] as int?,
             orderId: row['orderId'] as String?,
             userId: row['userId'] as int?,
+            CustomerId: row['CustomerId'] as String?,
             status: row['status'] as String?,
             totalItem: row['totalItem'] as int?,
             totalPrice: row['totalPrice'] as double?,
@@ -434,6 +437,7 @@ class _$OrderItemDao extends OrderItemDao {
             id: row['id'] as int?,
             orderId: row['orderId'] as String?,
             userId: row['userId'] as int?,
+            CustomerId: row['CustomerId'] as String?,
             status: row['status'] as String?,
             totalItem: row['totalItem'] as int?,
             totalPrice: row['totalPrice'] as double?,

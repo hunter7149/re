@@ -13,6 +13,7 @@ import '../../../DAO/orderItemDao.dart';
 import '../../../DAO/saleRequisitionDao.dart';
 import '../../../api/service/prefrences.dart';
 import '../../../components/cart_value.dart';
+import '../../../components/connection_checker.dart';
 import '../../../database/database.dart';
 import '../../../models/orderItem.dart';
 import '../../../models/saleRequisition.dart';
@@ -57,15 +58,15 @@ class OrderHomeController extends GetxController {
   }
 
   RxString selectedCustomerId = ''.obs;
-  RxString dropdownCustomerValue = 'Select Customer'.obs;
-  RxList<String> customerData = <String>['Select Customer'].obs;
+  RxString dropdownCustomerValue = ''.obs;
+  RxList<String> customerData = <String>[''].obs;
 
   DropdownCustomerValueUpdater(String type) {
     dropdownCustomerValue.value = type;
     Update();
     Pref.writeData(key: Pref.CUSTOMER_NAME, value: type);
     final selectedCustomer = customerList.firstWhere(
-      (customer) => customer['CUSTOMER_NAME'] == type.toString().split(" ~")[0],
+      (customer) => customer['ID'].toString() == type.toString().split(" ~")[1],
       orElse: () => {},
     );
     if (selectedCustomer != null) {
@@ -133,15 +134,28 @@ class OrderHomeController extends GetxController {
   }
 
   initialDropdownValue() async {
-    await requestBeatList();
-    await requestCustomerList();
+    if (await IEchecker.checker()) {
+      await requestBeatList();
+      await requestCustomerList();
+      assignBeatData();
+      assignCustomerData();
+    } else {
+      offlineDropDowns();
+    }
+  }
+
+  offlineDropDowns() {
+    beatList.value = Pref.readData(key: Pref.BEATLIST) ?? [];
+    customerList.value = Pref.readData(key: Pref.CUSTOMERLIST) ?? [];
     assignBeatData();
     assignCustomerData();
   }
 
   requestBeatList() async {
     isBeatLoading.value = true;
+    isCustomerLoading.value = true;
     Update();
+
     try {
       final value = await Repository().requestBeatList();
       if (value != null && value['value'] != []) {
@@ -159,8 +173,6 @@ class OrderHomeController extends GetxController {
   }
 
   requestCustomerList() async {
-    isCustomerLoading.value = true;
-    Update();
     try {
       final value = await Repository().requestCustomerList();
       if (value != null && value['value'] != []) {

@@ -14,11 +14,13 @@ class OrderItem {
   double? totalPrice;
   String? beatName;
   String? CustomerName;
+  String? CustomerId;
 
   OrderItem(
       {this.id,
       this.orderId,
       this.userId,
+      this.CustomerId,
       this.status,
       this.totalItem,
       this.totalPrice,

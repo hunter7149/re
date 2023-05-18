@@ -50,10 +50,13 @@ class OrderHomeView extends GetView<OrderHomeController> {
                 children: [
                   Obx(() {
                     return controller.isBeatLoading.value
-                        ? SpinKitThreeBounce(
-                            color: AppThemes.modernBlue,
+                        ? Container(
+                            height: 30,
+                            child: SpinKitRipple(
+                              color: AppThemes.modernGreen,
+                            ),
                           )
-                        : controller.beatData.isEmpty
+                        : controller.beatData[0] == ""
                             ? Container()
                             : Container(
                                 height: 50,
@@ -100,11 +103,11 @@ class OrderHomeView extends GetView<OrderHomeController> {
                     return controller.isCustomerLoading.value
                         ? Container(
                             height: 30,
-                            child: SpinKitThreeBounce(
-                              color: AppThemes.modernBlue,
+                            child: SpinKitRipple(
+                              color: AppThemes.modernGreen,
                             ),
                           )
-                        : controller.customerData.isEmpty
+                        : controller.customerData[0] == ""
                             ? Container()
                             : Container(
                                 decoration: BoxDecoration(

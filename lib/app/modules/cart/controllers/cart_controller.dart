@@ -12,6 +12,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:sales/app/DAO/offlineOrderDao.dart';
 import 'package:sales/app/DAO/orderItemDao.dart';
 import 'package:sales/app/DAO/saleRequisitionDao.dart';
+import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/models/offlineorder.dart';
 import 'package:sales/app/models/orderItem.dart';
@@ -100,6 +101,22 @@ class CartController extends GetxController {
     Update();
   }
 
+  requestOnlineCheckout({required dynamic data}) async {
+    try {
+      await Repository()
+          .requestSaleRequistion(body: {"data": "${data.value}"}).then((value) {
+        isRequesting.value = false;
+        Update();
+        print(value);
+      });
+    } on Exception catch (e) {
+      isRequesting.value = false;
+      Update();
+      print(e);
+    }
+    print("ORDER REQ----->${data}");
+  }
+
   reqRemoveFromCart({required String id}) {
     cartItemDao.deleteCartItemByID(id);
     loadData();
@@ -118,6 +135,7 @@ class CartController extends GetxController {
       // -----------------Running old code-------//
       cartItems.forEach((element) async {
         allItems.add({
+          "name": element.productName,
           "brand": element.brand,
           "productId": element.productId.toString(),
           "quantity": element.quantity,
@@ -129,6 +147,7 @@ class CartController extends GetxController {
       RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
       saleRequisation.value = {
         "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
+        "customerId": selectedCustomerId.toString().split(" ~")[0],
         "lattitude": lattitude, //looks like 20.1234
         "longitude": longitude, //looks like 20.1234
         "totalItemCount": cartItems.length, // in number like 3 or 4
@@ -141,47 +160,11 @@ class CartController extends GetxController {
             ? []
             : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
       };
-      await Repository().requestSaleRequistion(
-          body: {"data": "${saleRequisation.value}"}).then((value) {
-        isRequesting.value = false;
-        Update();
-        print(value);
-      });
-
-      try {
-        isRequesting.value = true;
-        Update();
-      } on Exception catch (e) {
-        print(e);
-      }
-      print("ORDER REQ----->${saleRequisation}");
-
-      //-------One array code---------//
-      // cartItems.forEach((element) async {
-      //   allItems.add({
-      //     "brand": element.brand,
-      //     "productId": element.productId.toString(),
-      //     "quantity": element.quantity,
-      //     "totalPrice": element.price,
-      //     "unitPrice": element.unitPrice,
-      //     "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
-      //     "lattitude": lattitude, //looks like 20.1234
-      //     "longitude": longitude, //looks like 20.1234
-      //     "totalItemCount": cartItems.length, // in number like 3 or 4
-      //     "dateTime": DateTime.now()
-      //         .toString()
-      //         .split(".")[0]
-      //         .toString(), // looks like 2023-05-10 09:55:06.602402
-      //     "totalPrice": totalPrice.value, // like 2034.23
-      //     "beatName": dropdownBeatValue.value, //String
-      //     "CustomerName": dropdownCustomerValue.value,
-      //   });
-      // });
-      // print("ORDER REQ----->${allItems}}");
-      //-----One array code ends here-----//
+      requestOnlineCheckout(data: saleRequisation);
       OrderItem orderItem = OrderItem(
           orderId: "ORD${orderId}",
           userId: 1,
+          CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
           lattitude: lattitude.value,
           longitude: longitude.value,
           status: "Pending",
@@ -235,6 +218,7 @@ class CartController extends GetxController {
           userId: 1,
           lattitude: lattitude.value,
           longitude: longitude.value,
+          CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
           status: "Pending",
           totalItem: cartItems.length,
           dateTime: DateTime.now().toString(),
@@ -320,6 +304,7 @@ class CartController extends GetxController {
           RxList<dynamic> allItems = <dynamic>[].obs;
           itemList.forEach((elmnt) async {
             allItems.add({
+              "name": elmnt.productName,
               "brand": elmnt.brand,
               "productId": elmnt.productId.toString(),
               "quantity": elmnt.quantity,
@@ -331,6 +316,7 @@ class CartController extends GetxController {
           RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
           saleRequisation.value = {
             "orderId": orderItem[0].orderId,
+            "customerId": orderItem[0].CustomerId,
             "lattitude": orderItem[0].lattitude,
             "longitude": orderItem[0].longitude,
             "totalItemCount": orderItem[0].totalItem,
@@ -476,7 +462,7 @@ class CartController extends GetxController {
     Update();
     Pref.writeData(key: Pref.CUSTOMER_NAME, value: type);
     final selectedCustomer = customerList.firstWhere(
-      (customer) => customer['CUSTOMER_NAME'] == type.toString().split(" ~")[0],
+      (customer) => customer['ID'].toString() == type.toString().split(" ~")[1],
       orElse: () => {},
     );
     if (selectedCustomer != null) {
@@ -544,8 +530,19 @@ class CartController extends GetxController {
   }
 
   initialDropdownValue() async {
-    await requestBeatList();
-    await requestCustomerList();
+    if (await IEchecker.checker()) {
+      await requestBeatList();
+      await requestCustomerList();
+      assignBeatData();
+      assignCustomerData();
+    } else {
+      offlineDropDowns();
+    }
+  }
+
+  offlineDropDowns() {
+    beatList.value = Pref.readData(key: Pref.BEATLIST) ?? [];
+    customerList.value = Pref.readData(key: Pref.CUSTOMERLIST) ?? [];
     assignBeatData();
     assignCustomerData();
   }
@@ -597,6 +594,11 @@ class CartController extends GetxController {
       beatData.refresh();
 
       DropdownBeatValueUpdater(beatData[0]);
+    } else {
+      beatData.value = [];
+      dropdownBeatValue.value = '';
+      isBeatLoading.value = false;
+      Update();
     }
   }
 
@@ -610,6 +612,11 @@ class CartController extends GetxController {
 
       customiseCustomerList(beatName: beatData[0]);
       // DropdownCustomerValueUpdater(customerData[0]);
+    } else {
+      customerData.value = [];
+      dropdownCustomerValue.value = '';
+      isCustomerLoading.value = false;
+      Update();
     }
   }
 
@@ -688,3 +695,28 @@ class CartController extends GetxController {
 // _locationData = await location.getLocation();
 // // print(_locationData.latitude);
 // LocationData locationData = _locationData;
+
+
+      //-------One array code---------//
+      // cartItems.forEach((element) async {
+      //   allItems.add({
+      //     "brand": element.brand,
+      //     "productId": element.productId.toString(),
+      //     "quantity": element.quantity,
+      //     "totalPrice": element.price,
+      //     "unitPrice": element.unitPrice,
+      //     "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
+      //     "lattitude": lattitude, //looks like 20.1234
+      //     "longitude": longitude, //looks like 20.1234
+      //     "totalItemCount": cartItems.length, // in number like 3 or 4
+      //     "dateTime": DateTime.now()
+      //         .toString()
+      //         .split(".")[0]
+      //         .toString(), // looks like 2023-05-10 09:55:06.602402
+      //     "totalPrice": totalPrice.value, // like 2034.23
+      //     "beatName": dropdownBeatValue.value, //String
+      //     "CustomerName": dropdownCustomerValue.value,
+      //   });
+      // });
+      // print("ORDER REQ----->${allItems}}");
+      //-----One array code ends here-----//
