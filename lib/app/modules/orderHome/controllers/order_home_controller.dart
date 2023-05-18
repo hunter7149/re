@@ -218,7 +218,7 @@ class OrderHomeController extends GetxController {
   RxBool isReorderCompleted = false.obs;
   RxList<Map<String, dynamic>> previousOrder = <Map<String, dynamic>>[].obs;
   addAllToCart() async {
-    final tempList = previousOrder[0]["products"];
+    // final tempList = previousOrder[0]["products"];
     itemList.forEach((element) async {
       CartItem item = CartItem(
           userId: 1,
