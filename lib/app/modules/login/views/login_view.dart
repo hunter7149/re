@@ -1,3 +1,4 @@
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:proste_bezier_curve/proste_bezier_curve.dart';
 import 'package:sales/app/components/common_widgets.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -110,25 +111,29 @@ class LoginView extends GetView<LoginController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ZoomTapAnimation(
-                      onTap: () {
-                        controller.requestLogin();
-                      },
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                            color: AppThemes.PrimaryColor,
-                            borderRadius: BorderRadius.circular(100)),
-                        child: Center(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.white,
-                            size: 40,
-                          ),
-                        ),
-                      ),
-                    )
+                    Obx(() => controller.isLogingIn.value
+                        ? SpinKitRipple(
+                            color: AppThemes.modernGreen,
+                          )
+                        : ZoomTapAnimation(
+                            onTap: () {
+                              controller.requestLogin();
+                            },
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  color: AppThemes.PrimaryColor,
+                                  borderRadius: BorderRadius.circular(100)),
+                              child: Center(
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.white,
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                          ))
                   ],
                 ),
                 // COMMONWIDGET.button(
