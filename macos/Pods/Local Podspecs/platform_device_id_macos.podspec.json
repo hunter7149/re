@@ -1,0 +1,30 @@
+{
+  "name": "platform_device_id_macos",
+  "version": "0.0.1",
+  "summary": "Flutter macos for platform_device_id plugin.",
+  "description": "A macOS implementation of the platform_device_id plugin.",
+  "homepage": "https://github.com/BestBurning/platform_device_id/tree/master/platform_device_id_macos",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "di1shuai": "zhushuai026@gmail.com"
+  },
+  "source": {
+    "http": "https://github.com/BestBurning/platform_device_id/tree/master/platform_device_id_macos"
+  },
+  "source_files": "Classes/**/*",
+  "dependencies": {
+    "FlutterMacOS": [
+
+    ]
+  },
+  "platforms": {
+    "osx": "10.11"
+  },
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES"
+  },
+  "swift_versions": "5.0",
+  "swift_version": "5.0"
+}
