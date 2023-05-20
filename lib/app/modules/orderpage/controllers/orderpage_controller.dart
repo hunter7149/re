@@ -15,8 +15,8 @@ class OrderpageController extends GetxController {
     await orderItemDao.findAllOrderItem().then((value) {
       orderItem.clear();
       orderItem.refresh();
-
       orderItem.value = value;
+      orderItem.reversed;
       orderItem.refresh();
       print(orderItem.length);
       update();

@@ -50,6 +50,7 @@ class ProductbController extends GetxController {
             backgroundColor: AppThemes.modernSexyRed,
             snackPosition: SnackPosition.TOP,
             borderRadius: 0,
+            animationDuration: Duration(seconds: 0),
             colorText: Colors.white,
             duration: Duration(seconds: 4));
       }
@@ -57,6 +58,7 @@ class ProductbController extends GetxController {
       offlineProductsModule();
       Get.snackbar("No internet", "Data loaded in offline mode!",
           borderRadius: 0,
+          animationDuration: Duration(seconds: 0),
           backgroundColor: AppThemes.modernSexyRed,
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
@@ -66,7 +68,7 @@ class ProductbController extends GetxController {
 
   offlineProductsModule() async {
     dynamic offline = Pref.readData(key: 'offlineData');
-    Map<String, List<dynamic>> offline2 = offline['${data['brand']}'] ?? {};
+    Map<String, dynamic> offline2 = offline['${data['brand']}'] ?? {};
     List<String> offline2Keys = offline2.keys.toList();
     products.clear();
     for (int i = 0; i < offline2.length; i++) {
@@ -76,11 +78,6 @@ class ProductbController extends GetxController {
       });
       products.refresh();
     }
-    // print(offline.runtimeType);
-    // print(offline['nior'].length);
-
-    // products.value = offline['${data['brand']}'] ?? [];
-    // products.refresh();
     isItemCountLoading.value = false;
     Update();
   }
@@ -88,7 +85,6 @@ class ProductbController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // dataSetter(data);
   }
 
   @override

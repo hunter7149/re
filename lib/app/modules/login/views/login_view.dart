@@ -113,7 +113,7 @@ class LoginView extends GetView<LoginController> {
                   children: [
                     Obx(() => controller.isLogingIn.value
                         ? SpinKitRipple(
-                            color: AppThemes.modernGreen,
+                            color: AppThemes.mainBlue,
                           )
                         : ZoomTapAnimation(
                             onTap: () {

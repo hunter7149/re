@@ -198,7 +198,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                 height: 250,
                                 width: double.maxFinite,
                                 decoration: BoxDecoration(
-                                    color: Colors.green.shade300,
+                                    color: AppThemes.modernGreen,
                                     border:
                                         Border.all(color: Colors.grey.shade500),
                                     borderRadius: BorderRadius.circular(10)),

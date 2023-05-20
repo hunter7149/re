@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:workmanager/workmanager.dart';
 import 'app/api/firebase/pushnotificationservice.dart';
+import 'app/api/service/prefrences.dart';
 import 'app/modules/underdevelopment/bindings/underdevelopment_binding.dart';
 import 'app/modules/underdevelopment/views/underdevelopment_view.dart';
 import 'app/routes/app_pages.dart';
@@ -34,8 +35,8 @@ Future<void> main() async {
   // Workmanager().registerPeriodicTask("appSync", "AppSync",
   //     frequency: Duration(seconds: 10));
 
-  await GetStorage.init();
-  String synctime = await GetStorage().read("lastSyncTime") ?? "0";
+  await GetStorage.init("remark_sales_app_data");
+  String synctime = Pref.readData(key: "lastSyncTime") ?? "0";
   if (synctime == " 0") {
     print("Never synced");
   } else {

@@ -79,6 +79,8 @@ class LoginController extends GetxController {
               update();
               Get.snackbar("Failed", "${value['result'] ?? "Try again"}",
                   colorText: Colors.white,
+                  animationDuration: Duration(seconds: 0),
+                  borderRadius: 0,
                   backgroundColor: Colors.red,
                   snackPosition: SnackPosition.BOTTOM);
             }
@@ -88,7 +90,8 @@ class LoginController extends GetxController {
           update();
           Get.snackbar("SERVER ERROR", "TRY AGAIN LATER",
               colorText: Colors.white,
-              borderRadius: 2,
+              animationDuration: Duration(seconds: 0),
+              borderRadius: 0,
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.red.shade500,
               duration: Duration(seconds: 2));
@@ -96,7 +99,8 @@ class LoginController extends GetxController {
       } else {
         Get.snackbar("NO INTERNET", "PLEASE ENABLE INTERNET",
             colorText: Colors.white,
-            borderRadius: 2,
+            animationDuration: Duration(seconds: 0),
+            borderRadius: 0,
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red.shade500,
             duration: Duration(seconds: 2));
@@ -135,7 +139,7 @@ class LoginController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
 
-    String value = GetStorage().read("lastSyncTime") ?? "0";
+    String value = Pref.readData(key: "lastSyncTime") ?? "0";
     print("Saved last sync date = ${value}");
   }
 

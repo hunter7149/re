@@ -22,7 +22,7 @@ class SplashController extends GetxController {
 
   navigate() async {
     await saveDeviceInfo();
-    String token = await GetStorage().read(Pref.LOGIN_INFORMATION) ?? "";
+    String token = await Pref.readData(key: Pref.LOGIN_INFORMATION) ?? "";
     if (token.isNotEmpty) {
       Timer(Duration(milliseconds: 2000), () {
         Get.offNamed(Routes.INDEX);

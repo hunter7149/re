@@ -34,27 +34,7 @@ class ProductcController extends GetxController {
     AppThemes.modernRed,
     AppThemes.modernCoolPink
   ];
-  // late VideoPlayerController videoPlayerController;
 
-  // dynamic argumentData = Get.arguments;
-  // @override
-  // void onInit() {
-  //   print(argumentData[0]['first']);
-  //   print(argumentData[1]['second']);
-  //   super.onInit();
-  // }
-  //RxInt currentIndex = 4.obs;
-// onTapMain(){
-//   Get.toNamed(Routes.INDEX);a
-// }
-
-  // videoInit() async {
-  //   videoPlayerController = VideoPlayerController.network('');
-  //   await videoPlayerController.initialize();
-  //   videoPlayerController.play();
-  //   isVideoInitalized.value = true;
-  //   update();
-  // }
   RxString VideoUrl = "".obs;
   RxBool isVideoInitalized = false.obs;
   seeVideo({required String link}) async {
@@ -114,6 +94,7 @@ class ProductcController extends GetxController {
             snackPosition: SnackPosition.TOP,
             colorText: Colors.white,
             borderRadius: 0,
+            animationDuration: Duration(seconds: 0),
             duration: Duration(seconds: 2));
         isProductLoading.value = false;
         update();
@@ -125,82 +106,12 @@ class ProductcController extends GetxController {
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
           borderRadius: 0,
+          animationDuration: Duration(seconds: 0),
           duration: Duration(seconds: 2));
       isProductLoading.value = false;
       update();
     }
 
-    // products.value = [
-    //   {
-    //     "productId": 101,
-    //     "name": "Tylox",
-    //     "weight": "300 ml",
-    //     "offer": "BOGO",
-    //     "description": "This is a demo product",
-    //     "ingredients": ["Menthol", "Soap"],
-    //     "claims": ["non-alergic", "adove 18"],
-    //     "catagory": "Toilet Cleaner",
-    //     "unit": "pcs",
-    //     "price": 99.5,
-    //     "brand": "Remark",
-    //     "quantity": 5,
-    //     "img":
-    //         "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Cleansing-Foam-2.jpg",
-    //     "video":
-    //         "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
-    //   },
-    //   {
-    //     "productId": 102,
-    //     "name": "Nior",
-    //     "weight": "500 ml",
-    //     "offer": "15% off",
-    //     "description": "This is a demo product",
-    //     "ingredients": ["Serum", "Vitamin C"],
-    //     "claims": ["non-alergic", "adove 18"],
-    //     "catagory": "Toilet Cleaner",
-    //     "unit": "pcs",
-    //     "price": 99.5,
-    //     "brand": "Remark",
-    //     "quantity": 5,
-    //     "img":
-    //         "https://www.rizik.com.bd/wp-content/uploads/Nior-Matte-Lipstick-Pencil-18.jpg",
-    //     "video": "http://techslides.com/demos/sample-videos/small.mp4"
-    //   },
-    //   {
-    //     "productId": 102,
-    //     "name": "Nior",
-    //     "weight": "500 ml",
-    //     "offer": "15% off",
-    //     "description": "This is a demo product",
-    //     "ingredients": ["Serum", "Vitamin C"],
-    //     "claims": ["non-alergic", "adove 18"],
-    //     "catagory": "Toilet Cleaner",
-    //     "unit": "pcs",
-    //     "price": 99.5,
-    //     "brand": "Remark",
-    //     "quantity": 5,
-    //     "img":
-    //         "https://www.rizik.com.bd/wp-content/uploads/Nior-Matte-Lipstick-Pencil-18.jpg",
-    //     "video": "http://techslides.com/demos/sample-videos/small.mp4"
-    //   },
-    //   {
-    //     "productId": 102,
-    //     "name": "Nior",
-    //     "weight": "500 ml",
-    //     "offer": "15% off",
-    //     "description": "This is a demo product",
-    //     "ingredients": ["Serum", "Vitamin C"],
-    //     "claims": ["non-alergic", "adove 18"],
-    //     "catagory": "Toilet Cleaner",
-    //     "unit": "pcs",
-    //     "price": 99.5,
-    //     "brand": "Remark",
-    //     "quantity": 5,
-    //     "img":
-    //         "https://www.rizik.com.bd/wp-content/uploads/Nior-Matte-Lipstick-Pencil-18.jpg",
-    //     "video": "http://techslides.com/demos/sample-videos/small.mp4"
-    //   }
-    // ];
     products.refresh();
     update();
   }
@@ -209,10 +120,6 @@ class ProductcController extends GetxController {
     dynamic offline = Pref.readData(key: 'offlineData');
     products.value =
         offline['${tempData['brand']}']['${tempData['type']}'] ?? [];
-
-    // products.value =
-    //     // await GetStorage().read("${tempData['brand']}-${tempData['type']}") ??
-    //     [];
     products.refresh();
     update();
   }
@@ -359,12 +266,6 @@ class ProductcController extends GetxController {
         Timer(Duration(seconds: 1), () {
           Get.back();
         });
-        // Get.snackbar(
-        //   "Success",
-        //   "Product added successfully!",
-        //   backgroundColor: Colors.green,
-        //   colorText: Colors.white,
-        // );
       } else {
         totalpriceUpdater();
         Get.snackbar(
@@ -376,45 +277,6 @@ class ProductcController extends GetxController {
       }
     }
   }
-
-  // addToCart({required CartItem data}) async {
-  //   if (await ICHECKER.checkConnection()) {
-  //     print("INTERNET");
-  //   } else {
-  //     print("NO INTERNET");
-  //   }
-  //   CartItem item = data;
-  //   if (await cartItemDao.insertCartItem(data).then((value) => true)) {
-  //     totalpriceUpdater();
-  //     CartCounter.cartCounter();
-  //     Get.snackbar(
-  //       "Success",
-  //       "Product added successfully!",
-  //       backgroundColor: Colors.green,
-  //       colorText: Colors.white,
-  //     );
-  //   } else {
-  //     totalpriceUpdater();
-  //     Get.snackbar(
-  //       "Failure",
-  //       "Product was not added!",
-  //       backgroundColor: Colors.red,
-  //       colorText: Colors.white,
-  //     );
-  //   }
-  //   ;
-
-  //   // final data = await cartItemDao.findAllCartItem() as List<CartItem>;
-  //   print("=======================");
-  //   // print(data);
-  //   // isReorder.value = true;
-  //   // update();
-
-  //   // Timer(Duration(seconds: 2), () {
-  //   //   isReorderCompleted.value = true;
-  //   // update();
-  //   // });
-  // }
 
   late CartItemDao cartItemDao;
 
@@ -520,9 +382,9 @@ class ProductcController extends GetxController {
   }
 
   successAlert() async {
+    Get.closeAllSnackbars();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.generalDialog(
-          barrierDismissible: false,
           transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
                 filter: ImageFilter.blur(
                   sigmaX: 4 * anim1.value,
@@ -576,12 +438,8 @@ class ProductcController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    // initializeProducts();
     initValues();
     await assignVideoController();
-
-    // videoInit();
-    // videoController();
   }
 
   @override

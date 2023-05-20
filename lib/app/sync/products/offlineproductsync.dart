@@ -19,6 +19,8 @@ class OFFLINEPRODUCTSYNC {
       Get.snackbar('SYNC', 'PRODUCT SYNCING STATUS: ${isSyncing.value}',
           colorText: Colors.white,
           backgroundColor: AppThemes.modernBlue,
+          borderRadius: 0,
+          animationDuration: Duration(seconds: 0),
           duration: Duration(seconds: 2));
       Map<String, Map<String, List<dynamic>>> ProductData = {};
 // Iterate over the BrandList
@@ -97,6 +99,8 @@ class OFFLINEPRODUCTSYNC {
         Get.snackbar('SYNC COMPLETE', 'OFFLINE PRODUCTS UPDATED',
             colorText: Colors.white,
             backgroundColor: AppThemes.modernGreen,
+            animationDuration: Duration(seconds: 0),
+            borderRadius: 0,
             duration: Duration(seconds: 2));
         print("Sync successful");
       } else {

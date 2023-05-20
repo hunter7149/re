@@ -74,82 +74,91 @@ class OrderpageView extends GetView<OrderpageController> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      "${index + 1} | ",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Order ID: ${controller.orderItem[index].orderId}",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        space(),
-                                        Text(
-                                          "Total price: ${controller.orderItem[index].totalPrice}",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        space(),
-                                        Text(
-                                          "Order date: ${controller.orderItem[index].dateTime.toString().split(".")[0].split(" ")[0]}",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        space(),
-                                        Text(
-                                          "Order time: ${time}",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        space(),
-                                        Text(
-                                          "Beat name: ${controller.orderItem[index].beatName}",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        space(),
-                                        Text(
-                                          "Customer name: ${controller.orderItem[index].CustomerName}",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        space(),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Status: ",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(5),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.deepOrange),
-                                              child: Text(
-                                                "${controller.orderItem[index].status}",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                                    Flexible(
+                                      flex: 1,
+                                      child: Text(
+                                        "${index + 1} | ",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                     Flexible(
+                                      flex: 2,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Order ID: ${controller.orderItem[index].orderId}",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          space(),
+                                          Text(
+                                            "Total price: ${controller.orderItem[index].totalPrice}",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          space(),
+                                          Text(
+                                            "Order date: ${controller.orderItem[index].dateTime.toString().split(".")[0].split(" ")[0]}",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          space(),
+                                          Text(
+                                            "Order time: ${time}",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          space(),
+                                          Text(
+                                            "Beat name: ${controller.orderItem[index].beatName}",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          space(),
+                                          Text(
+                                            "Customer name: ${controller.orderItem[index].CustomerName}",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          space(),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Status: ",
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.deepOrange),
+                                                child: Text(
+                                                  "${controller.orderItem[index].status}",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Flexible(
+                                      flex: 2,
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,

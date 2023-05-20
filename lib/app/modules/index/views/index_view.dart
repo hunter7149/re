@@ -201,8 +201,12 @@ class IndexView extends GetView<IndexController> {
                             )),
                         label: 'Cart'),
                     BottomNavigationBarItem(
-                        icon: Icon(FontAwesomeIcons.shoppingBag),
-                        label: 'Orders'),
+                      icon: Icon(
+                        Icons.history_sharp,
+                        size: 30,
+                      ),
+                      label: 'Orders',
+                    ),
                     BottomNavigationBarItem(
                         icon: Icon(FontAwesomeIcons.listUl), label: 'More'),
                   ],

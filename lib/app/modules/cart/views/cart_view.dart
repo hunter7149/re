@@ -617,6 +617,8 @@ class CartView extends GetView<CartController> {
                         "Item removed!", "The item was removed from your cart!",
                         colorText: Colors.white,
                         backgroundColor: Colors.red,
+                        animationDuration: Duration(seconds: 0),
+                        borderRadius: 0,
                         duration: Duration(seconds: 1));
                   },
                   child: Container(

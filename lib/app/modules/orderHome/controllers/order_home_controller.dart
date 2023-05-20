@@ -47,8 +47,8 @@ class OrderHomeController extends GetxController {
 
   //-------------------------Beat Dropdown menu--------------------//
   TextEditingController searchCustomerController = TextEditingController();
-  RxString dropdownBeatValue = 'Select beat'.obs;
-  RxList<String> beatData = <String>['Select beat'].obs;
+  RxString dropdownBeatValue = ''.obs;
+  RxList<String> beatData = <String>[''].obs;
 
   DropdownBeatValueUpdater(String type) {
     dropdownBeatValue.value = type;
@@ -167,7 +167,7 @@ class OrderHomeController extends GetxController {
       isBeatLoading.value = false;
       Update();
     } on Exception catch (e) {
-      isBeatLoading.value = true;
+      isBeatLoading.value = false;
       Update();
     }
   }

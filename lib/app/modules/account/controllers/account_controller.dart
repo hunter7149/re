@@ -8,18 +8,17 @@ import 'package:sales/app/routes/app_pages.dart';
 class AccountController extends GetxController {
   logOut() async {
     // await removeData();
-    await GetStorage().remove(Pref.LOGIN_INFORMATION).then((value) async {
-      await GetStorage().remove(Pref.USER_ID);
-      await GetStorage().remove(Pref.USER_PASSWORD);
-      // await GetStorage().remove(Pref.FCM_TOKEN);
-      Get.offNamed(Routes.LOGIN);
-    });
+    Pref.removeData(key: Pref.LOGIN_INFORMATION);
+    Pref.readData(key: Pref.USER_ID);
+    Pref.removeData(key: Pref.USER_PASSWORD);
+    // await GetStorage().remove(Pref.FCM_TOKEN);
+    Get.offNamed(Routes.LOGIN);
   }
 
   removeData() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference stringsCollection = firestore.collection('fcm_token');
-    String emailText = GetStorage().read(Pref.USER_ID);
+    String emailText = Pref.readData(key: Pref.USER_ID);
 
     try {
       await stringsCollection.doc(emailText).delete();
