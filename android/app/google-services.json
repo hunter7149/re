@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "972347186101",
+    "project_id": "remark-sales",
+    "storage_bucket": "remark-sales.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972347186101:android:069e3aaf5c73df604ad7fc",
+        "android_client_info": {
+          "package_name": "com.remark.sales"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972347186101-laj9vjggq22djq9rfnib7cqcvebok4mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJdPWc_3ekKhtz0W4apluQMqSqvtNAveE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972347186101-laj9vjggq22djq9rfnib7cqcvebok4mm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

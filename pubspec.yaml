@@ -1,0 +1,82 @@
+name: sales
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.1 <3.0.0"
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  quickalert: ^1.0.1
+  cupertino_icons: ^1.0.2
+  get: 4.6.5
+  animated_text_kit: ^4.2.2
+  orientation: ^1.2.0
+  dropdown_button2: ^1.9.2
+  zoom_tap_animation: ^1.1.0
+  font_awesome_flutter: ^10.3.0
+  cached_network_image: ^3.2.3
+  google_maps_flutter: ^2.2.3
+  floor: ^1.4.1
+  chewie: ^1.4.0
+  geocoding: ^2.0.5
+  carousel_slider: ^4.2.1
+  video_player: ^2.5.1
+  proste_bezier_curve: ^2.0.2
+  location: ^4.4.0
+  intl: ^0.18.0
+  cool_alert: ^1.1.0
+  connectivity_plus: ^3.0.3
+  dio: ^4.0.6
+  package_info_plus: ^3.0.3
+  get_storage: ^2.0.3
+  mime: ^1.0.4
+  workmanager: ^0.5.1
+  fluttertoast: ^8.1.3
+  flutter_spinkit: ^5.1.0
+  internet_connection_checker: ^1.0.0+1
+  firebase_core: ^2.7.0
+  firebase_messaging: ^14.2.5
+  flutter_local_notifications: ^13.0.0
+  cloud_firestore: ^4.7.0
+  platform_device_id: ^1.0.1
+
+
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  floor_generator: ^1.4.1
+  build_runner: ^2.1.2
+  flutter_launcher_icons: ^0.11.0
+
+  # flutter_lints: ^2.0.0
+  
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo/remark.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/logo/remark.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/logo/remark.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/logo/remark.png"
+flutter:
+  assets:
+    - assets/logo/
+    - assets/images/
+
+  uses-material-design: true
