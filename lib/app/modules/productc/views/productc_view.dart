@@ -340,7 +340,7 @@ class ProductcView extends GetView<ProductcController> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 10,
+                                                  width: 5,
                                                 ),
                                                 ZoomTapAnimation(
                                                   onTap: () {

@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
+import '../modules/addcustomer/bindings/addcustomer_binding.dart';
+import '../modules/addcustomer/views/addcustomer_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
@@ -154,6 +156,11 @@ class AppPages {
       name: _Paths.UNDERDEVELOPMENT,
       page: () => const UnderdevelopmentView(),
       binding: UnderdevelopmentBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADDCUSTOMER,
+      page: () => const AddcustomerView(),
+      binding: AddcustomerBinding(),
     ),
   ];
 }

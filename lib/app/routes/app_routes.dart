@@ -23,6 +23,7 @@ abstract class Routes {
   static const NOTICESCREEN = _Paths.NOTICESCREEN;
   static const PRODUCTINFO = _Paths.PRODUCTINFO;
   static const UNDERDEVELOPMENT = _Paths.UNDERDEVELOPMENT;
+  static const ADDCUSTOMER = _Paths.ADDCUSTOMER;
 }
 
 abstract class _Paths {
@@ -47,4 +48,5 @@ abstract class _Paths {
   static const NOTICESCREEN = '/noticescreen';
   static const PRODUCTINFO = '/productinfo';
   static const UNDERDEVELOPMENT = '/underdevelopment';
+  static const ADDCUSTOMER = '/addcustomer';
 }

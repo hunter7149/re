@@ -9,4 +9,5 @@ class AppAssets {
   static const String ASSET_UNDERDEV = 'assets/logo/underdev.png';
   static const String ASSET_EDIT_PROFILE = 'assets/logo/editprof.png';
   static const String ASSET_TASKS = 'assets/logo/tasks.png';
+  static const String ASSET_ADD_USER = 'assets/images/adduser.png';
 }
