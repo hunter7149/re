@@ -14,6 +14,8 @@ class Pref {
   static var CUSTOMER_CODE = "customer_code";
   static var BEATLIST = "beatlist";
   static var CUSTOMERLIST = "customerlist";
+  static var RESTRICTION_STATUS = 'restriction_status';
+  static var RESTRICTION_MESSAGE = 'restriction_message';
 
   static void writeData({required String key, required dynamic value}) =>
       box.write(key, value);

@@ -10,4 +10,5 @@ class AppAssets {
   static const String ASSET_EDIT_PROFILE = 'assets/logo/editprof.png';
   static const String ASSET_TASKS = 'assets/logo/tasks.png';
   static const String ASSET_ADD_USER = 'assets/images/adduser.png';
+  static const String ASSET_RESTRICTION = 'assets/images/restricted.jpg';
 }

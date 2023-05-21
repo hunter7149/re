@@ -24,6 +24,7 @@ abstract class Routes {
   static const PRODUCTINFO = _Paths.PRODUCTINFO;
   static const UNDERDEVELOPMENT = _Paths.UNDERDEVELOPMENT;
   static const ADDCUSTOMER = _Paths.ADDCUSTOMER;
+  static const RESTRICTION = _Paths.RESTRICTION;
 }
 
 abstract class _Paths {
@@ -49,4 +50,5 @@ abstract class _Paths {
   static const PRODUCTINFO = '/productinfo';
   static const UNDERDEVELOPMENT = '/underdevelopment';
   static const ADDCUSTOMER = '/addcustomer';
+  static const RESTRICTION = '/restriction';
 }

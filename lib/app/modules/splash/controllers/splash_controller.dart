@@ -24,9 +24,15 @@ class SplashController extends GetxController {
     await saveDeviceInfo();
     String token = await Pref.readData(key: Pref.LOGIN_INFORMATION) ?? "";
     if (token.isNotEmpty) {
-      Timer(Duration(milliseconds: 2000), () {
-        Get.offNamed(Routes.INDEX);
-      });
+      bool restrictionstatus =
+          Pref.readData(key: Pref.RESTRICTION_STATUS) ?? false;
+      if (restrictionstatus) {
+        Get.toNamed(Routes.RESTRICTION);
+      } else {
+        Timer(Duration(milliseconds: 2000), () {
+          Get.offNamed(Routes.INDEX);
+        });
+      }
     } else {
       Timer(Duration(milliseconds: 2000), () {
         // final status = GetStorage().read('login_status') ?? false;

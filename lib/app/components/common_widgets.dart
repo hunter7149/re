@@ -5,6 +5,7 @@ import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sales/app/components/AppColors.dart';
 import 'package:sales/app/config/app_themes.dart';
+import 'package:sales/app/routes/app_pages.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../api/service/prefrences.dart';
@@ -39,6 +40,55 @@ class COMMONWIDGET {
               ZoomTapAnimation(
                 onTap: () {
                   Get.back();
+                },
+                child: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                      color: AppThemes.PrimaryColor,
+                      borderRadius: BorderRadius.circular(100)),
+                  child: Center(
+                      child: Text(
+                    "OK",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  static restriction({required String message}) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            AppAssets.ASSET_RESTRICTION,
+            height: 300,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            "${message}",
+            style: TextStyle(color: Colors.grey.shade700, fontSize: 18),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ZoomTapAnimation(
+                onTap: () {
+                  Get.offNamed(Routes.LOGIN);
                 },
                 child: Container(
                   height: 60,
@@ -131,6 +181,17 @@ class COMMONWIDGET {
   }
 
   static saveNotification(RemoteMessage message) {
+    if (message.notification != null) {
+      if (message.notification!.title!.toLowerCase().contains("restrict")) {
+        Pref.writeData(key: Pref.RESTRICTION_STATUS, value: true);
+        Pref.writeData(
+            key: Pref.RESTRICTION_MESSAGE, value: message.notification!.body);
+        Get.offNamed(Routes.RESTRICTION);
+      } else if (message.notification!.title!.toLowerCase().contains("allow")) {
+        Pref.writeData(key: Pref.RESTRICTION_STATUS, value: false);
+        Pref.removeData(key: Pref.RESTRICTION_MESSAGE);
+      } else {}
+    }
     RxList<dynamic> noticelist = <dynamic>[].obs;
     print(
         "Recieved data type: ---------------- ${Pref.readData(key: Pref.NOTICE_LIST)}");

@@ -16,12 +16,12 @@ class OFFLINEPRODUCTSYNC {
     if (await IEchecker.checker()) {
       isSyncing.value = true;
       Update();
-      Get.snackbar('SYNC', 'PRODUCT SYNCING STATUS: ${isSyncing.value}',
-          colorText: Colors.white,
-          backgroundColor: AppThemes.modernBlue,
-          borderRadius: 0,
-          animationDuration: Duration(seconds: 0),
-          duration: Duration(seconds: 2));
+      // Get.snackbar('SYNC', 'PRODUCT SYNCING STATUS: ${isSyncing.value}',
+      //     colorText: Colors.white,
+      //     backgroundColor: AppThemes.modernBlue,
+      //     borderRadius: 0,
+      //     animationDuration: Duration(seconds: 0),
+      //     duration: Duration(seconds: 2));
       Map<String, Map<String, List<dynamic>>> ProductData = {};
 // Iterate over the BrandList
       for (var brand in brands) {

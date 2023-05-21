@@ -34,6 +34,8 @@ import '../modules/productinfo/bindings/productinfo_binding.dart';
 import '../modules/productinfo/views/productinfo_view.dart';
 import '../modules/promotionalads/bindings/promotionalads_binding.dart';
 import '../modules/promotionalads/views/promotionalads_view.dart';
+import '../modules/restriction/bindings/restriction_binding.dart';
+import '../modules/restriction/views/restriction_view.dart';
 import '../modules/services/bindings/services_binding.dart';
 import '../modules/services/views/services_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -161,6 +163,11 @@ class AppPages {
       name: _Paths.ADDCUSTOMER,
       page: () => AddcustomerView(),
       binding: AddcustomerBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESTRICTION,
+      page: () => const RestrictionView(),
+      binding: RestrictionBinding(),
     ),
   ];
 }

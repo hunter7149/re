@@ -96,7 +96,8 @@ class OFFLINEORDERSYNC {
           await offlineOrderDao.deleteOrderItemByID(element.orderId!);
         });
 
-        Get.snackbar("SYNC SUCCESS", "Sync with cloud done",
+        Get.snackbar(
+            "SYNC SUCCESS", "OFFLINE ORDERS HAS BEEN SYNCED WITH THE SERVER",
             backgroundColor: AppThemes.modernGreen,
             duration: Duration(seconds: 2),
             animationDuration: Duration(seconds: 0),

@@ -73,7 +73,14 @@ class LoginController extends GetxController {
               isLogingIn.value = false;
               update();
               Platform.isAndroid ? firebaseStore() : () {};
-              Get.offNamed(Routes.INDEX);
+
+              bool restrictionstatus =
+                  Pref.readData(key: Pref.RESTRICTION_STATUS) ?? false;
+              if (restrictionstatus) {
+                Get.toNamed(Routes.RESTRICTION);
+              } else {
+                Get.offNamed(Routes.INDEX);
+              }
             } else {
               isLogingIn.value = false;
               update();

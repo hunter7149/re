@@ -50,6 +50,7 @@ class FirebaseService {
         // }
         COMMONWIDGET.saveNotification(message);
         noticeViewer(message: message);
+
         // _flutterLocalNotificationsPlugin.show(
         //     notification.hashCode,
         //     notification.title,
