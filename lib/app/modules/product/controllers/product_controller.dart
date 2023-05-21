@@ -10,6 +10,17 @@ import 'package:sales/app/sync/products/offlineproductsync.dart';
 import '../../../routes/app_pages.dart';
 
 class ProductController extends GetxController {
+  List<Color> randomeColor = [
+    AppThemes.modernBlue,
+    AppThemes.modernGreen,
+    AppThemes.modernPurple,
+    AppThemes.modernRed,
+    AppThemes.modernCoolPink,
+    AppThemes.modernSexyRed,
+    AppThemes.modernChocolate,
+    AppThemes.modernPlantation
+  ];
+
   RxList<dynamic> mainProductList = <dynamic>[].obs;
 
   RxList<dynamic> categories = <dynamic>[].obs;

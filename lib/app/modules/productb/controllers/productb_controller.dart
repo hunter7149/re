@@ -8,6 +8,17 @@ import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/config/app_themes.dart';
 
 class ProductbController extends GetxController {
+  List<Color> randomeColor = [
+    AppThemes.modernBlue,
+    AppThemes.modernGreen,
+    AppThemes.modernPurple,
+    AppThemes.modernRed,
+    AppThemes.modernCoolPink,
+    AppThemes.modernSexyRed,
+    AppThemes.modernChocolate,
+    AppThemes.modernPlantation
+  ];
+
   final count = 0.0.obs;
   RxList<dynamic> products = <dynamic>[].obs;
   RxMap<String, dynamic> data = <String, dynamic>{}.obs;

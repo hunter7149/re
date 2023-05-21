@@ -21,7 +21,7 @@ class ProductcView extends GetView<ProductcController> {
   const ProductcView({Key? key, required this.argument}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    int randome = Random().nextInt(5);
+    int randome = Random().nextInt(7);
     controller.setData(data: argument);
 
     //final  data=Get.arguments;

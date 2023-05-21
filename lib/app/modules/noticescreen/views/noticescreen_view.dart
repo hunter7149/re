@@ -101,6 +101,7 @@ class NoticescreenView extends GetView<NoticescreenController> {
                                       child: Text(
                                         controller.notices[index]['title'] ??
                                             "",
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 16),
                                       ),
@@ -113,6 +114,7 @@ class NoticescreenView extends GetView<NoticescreenController> {
                                       child: Text(
                                           controller.notices[index]['body'] ??
                                               "",
+                                          textAlign: TextAlign.center,
                                           style:
                                               TextStyle(color: Colors.black)))
                                 ],

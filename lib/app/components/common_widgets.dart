@@ -229,6 +229,7 @@ class COMMONWIDGET {
         toolbarHeight: 50.0,
         bottomOpacity: 0.0,
         elevation: 0.0,
+        leadingWidth: 30,
         titleTextStyle: TextStyle(color: Colors.grey.shade700),
         title: Text(tittle),
         actions: [

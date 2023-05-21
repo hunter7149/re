@@ -32,7 +32,10 @@ class ProductcController extends GetxController {
     AppThemes.modernGreen,
     AppThemes.modernPurple,
     AppThemes.modernRed,
-    AppThemes.modernCoolPink
+    AppThemes.modernCoolPink,
+    AppThemes.modernSexyRed,
+    AppThemes.modernChocolate,
+    AppThemes.modernPlantation
   ];
 
   RxString VideoUrl = "".obs;

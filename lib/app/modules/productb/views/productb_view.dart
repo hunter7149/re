@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -20,6 +22,7 @@ class ProductbView extends GetView<ProductbController> {
 
   @override
   Widget build(BuildContext context) {
+    int randome = Random().nextInt(7);
     controller.dataSetter(argument);
     return Scaffold(
         backgroundColor: Colors.white,
@@ -38,13 +41,15 @@ class ProductbView extends GetView<ProductbController> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SpinKitDoubleBounce(color: AppThemes.modernGreen),
+                      SpinKitDoubleBounce(
+                          color: controller.randomeColor[randome]),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
                         "Loading catalogue..",
-                        style: TextStyle(color: AppThemes.modernGreen),
+                        style:
+                            TextStyle(color: controller.randomeColor[randome]),
                       )
                     ],
                   ),
@@ -56,10 +61,14 @@ class ProductbView extends GetView<ProductbController> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              "assets/images/emptycart.png",
+                              "assets/images/emptybox.jpg",
                               height: 200,
                             ),
-                            Text("No products found!"),
+                            Text(
+                              "No products found!",
+                              style: TextStyle(
+                                  color: Colors.grey.shade800, fontSize: 18),
+                            ),
                           ],
                         ),
                       ),
@@ -87,7 +96,8 @@ class ProductbView extends GetView<ProductbController> {
                                     borderRadius: BorderRadius.circular(15),
                                     border: Border.all(
                                         width: 1,
-                                        color: AppThemes.modernGreen)),
+                                        color:
+                                            controller.randomeColor[randome])),
                                 child: Row(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -104,7 +114,8 @@ class ProductbView extends GetView<ProductbController> {
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) => Center(
                                               child: SpinKitThreeBounce(
-                                            color: AppThemes.modernGreen,
+                                            color: controller
+                                                .randomeColor[randome],
                                           )),
                                           errorWidget: (ctx, url, err) =>
                                               Image.asset(
@@ -139,7 +150,8 @@ class ProductbView extends GetView<ProductbController> {
                                       width: 90,
                                       // margin: EdgeInsets.only(top: 20),
                                       decoration: BoxDecoration(
-                                          color: AppThemes.modernGreen,
+                                          color:
+                                              controller.randomeColor[randome],
                                           borderRadius: BorderRadius.only(
                                               topLeft: Radius.circular(15),
                                               bottomLeft: Radius.circular(15))),

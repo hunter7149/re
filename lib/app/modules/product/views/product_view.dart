@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:sales/app/components/common_widgets.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/modules/product/controllers/product_controller.dart';
@@ -17,6 +19,7 @@ class ProductView extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
+    int randome = Random().nextInt(7);
     List brands = controller.brands;
 
     final colorScheme = Theme.of(context).colorScheme;
@@ -81,7 +84,8 @@ class ProductView extends GetView<ProductController> {
                                 topLeft: Radius.circular(20),
                                 bottomRight: Radius.circular(20)),
                             border: Border.all(
-                                width: 1, color: AppThemes.modernGreen)),
+                                width: 1,
+                                color: controller.randomeColor[randome])),
                         child: ClipRRect(
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),

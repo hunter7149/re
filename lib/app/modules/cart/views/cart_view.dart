@@ -19,18 +19,6 @@ class CartView extends GetView<CartController> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        // appBar: AppBar(
-        //   backgroundColor: AppThemes.modernGreen,
-        //   elevation: 0,
-        //   title: const Text(
-        //     'Cart',
-        //     style: TextStyle(
-        //         color: Colors.black,
-        //         letterSpacing: 1,
-        //         fontWeight: FontWeight.bold),
-        //   ),
-        //   centerTitle: true,
-        // ),
         body: Obx(() => controller.cartItems.length == 0
             ? Center(
                 child: Container(
@@ -38,10 +26,14 @@ class CartView extends GetView<CartController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        "assets/images/emptycart.png",
+                        "assets/images/emptyproduct.jpg",
                         height: 200,
                       ),
-                      Text("You have no items in your cart!"),
+                      Text(
+                        "No product in cart!",
+                        style: TextStyle(
+                            color: Colors.grey.shade800, fontSize: 18),
+                      ),
                     ],
                   ),
                 ),

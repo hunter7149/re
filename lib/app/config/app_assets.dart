@@ -5,7 +5,7 @@ class AppAssets {
   static const String ASSET_BRAND_IMAGE = 'assets/images/brand.png';
   static const String ASSET_EMPTY_IMAGE = 'assets/images/empty.png';
   static const String ASSET_PRODUCT_IMAGE = 'assets/images/product.png';
-  static const String ASSET_BEAUTY_PRODUCT_IMAGE = 'assets/images/product.png';
+  // static const String ASSET_BEAUTY_PRODUCT_IMAGE = 'assets/images/product.png';
   static const String ASSET_UNDERDEV = 'assets/logo/underdev.png';
   static const String ASSET_EDIT_PROFILE = 'assets/logo/editprof.png';
   static const String ASSET_TASKS = 'assets/logo/tasks.png';

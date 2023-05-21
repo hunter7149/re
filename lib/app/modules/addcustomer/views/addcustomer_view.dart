@@ -31,7 +31,7 @@ class AddcustomerView extends GetView<AddcustomerController> {
                 top: 0,
                 left: 0,
                 right: 0,
-                bottom: 80,
+                bottom: 60,
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
@@ -545,15 +545,15 @@ class AddcustomerView extends GetView<AddcustomerController> {
                       // Get.back();
                     },
                     child: Container(
-                      height: 70,
+                      height: 60,
                       decoration: BoxDecoration(color: AppThemes.modernGreen),
                       child: Center(
                         child: Text(
                           "Add customer",
                           style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 22),
                         ),
                       ),
                     ),
