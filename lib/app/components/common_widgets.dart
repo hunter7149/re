@@ -134,7 +134,7 @@ class COMMONWIDGET {
     RxList<dynamic> noticelist = <dynamic>[].obs;
     print(
         "Recieved data type: ---------------- ${Pref.readData(key: Pref.NOTICE_LIST)}");
-    noticelist.value = GetStorage().read(Pref.NOTICE_LIST) ?? [];
+    noticelist.value = Pref.readData(key: Pref.NOTICE_LIST) ?? [];
 
     noticelist.refresh();
     if (message.notification != null) {

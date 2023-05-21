@@ -198,6 +198,11 @@ class OrderHomeController extends GetxController {
       beatData.refresh();
 
       DropdownBeatValueUpdater(beatData[0]);
+    } else {
+      beatData.value = [];
+      dropdownBeatValue.value = '';
+      isBeatLoading.value = false;
+      Update();
     }
   }
 
@@ -210,7 +215,14 @@ class OrderHomeController extends GetxController {
       customerData.refresh();
 
       customiseCustomerList(beatName: beatData[0]);
+      isCustomerLoading.value = false;
+      Update();
       // DropdownCustomerValueUpdater(customerData[0]);
+    } else {
+      customerData.value = [];
+      dropdownCustomerValue.value = '';
+      isCustomerLoading.value = false;
+      Update();
     }
   }
 

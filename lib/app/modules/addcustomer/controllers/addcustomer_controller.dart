@@ -1,7 +1,9 @@
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sales/app/components/connection_checker.dart';
+import 'package:sales/app/components/thana_finder.dart';
 
 import '../../../api/repository/repository.dart';
 import '../../../api/service/prefrences.dart';
@@ -17,6 +19,8 @@ class AddcustomerController extends GetxController {
   TextEditingController phone = TextEditingController();
   TextEditingController national_id = TextEditingController();
   TextEditingController remark_id = TextEditingController();
+  TextEditingController current_balance = TextEditingController();
+  TextEditingController credit_limit = TextEditingController();
 
   //--------Dropdown beat ----------//
 
@@ -31,10 +35,21 @@ class AddcustomerController extends GetxController {
   }
 
   initvalues() async {
+    print("${BANGLADESHGEOCODE.returnThana(districtName: "Dhaka")}");
     if (await IEchecker.checker()) {
       await requestBeatList();
       await assignBeatData();
+      Division.clear();
+      Division.value =
+          BANGLADESHGEOCODE.returnDivision(countryName: 'Bangladesh');
+      Division.refresh();
+      dropdownDivisionValue.value = Division.isEmpty ? '' : Division[0];
     } else {
+      Division.clear();
+      Division.value =
+          BANGLADESHGEOCODE.returnDivision(countryName: 'Bangladesh');
+      Division.refresh();
+      dropdownDivisionValue.value = Division.isEmpty ? '' : Division[0];
       beatList.value = Pref.readData(key: Pref.BEATLIST) ?? [];
       await assignBeatData();
     }
@@ -81,6 +96,71 @@ class AddcustomerController extends GetxController {
 
   DropdownCustomerValueUpdater(String type) {
     dropdownCustomerValue.value = type;
+    Update();
+  }
+
+  //------------------Dropdown country------------------/
+
+  RxString dropdownCountryValue = 'Bangladesh'.obs;
+  RxList<String> Country = <String>['Bangladesh'].obs;
+  DropdownCountryValueUpdater(String type) {
+    dropdownCountryValue.value = type;
+    Division.clear();
+    Division.value = BANGLADESHGEOCODE.returnDivision(countryName: type);
+    Division.refresh();
+    dropdownDivisionValue.value = Division.isEmpty ? '' : Division[0];
+    Update();
+  }
+
+  //---Division setter---//
+
+  RxString dropdownDivisionValue = ''.obs;
+  RxList<String> Division = <String>[''].obs;
+
+  DropdownDivisionValueUpdater(String type) {
+    dropdownDivisionValue.value = type;
+    District.clear();
+    District.value = BANGLADESHGEOCODE.returnDistrict(divisionName: type);
+    District.refresh();
+    dropdownDistrictValue.value = District.isEmpty ? '' : District[0];
+    Update();
+  }
+
+  //----District setter---//
+  RxString dropdownDistrictValue = ''.obs;
+  RxList<String> District = <String>[''].obs;
+
+  DropdownDistrictValueUpdater(String type) {
+    dropdownDistrictValue.value = type;
+    Thana.clear();
+    Thana.value = BANGLADESHGEOCODE.returnThana(districtName: type);
+    Thana.refresh();
+    dropdownThanaValue.value = Thana.isEmpty ? '' : Thana[0];
+    Update();
+  }
+
+  //---Thana list ----//
+  RxString dropdownThanaValue = ''.obs;
+  RxList<String> Thana = <String>[''].obs;
+
+  DropdownThanaValueUpdater(String type) {
+    dropdownThanaValue.value = type;
+    Update();
+  }
+
+  //--------Image file---------//
+  final file = Rxn<XFile>();
+  setFile(XFile? f) {
+    file.value = f;
+    Update();
+  }
+
+  RxBool isLocal = false.obs;
+  final profileImage = Rxn<XFile>();
+  RxString networkImage = ''.obs;
+  setImageFile(XFile f) {
+    isLocal.value = true;
+    profileImage.value = f;
     Update();
   }
 

@@ -508,7 +508,8 @@ class CartController extends GetxController {
         beatData.add(element['BEAT_NAME']);
       });
       beatData.refresh();
-
+      isBeatLoading.value = false;
+      Update();
       DropdownBeatValueUpdater(beatData[0]);
     } else {
       beatData.value = [];
@@ -525,7 +526,8 @@ class CartController extends GetxController {
         customerData.add("${element['CUSTOMER_NAME']} ~${element['ID']}");
       });
       customerData.refresh();
-
+      isCustomerLoading.value = false;
+      Update();
       customiseCustomerList(beatName: beatData[0]);
       // DropdownCustomerValueUpdater(customerData[0]);
     } else {
