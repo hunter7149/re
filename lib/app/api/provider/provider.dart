@@ -36,6 +36,7 @@ abstract class Providers implements CallBack {
       required Method method,
       required Map<String, dynamic> map}) async {
     String token = Pref.readData(key: Pref.LOGIN_INFORMATION);
+    print(token);
 
     ///Adding some value in recieved map
     Map<String, dynamic> finalMap = map;

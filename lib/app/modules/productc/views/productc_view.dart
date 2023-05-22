@@ -312,6 +312,58 @@ class ProductcView extends GetView<ProductcController> {
                                                   width: 60,
                                                   height: 20,
                                                   child: TextField(
+                                                    onChanged: (value) {
+                                                      if (quanity
+                                                          .text.isNotEmpty) {
+                                                        if (int.parse(
+                                                                quanity.text) >
+                                                            0) {
+                                                          controller.calculation(
+                                                              price: double.parse(controller
+                                                                  .returnPrice(
+                                                                      productCode:
+                                                                          '${controller.products[i]['PRODUCT_CODE']}')
+                                                                  .toString()),
+                                                              quanity: int
+                                                                  .parse(quanity
+                                                                      .text));
+                                                        } else if (int.parse(
+                                                                quanity.text) <=
+                                                            0) {
+                                                          quanity.text = '1';
+                                                          controller.calculation(
+                                                              price: double.parse(controller
+                                                                  .returnPrice(
+                                                                      productCode:
+                                                                          '${controller.products[i]['PRODUCT_CODE']}')
+                                                                  .toString()),
+                                                              quanity: int
+                                                                  .parse(quanity
+                                                                      .text));
+                                                        } else {
+                                                          quanity.text = '1';
+                                                          controller.calculation(
+                                                              price: double.parse(controller
+                                                                  .returnPrice(
+                                                                      productCode:
+                                                                          '${controller.products[i]['PRODUCT_CODE']}')
+                                                                  .toString()),
+                                                              quanity: int
+                                                                  .parse(quanity
+                                                                      .text));
+                                                        }
+                                                      } else {
+                                                        quanity.text = '1';
+                                                        controller.calculation(
+                                                            price: double.parse(controller
+                                                                .returnPrice(
+                                                                    productCode:
+                                                                        '${controller.products[i]['PRODUCT_CODE']}')
+                                                                .toString()),
+                                                            quanity: int.parse(
+                                                                quanity.text));
+                                                      }
+                                                    },
                                                     style:
                                                         TextStyle(fontSize: 14),
                                                     keyboardType:

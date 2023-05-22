@@ -309,7 +309,85 @@ class CartView extends GetView<CartController> {
                                                                               .text,
                                                                       price:
                                                                           price);
+                                                                } else if (int.parse(
+                                                                        quantity
+                                                                            .text) <=
+                                                                    0) {
+                                                                  quantity.text =
+                                                                      '1';
+                                                                  double unitPrice = controller
+                                                                          .cartItems[
+                                                                              index]
+                                                                          .price! /
+                                                                      controller
+                                                                          .cartItems[
+                                                                              index]
+                                                                          .quantity!;
+
+                                                                  String price = (unitPrice *
+                                                                          int.parse(quantity
+                                                                              .text))
+                                                                      .toStringAsFixed(
+                                                                          2);
+                                                                  controller.priceQuantiyUpdater(
+                                                                      index:
+                                                                          index,
+                                                                      quantity:
+                                                                          quantity
+                                                                              .text,
+                                                                      price:
+                                                                          price);
+                                                                } else {
+                                                                  quantity.text =
+                                                                      '1';
+                                                                  double unitPrice = controller
+                                                                          .cartItems[
+                                                                              index]
+                                                                          .price! /
+                                                                      controller
+                                                                          .cartItems[
+                                                                              index]
+                                                                          .quantity!;
+
+                                                                  String price = (unitPrice *
+                                                                          int.parse(quantity
+                                                                              .text))
+                                                                      .toStringAsFixed(
+                                                                          2);
+                                                                  controller.priceQuantiyUpdater(
+                                                                      index:
+                                                                          index,
+                                                                      quantity:
+                                                                          quantity
+                                                                              .text,
+                                                                      price:
+                                                                          price);
                                                                 }
+                                                              } else {
+                                                                quantity.text =
+                                                                    '1';
+                                                                double unitPrice = controller
+                                                                        .cartItems[
+                                                                            index]
+                                                                        .price! /
+                                                                    controller
+                                                                        .cartItems[
+                                                                            index]
+                                                                        .quantity!;
+
+                                                                String price = (unitPrice *
+                                                                        int.parse(quantity
+                                                                            .text))
+                                                                    .toStringAsFixed(
+                                                                        2);
+                                                                controller.priceQuantiyUpdater(
+                                                                    index:
+                                                                        index,
+                                                                    quantity:
+                                                                        quantity
+                                                                            .text,
+                                                                    price:
+                                                                        price);
                                                               }
                                                             },
                                                             controller:

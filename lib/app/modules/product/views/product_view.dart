@@ -84,8 +84,7 @@ class ProductView extends GetView<ProductController> {
                                 topLeft: Radius.circular(20),
                                 bottomRight: Radius.circular(20)),
                             border: Border.all(
-                                width: 1,
-                                color: controller.randomeColor[randome])),
+                                width: 1, color: controller.randomeColor[1])),
                         child: ClipRRect(
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),

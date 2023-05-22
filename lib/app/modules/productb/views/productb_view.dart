@@ -41,15 +41,13 @@ class ProductbView extends GetView<ProductbController> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SpinKitDoubleBounce(
-                          color: controller.randomeColor[randome]),
+                      SpinKitDoubleBounce(color: controller.randomeColor[1]),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
                         "Loading catalogue..",
-                        style:
-                            TextStyle(color: controller.randomeColor[randome]),
+                        style: TextStyle(color: controller.randomeColor[1]),
                       )
                     ],
                   ),
@@ -96,8 +94,7 @@ class ProductbView extends GetView<ProductbController> {
                                     borderRadius: BorderRadius.circular(15),
                                     border: Border.all(
                                         width: 1,
-                                        color:
-                                            controller.randomeColor[randome])),
+                                        color: controller.randomeColor[1])),
                                 child: Row(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -114,8 +111,7 @@ class ProductbView extends GetView<ProductbController> {
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) => Center(
                                               child: SpinKitThreeBounce(
-                                            color: controller
-                                                .randomeColor[randome],
+                                            color: controller.randomeColor[1],
                                           )),
                                           errorWidget: (ctx, url, err) =>
                                               Image.asset(
@@ -150,8 +146,7 @@ class ProductbView extends GetView<ProductbController> {
                                       width: 90,
                                       // margin: EdgeInsets.only(top: 20),
                                       decoration: BoxDecoration(
-                                          color:
-                                              controller.randomeColor[randome],
+                                          color: controller.randomeColor[1],
                                           borderRadius: BorderRadius.only(
                                               topLeft: Radius.circular(15),
                                               bottomLeft: Radius.circular(15))),

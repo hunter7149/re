@@ -91,7 +91,16 @@ class CartController extends GetxController {
     //   print("Updated row count->${value}");
     // });
     await cartItemDao.updateCartItem(newItem);
-    loadData();
+    cartItems.clear();
+    // cartItems.refresh();
+    await cartItemDao.findAllCartItem().then((value) {
+      cartItems.value = value;
+      cartItems.refresh();
+      totalPriceCounter();
+      print("dta length -> ${cartItems.length}");
+    });
+    // await getlocation();
+    Update();
     totalPriceCounter();
     Update();
   }
@@ -129,130 +138,140 @@ class CartController extends GetxController {
   requestCheckout() async {
     Random random = Random();
     int orderId = random.nextInt(99999);
-    if (isDeviceConnected.value) {
-      RxList<dynamic> allItems = <dynamic>[].obs;
+    if (lattitude.value != 0.0 && longitude.value != 0.0) {
+      if (await IEchecker.checker()) {
+        RxList<dynamic> allItems = <dynamic>[].obs;
 
-      // -----------------Running old code-------//
-      cartItems.forEach((element) async {
-        allItems.add({
-          "name": element.productName,
-          "brand": element.brand,
-          "productId": element.productId.toString(),
-          "quantity": element.quantity,
-          "totalPrice": element.price,
-          "unitPrice": element.unitPrice,
+        // -----------------Running old code-------//
+        cartItems.forEach((element) async {
+          allItems.add({
+            "name": element.productName,
+            "brand": element.brand,
+            "productId": element.productId.toString(),
+            "quantity": element.quantity,
+            "totalPrice": element.price,
+            "unitPrice": element.unitPrice,
+          });
         });
-      });
-      //Created a structured list of products
-      RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
-      saleRequisation.value = {
-        "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
-        "customerId": selectedCustomerId.toString().split(" ~")[0],
-        "lattitude": lattitude, //looks like 20.1234
-        "longitude": longitude, //looks like 20.1234
-        "totalItemCount": cartItems.length, // in number like 3 or 4
-        "dateTime":
-            DateTime.now().toString(), // looks like 2023-05-10 09:55:06.602402
-        "totalPrice": totalPrice.value, // like 2034.23
-        "beatName": dropdownBeatValue.value, //String
-        "CustomerName": dropdownCustomerValue.value, //String
-        "items": allItems.length == 0
-            ? []
-            : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
-      };
-      requestOnlineCheckout(data: saleRequisation);
-      OrderItem orderItem = OrderItem(
-          orderId: "ORD${orderId}",
-          userId: 1,
-          CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
-          lattitude: lattitude.value,
-          longitude: longitude.value,
-          status: "Pending",
-          totalItem: cartItems.length,
-          dateTime: DateTime.now().toString(),
-          totalPrice: totalPrice.value,
-          beatName: dropdownBeatValue.value,
-          CustomerName: dropdownCustomerValue.value);
-      await orderItemDao.insertOrderItem(
-          orderItem); //Saving a single order info where order Id is the primary key
-      cartItems.forEach((element) async {
-        SaleRequisition item = SaleRequisition(
-            userId: 1,
+        //Created a structured list of products
+        RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
+        saleRequisation.value = {
+          "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
+          "customerId": selectedCustomerId.toString().split(" ~")[0],
+          "lattitude": lattitude, //looks like 20.1234
+          "longitude": longitude, //looks like 20.1234
+          "totalItemCount": cartItems.length, // in number like 3 or 4
+          "dateTime": DateTime.now()
+              .toString(), // looks like 2023-05-10 09:55:06.602402
+          "totalPrice": totalPrice.value, // like 2034.23
+          "beatName": dropdownBeatValue.value, //String
+          "CustomerName": dropdownCustomerValue.value, //String
+          "items": allItems.length == 0
+              ? []
+              : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
+        };
+        requestOnlineCheckout(data: saleRequisation);
+        OrderItem orderItem = OrderItem(
             orderId: "ORD${orderId}",
-            productId: element.productId.toString(),
-            customerName: dropdownCustomerValue.value,
+            userId: 1,
+            CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
+            lattitude: lattitude.value,
+            longitude: longitude.value,
+            status: "Pending",
+            totalItem: cartItems.length,
+            dateTime: DateTime.now().toString(),
+            totalPrice: totalPrice.value,
             beatName: dropdownBeatValue.value,
-            productName: element.productName,
-            catagory: element.catagory,
-            unit: element.unit,
-            image: element.image,
-            price: element.price!,
-            brand: element.brand,
-            quantity: element.quantity);
-        await saleRequisitionDao.insertSaleItem(item);
-      });
-      //Inserting products agains order id one by one.A single order can have multiple products
-      await cartItemDao.deleteCartItemByuserID(1).then((value) {
-        cartItems.clear();
-        cartItems.refresh();
-        QuickAlert.show(
-          confirmBtnColor: AppThemes.modernGreen,
-          context: Get.context!,
-          type: QuickAlertType.success,
-          // autoCloseDuration: Duration(seconds: 2),
-        );
-      });
-      Update();
+            CustomerName: dropdownCustomerValue.value);
+        await orderItemDao.insertOrderItem(
+            orderItem); //Saving a single order info where order Id is the primary key
+        cartItems.forEach((element) async {
+          SaleRequisition item = SaleRequisition(
+              userId: 1,
+              orderId: "ORD${orderId}",
+              productId: element.productId.toString(),
+              customerName: dropdownCustomerValue.value,
+              beatName: dropdownBeatValue.value,
+              productName: element.productName,
+              catagory: element.catagory,
+              unit: element.unit,
+              image: element.image,
+              price: element.price!,
+              brand: element.brand,
+              quantity: element.quantity);
+          await saleRequisitionDao.insertSaleItem(item);
+        });
+        //Inserting products agains order id one by one.A single order can have multiple products
+        await cartItemDao.deleteCartItemByuserID(1).then((value) {
+          cartItems.clear();
+          cartItems.refresh();
+          QuickAlert.show(
+            confirmBtnColor: AppThemes.modernGreen,
+            context: Get.context!,
+            type: QuickAlertType.success,
+            // autoCloseDuration: Duration(seconds: 2),
+          );
+        });
+        Update();
+      } else {
+        //If there is no internet, this proceedure will be called
+        OfflineOrder item =
+            OfflineOrder(orderId: "ORD${orderId}", status: "offline");
+        await offlineOrderDao.insertOfflineOrdertItem(
+            item); //Saving this info in offline sync list database
+        await offlineOrderDao
+            .findAllOfflineOrder()
+            .then((value) => print(value[0].orderId));
+
+        OrderItem orderItem = OrderItem(
+            orderId: "ORD${orderId}",
+            userId: 1,
+            lattitude: lattitude.value,
+            longitude: longitude.value,
+            CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
+            status: "Pending",
+            totalItem: cartItems.length,
+            dateTime: DateTime.now().toString(),
+            totalPrice: totalPrice.value,
+            beatName: dropdownBeatValue.value,
+            CustomerName: dropdownCustomerValue.value);
+        await orderItemDao.insertOrderItem(orderItem);
+        cartItems.forEach((element) async {
+          SaleRequisition item = SaleRequisition(
+              userId: 1,
+              orderId: "ORD${orderId}",
+              productId: element.productId.toString(),
+              customerName: dropdownCustomerValue.value,
+              beatName: dropdownBeatValue.value,
+              productName: element.productName,
+              catagory: element.catagory,
+              unit: element.unit,
+              image: element.image,
+              price: element.price!,
+              brand: element.brand,
+              quantity: element.quantity);
+          await saleRequisitionDao.insertSaleItem(item);
+        });
+        await cartItemDao.deleteCartItemByuserID(1).then((value) {
+          cartItems.clear();
+          cartItems.refresh();
+          QuickAlert.show(
+            confirmBtnColor: AppThemes.modernGreen,
+            context: Get.context!,
+            type: QuickAlertType.success,
+          );
+        });
+
+        Update();
+      }
     } else {
-      //If there is no internet, this proceedure will be called
-      OfflineOrder item =
-          OfflineOrder(orderId: "ORD${orderId}", status: "offline");
-      await offlineOrderDao.insertOfflineOrdertItem(
-          item); //Saving this info in offline sync list database
-      await offlineOrderDao
-          .findAllOfflineOrder()
-          .then((value) => print(value[0].orderId));
-
-      OrderItem orderItem = OrderItem(
-          orderId: "ORD${orderId}",
-          userId: 1,
-          lattitude: lattitude.value,
-          longitude: longitude.value,
-          CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
-          status: "Pending",
-          totalItem: cartItems.length,
-          dateTime: DateTime.now().toString(),
-          totalPrice: totalPrice.value,
-          beatName: dropdownBeatValue.value,
-          CustomerName: dropdownCustomerValue.value);
-      await orderItemDao.insertOrderItem(orderItem);
-      cartItems.forEach((element) async {
-        SaleRequisition item = SaleRequisition(
-            userId: 1,
-            orderId: "ORD${orderId}",
-            productId: element.productId.toString(),
-            customerName: dropdownCustomerValue.value,
-            beatName: dropdownBeatValue.value,
-            productName: element.productName,
-            catagory: element.catagory,
-            unit: element.unit,
-            image: element.image,
-            price: element.price!,
-            brand: element.brand,
-            quantity: element.quantity);
-        await saleRequisitionDao.insertSaleItem(item);
-      });
-      await cartItemDao.deleteCartItemByuserID(1).then((value) {
-        cartItems.clear();
-        cartItems.refresh();
-        QuickAlert.show(
-          confirmBtnColor: AppThemes.modernGreen,
-          context: Get.context!,
-          type: QuickAlertType.success,
-        );
-      });
-
-      Update();
+      Get.snackbar("Warning", "Enable location to order product",
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+          animationDuration: Duration(seconds: 0),
+          borderRadius: 0,
+          duration: Duration(seconds: 1));
+      await getlocation();
     }
   }
 
@@ -312,13 +331,15 @@ class CartController extends GetxController {
     List<gcode.Placemark> placemarks = await gcode.placemarkFromCoordinates(
         double.parse(lattitude.value.toStringAsFixed(4)),
         double.parse(longitude.value.toStringAsFixed(4)));
-    address.value = "${placemarks[0].street}" +
-        "," +
-        "${placemarks[0].subLocality}" +
-        "," +
-        "${placemarks[0].locality}" +
-        "-" +
-        "${placemarks[0].postalCode}";
+    address.value = placemarks.isEmpty
+        ? "[${lattitude.value},${lattitude.value}]"
+        : "${placemarks[0].street}" +
+            "," +
+            "${placemarks[0].subLocality}" +
+            "," +
+            "${placemarks[0].locality}" +
+            "-" +
+            "${placemarks[0].postalCode}";
     isLocationLoading.value = false;
     Map<String, dynamic> tempLocation = {
       "time": DateTime.now().toString().split(" ")[1],
@@ -559,82 +580,3 @@ class CartController extends GetxController {
   @override
   void onClose() {}
 }
-// getLocation() async {
-//   Location location = new Location();
-
-//   bool _serviceEnabled;
-//   PermissionStatus _permissionGranted;
-//   LocationData _locationData;
-
-//   _serviceEnabled = await location.serviceEnabled();
-//   if (!_serviceEnabled) {
-//     _serviceEnabled = await location.requestService();
-//     if (!_serviceEnabled) {
-//       return;
-//     }
-//   }
-
-//   _permissionGranted = await location.hasPermission();
-//   if (_permissionGranted == PermissionStatus.denied) {
-//     _permissionGranted = await location.requestPermission();
-//     if (_permissionGranted != PermissionStatus.granted) {
-//       return LocationData;
-//     }
-//   }
-
-//   _locationData = await location.getLocation();
-//   // print(_locationData.latitude);
-//   LocationData locationData = _locationData;
-//   return locationData;
-// }
-//--------------------lOCATION ZONE------------------//
-// Location location = new Location();
-
-// bool _serviceEnabled;
-// PermissionStatus _permissionGranted;
-// LocationData _locationData;
-
-// _serviceEnabled = await location.serviceEnabled();
-// if (!_serviceEnabled) {
-//   _serviceEnabled = await location.requestService();
-//   if (!_serviceEnabled) {
-//     return;
-//   }
-// }
-
-// _permissionGranted = await location.hasPermission();
-// if (_permissionGranted == PermissionStatus.denied) {
-//   _permissionGranted = await location.requestPermission();
-//   if (_permissionGranted != PermissionStatus.granted) {
-//     return LocationData;
-//   }
-// }
-
-// _locationData = await location.getLocation();
-// // print(_locationData.latitude);
-// LocationData locationData = _locationData;
-
-
-      //-------One array code---------//
-      // cartItems.forEach((element) async {
-      //   allItems.add({
-      //     "brand": element.brand,
-      //     "productId": element.productId.toString(),
-      //     "quantity": element.quantity,
-      //     "totalPrice": element.price,
-      //     "unitPrice": element.unitPrice,
-      //     "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
-      //     "lattitude": lattitude, //looks like 20.1234
-      //     "longitude": longitude, //looks like 20.1234
-      //     "totalItemCount": cartItems.length, // in number like 3 or 4
-      //     "dateTime": DateTime.now()
-      //         .toString()
-      //         .split(".")[0]
-      //         .toString(), // looks like 2023-05-10 09:55:06.602402
-      //     "totalPrice": totalPrice.value, // like 2034.23
-      //     "beatName": dropdownBeatValue.value, //String
-      //     "CustomerName": dropdownCustomerValue.value,
-      //   });
-      // });
-      // print("ORDER REQ----->${allItems}}");
-      //-----One array code ends here-----//

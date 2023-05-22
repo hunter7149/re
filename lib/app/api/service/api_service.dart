@@ -79,7 +79,11 @@ class ApiService extends GetxService {
       throw Exception("Bad Response Format!");
     } on DioError catch (e) {
       // throw Exception(e.response?.data);
-      return e.response?.data;
+      if (e.response != null && e.response!.data != '') {
+        return e.response!.data;
+      } else {
+        throw Exception("Something Went Wrong");
+      }
     } catch (e) {
       print("error $e");
       throw Exception("Something Went Wrong");
