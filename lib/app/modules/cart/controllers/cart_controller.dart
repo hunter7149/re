@@ -494,10 +494,13 @@ class CartController extends GetxController {
         beatList.value = value['value'];
         beatList.refresh();
         Pref.writeData(key: Pref.BEATLIST, value: beatList.value);
+      } else {
+        offlineDropDowns();
       }
       isBeatLoading.value = false;
       Update();
     } on Exception catch (e) {
+      offlineDropDowns();
       isBeatLoading.value = true;
       Update();
     }
@@ -513,10 +516,13 @@ class CartController extends GetxController {
         customerList.value = value['value'];
         customerList.refresh();
         Pref.writeData(key: Pref.CUSTOMERLIST, value: customerList.value);
+      } else {
+        offlineDropDowns();
       }
       isCustomerLoading.value = false;
       Update();
     } on Exception catch (e) {
+      offlineDropDowns();
       isCustomerLoading.value = false;
       Update();
     }

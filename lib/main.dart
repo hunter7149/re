@@ -1,27 +1,21 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sales/app/api/repository/repository.dart';
-import 'package:sales/app/components/app_strings.dart';
-import 'package:sales/app/sync/products/offlineproductsync.dart';
-import 'package:workmanager/workmanager.dart';
-import 'app/api/firebase/pushnotificationservice.dart';
 import 'app/api/service/prefrences.dart';
 import 'app/modules/underdevelopment/bindings/underdevelopment_binding.dart';
 import 'app/modules/underdevelopment/views/underdevelopment_view.dart';
 import 'app/routes/app_pages.dart';
 
-@pragma(
-    'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    //  await Repository().getAllProducts(body: {'brand':'nior'}).then((value) => print(value););
-    //   OFFLINEPRODUCTSYNC().offlineDataSync(brands: AppStrings.brands);
-    return Future.value(true);
-  });
-}
+// @pragma(
+//     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) async {
+//     //  await Repository().getAllProducts(body: {'brand':'nior'}).then((value) => print(value););
+//     //   OFFLINEPRODUCTSYNC().offlineDataSync(brands: AppStrings.brands);
+//     return Future.value(true);
+//   });
+// }
 
 // appSync() async {
 //   // await GetStorage.init("remark_sales_app_data");
@@ -53,8 +47,8 @@ Future<void> main() async {
     print("Synced before");
   }
 
-  await GetStorage.init();
-  Platform.isAndroid ? await FirebaseService.initialize() : () {};
+  // await GetStorage.init();
+  // Platform.isAndroid ? await FirebaseService.initialize() : () {};
   HttpOverrides.global = MyHttpOverrides();
   runApp(
     GetMaterialApp(

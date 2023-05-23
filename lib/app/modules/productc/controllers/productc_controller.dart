@@ -27,6 +27,12 @@ import '../../../database/database.dart';
 import '../../../routes/app_pages.dart';
 
 class ProductcController extends GetxController {
+  RxBool isOffline = false.obs;
+  offlineUpdater({required bool status}) {
+    isOffline.value = status;
+    update();
+  }
+
   List<Color> randomeColor = [
     AppThemes.modernBlue,
     AppThemes.modernGreen,
@@ -92,25 +98,25 @@ class ProductcController extends GetxController {
         update();
       } on Exception catch (e) {
         offlineDataModule();
-        Get.snackbar("Server error", "Data loaded in offline mode!",
-            backgroundColor: AppThemes.modernSexyRed,
-            snackPosition: SnackPosition.TOP,
-            colorText: Colors.white,
-            borderRadius: 0,
-            animationDuration: Duration(seconds: 0),
-            duration: Duration(seconds: 2));
+        // Get.snackbar("Server error", "Data loaded in offline mode!",
+        //     backgroundColor: AppThemes.modernSexyRed,
+        //     snackPosition: SnackPosition.TOP,
+        //     colorText: Colors.white,
+        //     borderRadius: 0,
+        //     animationDuration: Duration(seconds: 0),
+        //     duration: Duration(seconds: 2));
         isProductLoading.value = false;
         update();
       }
     } else {
       offlineDataModule();
-      Get.snackbar("No internet", "Data loaded in offline mode!",
-          backgroundColor: AppThemes.modernSexyRed,
-          snackPosition: SnackPosition.TOP,
-          colorText: Colors.white,
-          borderRadius: 0,
-          animationDuration: Duration(seconds: 0),
-          duration: Duration(seconds: 2));
+      // Get.snackbar("No internet", "Data loaded in offline mode!",
+      //     backgroundColor: AppThemes.modernSexyRed,
+      //     snackPosition: SnackPosition.TOP,
+      //     colorText: Colors.white,
+      //     borderRadius: 0,
+      //     animationDuration: Duration(seconds: 0),
+      //     duration: Duration(seconds: 2));
       isProductLoading.value = false;
       update();
     }
@@ -120,6 +126,7 @@ class ProductcController extends GetxController {
   }
 
   offlineDataModule() async {
+    offlineUpdater(status: true);
     dynamic offline = Pref.readData(key: 'offlineData');
     products.value =
         offline['${tempData['brand']}']['${tempData['type']}'] ?? [];

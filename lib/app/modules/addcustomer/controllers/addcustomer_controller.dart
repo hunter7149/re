@@ -2,13 +2,17 @@ import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/components/thana_finder.dart';
 
 import '../../../api/repository/repository.dart';
 import '../../../api/service/prefrences.dart';
+import '../../../config/app_themes.dart';
 
 class AddcustomerController extends GetxController {
+  RxBool isCustomerTypeLoading = false.obs;
   RxBool isActive = false.obs;
   TextEditingController name = TextEditingController();
   TextEditingController distributor_name = TextEditingController();
@@ -51,7 +55,7 @@ class AddcustomerController extends GetxController {
       Division.refresh();
       dropdownDivisionValue.value = Division.isEmpty ? '' : Division[0];
       beatList.value = Pref.readData(key: Pref.BEATLIST) ?? [];
-      await assignBeatData();
+      offlineDropDowns();
     }
   }
 
@@ -68,13 +72,22 @@ class AddcustomerController extends GetxController {
         beatList.value = value['value'];
         beatList.refresh();
         Pref.writeData(key: Pref.BEATLIST, value: beatList.value);
+      } else {
+        offlineDropDowns();
       }
       isBeatLoading.value = false;
       Update();
     } on Exception catch (e) {
+      offlineDropDowns();
       isBeatLoading.value = false;
       Update();
     }
+  }
+
+  offlineDropDowns() {
+    beatList.value = Pref.readData(key: Pref.BEATLIST) ?? [];
+
+    assignBeatData();
   }
 
   assignBeatData() {
@@ -155,6 +168,83 @@ class AddcustomerController extends GetxController {
     Update();
   }
 
+  List<String> findEmptyFields() {
+    List<String> emptyFields = [];
+
+    // Check text editing controllers
+    if (name.text.isEmpty) {
+      emptyFields.add('Name');
+    }
+    if (distributor_name.text.isEmpty) {
+      emptyFields.add('Distributor Name');
+    }
+    if (code.text.isEmpty) {
+      emptyFields.add('Code');
+    }
+    if (bin_no.text.isEmpty) {
+      emptyFields.add('Bin No');
+    }
+    if (present_address.text.isEmpty) {
+      emptyFields.add('Present Address');
+    }
+    if (phone.text.isEmpty) {
+      emptyFields.add('Phone');
+    }
+    if (credit_limit.text.isEmpty) {
+      emptyFields.add('Credit Limit');
+    }
+
+    // Check dropdown values
+    if (dropdownBeatValue.isEmpty) {
+      emptyFields.add('Beat');
+    }
+    if (dropdownCustomerValue.isEmpty) {
+      emptyFields.add('Customer Type');
+    }
+    if (dropdownCountryValue.isEmpty) {
+      emptyFields.add('Country');
+    }
+    if (dropdownDivisionValue.isEmpty) {
+      emptyFields.add('Division');
+    }
+    if (dropdownDistrictValue.isEmpty) {
+      emptyFields.add('District');
+    }
+    if (dropdownThanaValue.isEmpty) {
+      emptyFields.add('Thana');
+    }
+
+    return emptyFields;
+  }
+
+  RxBool isError = false.obs;
+  RxList<String> emptyFields = <String>[].obs;
+  void validateForm() {
+    emptyFields.value = findEmptyFields();
+    emptyFields.refresh();
+
+    if (emptyFields.isEmpty) {
+      isError.value = false;
+      Update();
+      print("Form is valid");
+      QuickAlert.show(
+          context: Get.context!,
+          confirmBtnColor: AppThemes.modernGreen,
+          type: QuickAlertType.success,
+          onConfirmBtnTap: () {
+            Get.back();
+            Get.back();
+          });
+    } else {
+      isError.value = true;
+      Update();
+
+      String errorMessage =
+          'The following fields are empty: ${emptyFields.join(', ')}';
+      print(errorMessage);
+    }
+  }
+
   RxBool isLocal = false.obs;
   final profileImage = Rxn<XFile>();
   RxString networkImage = ''.obs;
@@ -168,6 +258,7 @@ class AddcustomerController extends GetxController {
   void onInit() {
     super.onInit();
     initvalues();
+    // validateForm();
   }
 
   @override

@@ -8,6 +8,12 @@ import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/config/app_themes.dart';
 
 class ProductbController extends GetxController {
+  RxBool isOffline = false.obs;
+  offlineUpdater({required bool status}) {
+    isOffline.value = status;
+    Update();
+  }
+
   List<Color> randomeColor = [
     AppThemes.modernBlue,
     AppThemes.modernGreen,
@@ -47,37 +53,40 @@ class ProductbController extends GetxController {
             products.clear();
             products.value = value['value'] ?? [];
             products.refresh();
+
             // Pref.writeData(key: data['brand'], value: products.value);
             isItemCountLoading.value = false;
 
             Update();
+            offlineUpdater(status: false);
           }
         });
       } on Exception catch (e) {
         offlineProductsModule();
         isItemCountLoading.value = false;
         Update();
-        Get.snackbar("Server error", "Data loaded in offline mode!",
-            backgroundColor: AppThemes.modernSexyRed,
-            snackPosition: SnackPosition.TOP,
-            borderRadius: 0,
-            animationDuration: Duration(seconds: 0),
-            colorText: Colors.white,
-            duration: Duration(seconds: 4));
+        // Get.snackbar("Server error", "Data loaded in offline mode!",
+        //     backgroundColor: AppThemes.modernSexyRed,
+        //     snackPosition: SnackPosition.TOP,
+        //     borderRadius: 0,
+        //     animationDuration: Duration(seconds: 0),
+        //     colorText: Colors.white,
+        //     duration: Duration(seconds: 4));
       }
     } else {
       offlineProductsModule();
-      Get.snackbar("No internet", "Data loaded in offline mode!",
-          borderRadius: 0,
-          animationDuration: Duration(seconds: 0),
-          backgroundColor: AppThemes.modernSexyRed,
-          snackPosition: SnackPosition.TOP,
-          colorText: Colors.white,
-          duration: Duration(seconds: 4));
+      // Get.snackbar("No internet", "Data loaded in offline mode!",
+      //     borderRadius: 0,
+      //     animationDuration: Duration(seconds: 0),
+      //     backgroundColor: AppThemes.modernSexyRed,
+      //     snackPosition: SnackPosition.TOP,
+      //     colorText: Colors.white,
+      //     duration: Duration(seconds: 4));
     }
   }
 
   offlineProductsModule() async {
+    offlineUpdater(status: true);
     dynamic offline = Pref.readData(key: 'offlineData');
     Map<String, dynamic> offline2 = offline['${data['brand']}'] ?? {};
     List<String> offline2Keys = offline2.keys.toList();

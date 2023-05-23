@@ -72,99 +72,153 @@ class ProductbView extends GetView<ProductbController> {
                       ),
                     )
                   : Center(
-                      child: ListView.builder(
-                          itemCount: controller.products.length,
-                          itemBuilder: (context, index) {
-                            return ZoomTapAnimation(
-                              onTap: () {
-                                Get.toNamed(Routes.PRODUCTC,
-                                    arguments: {
-                                      "brand": "${argument['brand']}",
-                                      "type":
-                                          "${controller.products[index]['GENERIC_NAME']}"
-                                    },
-                                    id: Constants.nestedNavigationNavigatorId);
-                              },
-                              child: Container(
-                                height: 150,
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 10),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: controller.randomeColor[1])),
-                                child: Row(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      width: 150,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(15),
-                                            bottomLeft: Radius.circular(15)),
-                                        child: CachedNetworkImage(
-                                          imageUrl: "",
-                                          // "${controller.products[index]['image']}",
-                                          // height: 160,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) => Center(
-                                              child: SpinKitThreeBounce(
-                                            color: controller.randomeColor[1],
-                                          )),
-                                          errorWidget: (ctx, url, err) =>
-                                              Image.asset(
-                                            'assets/images/noprev.png',
-                                            // height: 70,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Expanded(
-                                      child: Column(
+                      child: Container(
+                      // height: MediaQuery.of(context).size.height,
+                      // width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: [
+                          Obx(
+                            () => !controller.isOffline.value
+                                ? Container()
+                                : Container(
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        color: AppThemes.modernRed),
+                                    child: Center(
+                                      child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            MainAxisAlignment.center,
                                         children: [
+                                          Icon(
+                                            Icons
+                                                .signal_wifi_connected_no_internet_4,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
                                           Text(
-                                            "${controller.products[index]['GENERIC_NAME']}",
-                                            style: TextStyle(fontSize: 14),
+                                            "OFFLINE",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 90,
-                                      // margin: EdgeInsets.only(top: 20),
+                                  ),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                                // shrinkWrap: true,
+                                itemCount: controller.products.length,
+                                itemBuilder: (context, index) {
+                                  return ZoomTapAnimation(
+                                    onTap: () {
+                                      Get.toNamed(Routes.PRODUCTC,
+                                          arguments: {
+                                            "brand": "${argument['brand']}",
+                                            "type":
+                                                "${controller.products[index]['GENERIC_NAME']}"
+                                          },
+                                          id: Constants
+                                              .nestedNavigationNavigatorId);
+                                    },
+                                    child: Container(
+                                      height: 150,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 24, vertical: 10),
                                       decoration: BoxDecoration(
-                                          color: controller.randomeColor[1],
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(15),
-                                              bottomLeft: Radius.circular(15))),
-                                      child: Center(
-                                        child: Text(
-                                          "${controller.products[index]['TTL']} Items",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                              width: 1,
+                                              color:
+                                                  controller.randomeColor[1])),
+                                      child: Row(
+                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: 150,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(15),
+                                                  bottomLeft:
+                                                      Radius.circular(15)),
+                                              child: CachedNetworkImage(
+                                                imageUrl: "",
+                                                // "${controller.products[index]['image']}",
+                                                // height: 160,
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) =>
+                                                    Center(
+                                                        child:
+                                                            SpinKitThreeBounce(
+                                                  color: controller
+                                                      .randomeColor[1],
+                                                )),
+                                                errorWidget: (ctx, url, err) =>
+                                                    Image.asset(
+                                                  'assets/images/noprev.png',
+                                                  // height: 70,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${controller.products[index]['GENERIC_NAME']}",
+                                                  style:
+                                                      TextStyle(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 15,
+                                          ),
+                                          Container(
+                                            height: 50,
+                                            width: 90,
+                                            // margin: EdgeInsets.only(top: 20),
+                                            decoration: BoxDecoration(
+                                                color:
+                                                    controller.randomeColor[1],
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(15),
+                                                    bottomLeft:
+                                                        Radius.circular(15))),
+                                            child: Center(
+                                              child: Text(
+                                                "${controller.products[index]['TTL']} Items",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          })),
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    )),
         ));
   }
 }

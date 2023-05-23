@@ -914,7 +914,7 @@ class CartView extends GetView<CartController> {
                                               .searchCustomerController,
                                           onChanged: (value) {
                                             Future.delayed(
-                                                    Duration(milliseconds: 500))
+                                                    Duration(milliseconds: 0))
                                                 .then((v) {
                                               controller
                                                   .UpdateFilteredCustomers(

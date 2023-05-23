@@ -101,423 +101,508 @@ class ProductcView extends GetView<ProductcController> {
                     ? Container(
                         height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
-                        child: GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 0.58,
-                            crossAxisCount: _getCrossAxisCount(
-                                context), // Adjusted cross axis count
-                            mainAxisSpacing: 16,
-                            crossAxisSpacing: 16,
-                          ),
-                          padding: EdgeInsets.all(10),
-                          itemCount: controller.products.length,
-                          itemBuilder: (BuildContext context, int i) {
-                            bool status = controller.isAdded.value;
-                            TextEditingController quanity =
-                                TextEditingController(text: "1");
-                            // controller.calculation(price:controller.returnPrice(productCode:  controller.products[i]
-                            //                               ['PRODUCT_CODE']) ,quanity: int.parse(quanity.text));
-
-                            double unitprice = controller.calculation(
-                                price: controller.returnPrice(
-                                    productCode: controller.products[i]
-                                        ['PRODUCT_CODE']),
-                                quanity: int.parse(quanity.text));
-                            // controller.countUpdateR(value: i);
-                            print(
-                                "${controller.imageLinkReturn(brand: controller.products[i]['BRAND_NAME'], category: controller.products[i]['CATEGORY'], productid: controller.products[i]['PRODUCT_CODE'])}");
-                            return Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        width: 1,
-                                        color:
-                                            controller.randomeColor[randome]),
-                                    borderRadius: BorderRadius.circular(8)),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: ZoomTapAnimation(
-                                        onTap: () {
-                                          Get.toNamed(Routes.PRODUCTINFO,
-                                              arguments: controller.products[i],
-                                              id: Constants
-                                                  .nestedNavigationNavigatorId);
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(
-                                              top: 20, left: 20),
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: controller
-                                                      .randomeColor[randome]
-                                                      .withOpacity(0.3)),
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(15),
-                                                  bottomLeft:
-                                                      Radius.circular(15))),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(14),
-                                                bottomLeft:
-                                                    Radius.circular(14)),
-                                            child: CachedNetworkImage(
-                                              width: double.maxFinite,
-                                              imageUrl:
-                                                  // "",
-                                                  controller.imageLinkReturn(
-                                                      brand:
-                                                          controller.products[i]
-                                                              ['BRAND_NAME'],
-                                                      category:
-                                                          controller.products[i]
-                                                              ['CATEGORY'],
-                                                      productid:
-                                                          controller.products[i]
-                                                              ['PRODUCT_CODE']),
-                                              // height: 160,
-                                              fit: BoxFit.cover,
-                                              placeholder: (context, url) =>
-                                                  Center(
-                                                      child: SpinKitThreeBounce(
-                                                color: controller
-                                                    .randomeColor[randome],
-                                              )),
-                                              errorWidget: (ctx, url, err) =>
-                                                  Image.asset(
-                                                'assets/images/noprev.png',
-                                                height: 70,
-                                              ),
+                        child: Column(
+                          children: [
+                            Obx(
+                              () => !controller.isOffline.value
+                                  ? Container()
+                                  : Container(
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          color: AppThemes.modernRed),
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons
+                                                  .signal_wifi_connected_no_internet_4,
+                                              color: Colors.white,
                                             ),
-                                          ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "OFFLINE",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                    Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                          children: [
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "${controller.products[i]['PRODUCT_NAME']}"
-                                                          .toString()
-                                                          .length >
-                                                      15
-                                                  ? "${controller.products[i]['PRODUCT_NAME']}"
-                                                          .toString()
-                                                          .substring(0, 15) +
-                                                      "..."
-                                                  : "${controller.products[i]['PRODUCT_NAME']}"
-                                                      .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.grey.shade700,
-                                                  fontWeight: FontWeight.w500),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              "Variant: ${controller.products[i]['VARIANT']}",
-                                              style: TextStyle(
-                                                  color: Colors.grey.shade500,
-                                                  // fontWeight:
-                                                  //     FontWeight.w500,
-                                                  fontSize: 12),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              "Size: ${controller.products[i]['WEIGHT_SIZE']}",
-                                              style: TextStyle(
-                                                  color: Colors.grey.shade500,
-                                                  // fontWeight:
-                                                  // FontWeight.w500,
-                                                  fontSize: 12),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              "${'${controller.returnPrice(productCode: '${controller.products[i]['PRODUCT_CODE']}')} Tk'}",
-                                              style: TextStyle(
-                                                  color: controller
-                                                      .randomeColor[randome],
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                ZoomTapAnimation(
-                                                  onTap: () {
-                                                    int a = int.tryParse(
-                                                            quanity.text) ??
-                                                        0;
-                                                    if (a > 1) {
-                                                      a--;
-                                                    } else {
-                                                      a = 1;
-                                                    }
-                                                    if (int.parse(
-                                                                quanity.text) -
-                                                            1 ==
-                                                        0) {
-                                                      quanity.text = "1";
-                                                    }
+                            ),
+                            Expanded(
+                              child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio: 0.58,
+                                  crossAxisCount: _getCrossAxisCount(
+                                      context), // Adjusted cross axis count
+                                  mainAxisSpacing: 16,
+                                  crossAxisSpacing: 16,
+                                ),
+                                padding: EdgeInsets.all(10),
+                                itemCount: controller.products.length,
+                                itemBuilder: (BuildContext context, int i) {
+                                  bool status = controller.isAdded.value;
+                                  TextEditingController quanity =
+                                      TextEditingController(text: "1");
+                                  // controller.calculation(price:controller.returnPrice(productCode:  controller.products[i]
+                                  //                               ['PRODUCT_CODE']) ,quanity: int.parse(quanity.text));
 
-                                                    quanity.text = a.toString();
-                                                    controller.calculation(
-                                                        price: double.parse(
-                                                            controller
-                                                                .returnPrice(
-                                                                    productCode:
-                                                                        '${controller.products[i]['PRODUCT_CODE']}')
-                                                                .toString()),
-                                                        quanity: a);
-                                                  },
-                                                  child: Container(
-                                                    height: 20,
-                                                    width: 20,
-                                                    padding: EdgeInsets.all(5),
-                                                    child: Center(
-                                                        child: Icon(
-                                                      FontAwesomeIcons.minus,
-                                                      color:
-                                                          Colors.grey.shade800,
-                                                      size: 10,
-                                                    )),
-                                                    decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .grey.shade200,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        5),
-                                                                bottomLeft: Radius
-                                                                    .circular(
-                                                                        5))),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Container(
-                                                  width: 60,
-                                                  height: 20,
-                                                  child: TextField(
-                                                    onChanged: (value) {
-                                                      if (quanity
-                                                          .text.isNotEmpty) {
-                                                        if (int.parse(
-                                                                quanity.text) >
-                                                            0) {
-                                                          controller.calculation(
-                                                              price: double.parse(controller
-                                                                  .returnPrice(
-                                                                      productCode:
-                                                                          '${controller.products[i]['PRODUCT_CODE']}')
-                                                                  .toString()),
-                                                              quanity: int
-                                                                  .parse(quanity
-                                                                      .text));
-                                                        } else if (int.parse(
-                                                                quanity.text) <=
-                                                            0) {
-                                                          quanity.text = '1';
-                                                          controller.calculation(
-                                                              price: double.parse(controller
-                                                                  .returnPrice(
-                                                                      productCode:
-                                                                          '${controller.products[i]['PRODUCT_CODE']}')
-                                                                  .toString()),
-                                                              quanity: int
-                                                                  .parse(quanity
-                                                                      .text));
-                                                        } else {
-                                                          quanity.text = '1';
-                                                          controller.calculation(
-                                                              price: double.parse(controller
-                                                                  .returnPrice(
-                                                                      productCode:
-                                                                          '${controller.products[i]['PRODUCT_CODE']}')
-                                                                  .toString()),
-                                                              quanity: int
-                                                                  .parse(quanity
-                                                                      .text));
-                                                        }
-                                                      } else {
-                                                        quanity.text = '1';
-                                                        controller.calculation(
-                                                            price: double.parse(controller
-                                                                .returnPrice(
-                                                                    productCode:
-                                                                        '${controller.products[i]['PRODUCT_CODE']}')
-                                                                .toString()),
-                                                            quanity: int.parse(
-                                                                quanity.text));
-                                                      }
-                                                    },
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    textAlignVertical:
-                                                        TextAlignVertical
-                                                            .center,
-                                                    textAlign: TextAlign.center,
-                                                    controller: quanity,
-                                                    decoration: InputDecoration(
-                                                      hintStyle: TextStyle(
-                                                        color: Colors.black,
-                                                      ),
-                                                      border:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(2),
-                                                        borderSide: BorderSide(
-                                                          color: Colors
-                                                              .grey.shade400,
-                                                          width: 1,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                ZoomTapAnimation(
-                                                  onTap: () {
-                                                    int a = int.tryParse(
-                                                            quanity.text) ??
-                                                        0;
-                                                    a++;
-                                                    quanity.text = a.toString();
-                                                    controller.calculation(
-                                                        price: double.parse(
-                                                            controller
-                                                                .returnPrice(
-                                                                    productCode:
-                                                                        '${controller.products[i]['PRODUCT_CODE']}')
-                                                                .toString()),
-                                                        quanity: a);
-                                                  },
-                                                  child: Container(
-                                                    height: 20,
-                                                    width: 20,
-                                                    padding: EdgeInsets.all(5),
-                                                    child: Center(
-                                                        child: Icon(
-                                                      FontAwesomeIcons.plus,
-                                                      color:
-                                                          Colors.grey.shade800,
-                                                      size: 10,
-                                                    )),
-                                                    decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .grey.shade200,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        5),
-                                                                bottomRight: Radius
-                                                                    .circular(
-                                                                        5))),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Obx(() => ZoomTapAnimation(
-                                                  onTap: controller
-                                                          .isAdded.value
-                                                      ? () {}
-                                                      : () {
-                                                          CartItem product =
-                                                              CartItem(
-                                                            userId: 1,
-                                                            productId: controller
-                                                                    .products[i]
-                                                                ["SKU_CODE"],
-                                                            customerName: "",
-                                                            beatName: "",
-                                                            productName: controller
-                                                                    .products[i]
-                                                                [
-                                                                "PRODUCT_NAME"],
-                                                            catagory: controller
-                                                                    .products[i]
-                                                                ["CATEGORY"],
-                                                            unit: controller
-                                                                    .products[i]
-                                                                ["UOM"],
-                                                            image:
-                                                                "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
-                                                            price: controller.calculation(
-                                                                price: double.parse(controller
-                                                                    .returnPrice(
-                                                                        productCode:
-                                                                            '${controller.products[i]['PRODUCT_CODE']}')
-                                                                    .toString()),
-                                                                quanity: int
-                                                                    .parse(quanity
-                                                                        .text)),
+                                  double unitprice = controller.calculation(
+                                      price: controller.returnPrice(
+                                          productCode: controller.products[i]
+                                              ['PRODUCT_CODE']),
+                                      quanity: int.parse(quanity.text));
+                                  // controller.countUpdateR(value: i);
+                                  print(
+                                      "${controller.imageLinkReturn(brand: controller.products[i]['BRAND_NAME'], category: controller.products[i]['CATEGORY'], productid: controller.products[i]['PRODUCT_CODE'])}");
+                                  return Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: controller
+                                                  .randomeColor[randome]),
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: ZoomTapAnimation(
+                                              onTap: () {
+                                                Get.toNamed(Routes.PRODUCTINFO,
+                                                    arguments:
+                                                        controller.products[i],
+                                                    id: Constants
+                                                        .nestedNavigationNavigatorId);
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.only(
+                                                    top: 20, left: 20),
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: controller
+                                                            .randomeColor[
+                                                                randome]
+                                                            .withOpacity(0.3)),
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft: Radius
+                                                                .circular(15),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    15))),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  14),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  14)),
+                                                  child: CachedNetworkImage(
+                                                    width: double.maxFinite,
+                                                    imageUrl:
+                                                        // "",
+                                                        controller.imageLinkReturn(
                                                             brand: controller
                                                                     .products[i]
-                                                                ["BRAND_NAME"],
-                                                            quantity: int.parse(
-                                                                    quanity
-                                                                        .text) ??
-                                                                1,
-                                                            unitPrice: controller
-                                                                .returnPrice(
-                                                                    productCode:
-                                                                        '${controller.products[i]['PRODUCT_CODE']}'),
-                                                          );
-                                                          controller.addToCart(
-                                                              data: product);
-
-                                                          // addAlert(controller: controller, data: i);
-                                                        },
-                                                  child: Container(
-                                                    height: 30,
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 20,
-                                                            vertical: 10),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        color: controller
-                                                                .randomeColor[
-                                                            randome]),
-                                                    child: Center(
-                                                      child: Text(
-                                                        "Add to cart",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
+                                                                ['BRAND_NAME'],
+                                                            category: controller
+                                                                    .products[i]
+                                                                ['CATEGORY'],
+                                                            productid: controller
+                                                                    .products[i]
+                                                                [
+                                                                'PRODUCT_CODE']),
+                                                    // height: 160,
+                                                    fit: BoxFit.cover,
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        Center(
+                                                            child:
+                                                                SpinKitThreeBounce(
+                                                      color: controller
+                                                              .randomeColor[
+                                                          randome],
+                                                    )),
+                                                    errorWidget:
+                                                        (ctx, url, err) =>
+                                                            Image.asset(
+                                                      'assets/images/noprev.png',
+                                                      height: 70,
                                                     ),
                                                   ),
-                                                ))
-                                          ],
-                                        ))
-                                  ],
-                                ));
-                            ;
-                          },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                              flex: 2,
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    "${controller.products[i]['PRODUCT_NAME']}"
+                                                                .toString()
+                                                                .length >
+                                                            15
+                                                        ? "${controller.products[i]['PRODUCT_NAME']}"
+                                                                .toString()
+                                                                .substring(
+                                                                    0, 15) +
+                                                            "..."
+                                                        : "${controller.products[i]['PRODUCT_NAME']}"
+                                                            .toString(),
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .grey.shade700,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  Text(
+                                                    "Variant: ${controller.products[i]['VARIANT']}",
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .grey.shade500,
+                                                        // fontWeight:
+                                                        //     FontWeight.w500,
+                                                        fontSize: 12),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  Text(
+                                                    "Size: ${controller.products[i]['WEIGHT_SIZE']}",
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .grey.shade500,
+                                                        // fontWeight:
+                                                        // FontWeight.w500,
+                                                        fontSize: 12),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  Text(
+                                                    "${'${controller.returnPrice(productCode: '${controller.products[i]['PRODUCT_CODE']}')} Tk'}",
+                                                    style: TextStyle(
+                                                        color: controller
+                                                                .randomeColor[
+                                                            randome],
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 14),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      ZoomTapAnimation(
+                                                        onTap: () {
+                                                          int a = int.tryParse(
+                                                                  quanity
+                                                                      .text) ??
+                                                              0;
+                                                          if (a > 1) {
+                                                            a--;
+                                                          } else {
+                                                            a = 1;
+                                                          }
+                                                          if (int.parse(quanity
+                                                                      .text) -
+                                                                  1 ==
+                                                              0) {
+                                                            quanity.text = "1";
+                                                          }
+
+                                                          quanity.text =
+                                                              a.toString();
+                                                          controller.calculation(
+                                                              price: double.parse(controller
+                                                                  .returnPrice(
+                                                                      productCode:
+                                                                          '${controller.products[i]['PRODUCT_CODE']}')
+                                                                  .toString()),
+                                                              quanity: a);
+                                                        },
+                                                        child: Container(
+                                                          height: 20,
+                                                          width: 20,
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          child: Center(
+                                                              child: Icon(
+                                                            FontAwesomeIcons
+                                                                .minus,
+                                                            color: Colors
+                                                                .grey.shade800,
+                                                            size: 10,
+                                                          )),
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.grey
+                                                                  .shade200,
+                                                              borderRadius: BorderRadius.only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          5),
+                                                                  bottomLeft: Radius
+                                                                      .circular(
+                                                                          5))),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Container(
+                                                        width: 60,
+                                                        height: 20,
+                                                        child: TextField(
+                                                          onChanged: (value) {
+                                                            if (quanity.text
+                                                                .isNotEmpty) {
+                                                              if (int.parse(
+                                                                      quanity
+                                                                          .text) >
+                                                                  0) {
+                                                                controller.calculation(
+                                                                    price: double.parse(controller
+                                                                        .returnPrice(
+                                                                            productCode:
+                                                                                '${controller.products[i]['PRODUCT_CODE']}')
+                                                                        .toString()),
+                                                                    quanity: int
+                                                                        .parse(quanity
+                                                                            .text));
+                                                              } else if (int.parse(
+                                                                      quanity
+                                                                          .text) <=
+                                                                  0) {
+                                                                quanity.text =
+                                                                    '1';
+                                                                controller.calculation(
+                                                                    price: double.parse(controller
+                                                                        .returnPrice(
+                                                                            productCode:
+                                                                                '${controller.products[i]['PRODUCT_CODE']}')
+                                                                        .toString()),
+                                                                    quanity: int
+                                                                        .parse(quanity
+                                                                            .text));
+                                                              } else {
+                                                                quanity.text =
+                                                                    '1';
+                                                                controller.calculation(
+                                                                    price: double.parse(controller
+                                                                        .returnPrice(
+                                                                            productCode:
+                                                                                '${controller.products[i]['PRODUCT_CODE']}')
+                                                                        .toString()),
+                                                                    quanity: int
+                                                                        .parse(quanity
+                                                                            .text));
+                                                              }
+                                                            } else {
+                                                              quanity.text =
+                                                                  '1';
+                                                              controller.calculation(
+                                                                  price: double.parse(controller
+                                                                      .returnPrice(
+                                                                          productCode:
+                                                                              '${controller.products[i]['PRODUCT_CODE']}')
+                                                                      .toString()),
+                                                                  quanity: int
+                                                                      .parse(quanity
+                                                                          .text));
+                                                            }
+                                                          },
+                                                          style: TextStyle(
+                                                              fontSize: 14),
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          textAlignVertical:
+                                                              TextAlignVertical
+                                                                  .center,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          controller: quanity,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          2),
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade400,
+                                                                width: 1,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      ZoomTapAnimation(
+                                                        onTap: () {
+                                                          int a = int.tryParse(
+                                                                  quanity
+                                                                      .text) ??
+                                                              0;
+                                                          a++;
+                                                          quanity.text =
+                                                              a.toString();
+                                                          controller.calculation(
+                                                              price: double.parse(controller
+                                                                  .returnPrice(
+                                                                      productCode:
+                                                                          '${controller.products[i]['PRODUCT_CODE']}')
+                                                                  .toString()),
+                                                              quanity: a);
+                                                        },
+                                                        child: Container(
+                                                          height: 20,
+                                                          width: 20,
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          child: Center(
+                                                              child: Icon(
+                                                            FontAwesomeIcons
+                                                                .plus,
+                                                            color: Colors
+                                                                .grey.shade800,
+                                                            size: 10,
+                                                          )),
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.grey
+                                                                  .shade200,
+                                                              borderRadius: BorderRadius.only(
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          5),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          5))),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Obx(() => ZoomTapAnimation(
+                                                        onTap:
+                                                            controller.isAdded
+                                                                    .value
+                                                                ? () {}
+                                                                : () {
+                                                                    CartItem
+                                                                        product =
+                                                                        CartItem(
+                                                                      userId: 1,
+                                                                      productId:
+                                                                          controller.products[i]
+                                                                              [
+                                                                              "SKU_CODE"],
+                                                                      customerName:
+                                                                          "",
+                                                                      beatName:
+                                                                          "",
+                                                                      productName:
+                                                                          controller.products[i]
+                                                                              [
+                                                                              "PRODUCT_NAME"],
+                                                                      catagory:
+                                                                          controller.products[i]
+                                                                              [
+                                                                              "CATEGORY"],
+                                                                      unit: controller
+                                                                              .products[i]
+                                                                          [
+                                                                          "UOM"],
+                                                                      image:
+                                                                          "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
+                                                                      price: controller.calculation(
+                                                                          price: double.parse(controller
+                                                                              .returnPrice(productCode: '${controller.products[i]['PRODUCT_CODE']}')
+                                                                              .toString()),
+                                                                          quanity: int.parse(quanity.text)),
+                                                                      brand: controller
+                                                                              .products[i]
+                                                                          [
+                                                                          "BRAND_NAME"],
+                                                                      quantity:
+                                                                          int.parse(quanity.text) ??
+                                                                              1,
+                                                                      unitPrice:
+                                                                          controller.returnPrice(
+                                                                              productCode: '${controller.products[i]['PRODUCT_CODE']}'),
+                                                                    );
+                                                                    controller
+                                                                        .addToCart(
+                                                                            data:
+                                                                                product);
+
+                                                                    // addAlert(controller: controller, data: i);
+                                                                  },
+                                                        child: Container(
+                                                          height: 30,
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      20,
+                                                                  vertical: 10),
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                              color: controller
+                                                                      .randomeColor[
+                                                                  randome]),
+                                                          child: Center(
+                                                            child: Text(
+                                                              "Add to cart",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ))
+                                                ],
+                                              ))
+                                        ],
+                                      ));
+                                  ;
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       )
                     : Center(
