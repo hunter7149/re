@@ -329,8 +329,9 @@ class CartController extends GetxController {
     Update();
 
     List<gcode.Placemark> placemarks = await gcode.placemarkFromCoordinates(
-        double.parse(lattitude.value.toStringAsFixed(4)),
-        double.parse(longitude.value.toStringAsFixed(4)));
+            double.parse(lattitude.value.toStringAsFixed(4)),
+            double.parse(longitude.value.toStringAsFixed(4))) ??
+        [];
     address.value = placemarks.isEmpty
         ? "[${lattitude.value},${lattitude.value}]"
         : "${placemarks[0].street}" +
