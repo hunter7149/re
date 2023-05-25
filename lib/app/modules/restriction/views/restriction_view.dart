@@ -13,19 +13,6 @@ class RestrictionView extends GetView<RestrictionController> {
     String message = Pref.readData(key: Pref.RESTRICTION_MESSAGE) ??
         'Please contact IT department!';
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   leading: ZoomTapAnimation(
-      //     onTap: () {
-      //       Get.back();
-      //     },
-      //     child: Icon(
-      //       Icons.arrow_back,
-      //       color: Colors.grey.shade700,
-      //     ),
-      //   ),
-      // ),
       backgroundColor: Colors.white,
       body: Center(child: COMMONWIDGET.restriction(message: message)),
     );
