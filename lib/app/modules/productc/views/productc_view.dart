@@ -293,7 +293,8 @@ class ProductcView extends GetView<ProductcController> {
                                                     textAlign: TextAlign.center,
                                                   ),
                                                   Text(
-                                                    "${'${controller.returnPrice(productCode: '${controller.products[i]['PRODUCT_CODE']}')} Tk'}",
+                                                    // "${'${controller.returnPrice(productCode: '${controller.products[i]['PRODUCT_CODE']}')} Tk'}",
+                                                    "${controller.products[i]['MPR']} TK",
                                                     style: TextStyle(
                                                         color: controller
                                                                 .randomeColor[
@@ -332,11 +333,8 @@ class ProductcView extends GetView<ProductcController> {
                                                           quanity.text =
                                                               a.toString();
                                                           controller.calculation(
-                                                              price: double.parse(controller
-                                                                  .returnPrice(
-                                                                      productCode:
-                                                                          '${controller.products[i]['PRODUCT_CODE']}')
-                                                                  .toString()),
+                                                              price: double.parse(
+                                                                  "${controller.products[i]['MPR']}"),
                                                               quanity: a);
                                                         },
                                                         child: Container(
@@ -379,11 +377,9 @@ class ProductcView extends GetView<ProductcController> {
                                                                           .text) >
                                                                   0) {
                                                                 controller.calculation(
-                                                                    price: double.parse(controller
-                                                                        .returnPrice(
-                                                                            productCode:
-                                                                                '${controller.products[i]['PRODUCT_CODE']}')
-                                                                        .toString()),
+                                                                    price: double
+                                                                        .parse(
+                                                                            '${controller.products[i]['MPR']}'),
                                                                     quanity: int
                                                                         .parse(quanity
                                                                             .text));
@@ -394,11 +390,9 @@ class ProductcView extends GetView<ProductcController> {
                                                                 quanity.text =
                                                                     '1';
                                                                 controller.calculation(
-                                                                    price: double.parse(controller
-                                                                        .returnPrice(
-                                                                            productCode:
-                                                                                '${controller.products[i]['PRODUCT_CODE']}')
-                                                                        .toString()),
+                                                                    price: double
+                                                                        .parse(
+                                                                            '${controller.products[i]['MPR']}'),
                                                                     quanity: int
                                                                         .parse(quanity
                                                                             .text));
@@ -419,11 +413,9 @@ class ProductcView extends GetView<ProductcController> {
                                                               quanity.text =
                                                                   '1';
                                                               controller.calculation(
-                                                                  price: double.parse(controller
-                                                                      .returnPrice(
-                                                                          productCode:
-                                                                              '${controller.products[i]['PRODUCT_CODE']}')
-                                                                      .toString()),
+                                                                  price: double
+                                                                      .parse(
+                                                                          '${controller.products[i]['MPR']}'),
                                                                   quanity: int
                                                                       .parse(quanity
                                                                           .text));
@@ -477,11 +469,8 @@ class ProductcView extends GetView<ProductcController> {
                                                           quanity.text =
                                                               a.toString();
                                                           controller.calculation(
-                                                              price: double.parse(controller
-                                                                  .returnPrice(
-                                                                      productCode:
-                                                                          '${controller.products[i]['PRODUCT_CODE']}')
-                                                                  .toString()),
+                                                              price: double.parse(
+                                                                  '${controller.products[i]['MPR']}'),
                                                               quanity: a);
                                                         },
                                                         child: Container(
@@ -544,10 +533,10 @@ class ProductcView extends GetView<ProductcController> {
                                                                       image:
                                                                           "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
                                                                       price: controller.calculation(
-                                                                          price: double.parse(controller
-                                                                              .returnPrice(productCode: '${controller.products[i]['PRODUCT_CODE']}')
-                                                                              .toString()),
-                                                                          quanity: int.parse(quanity.text)),
+                                                                          price: double.parse(
+                                                                              '${controller.products[i]['MPR']}'),
+                                                                          quanity:
+                                                                              int.parse(quanity.text)),
                                                                       brand: controller
                                                                               .products[i]
                                                                           [
@@ -556,8 +545,8 @@ class ProductcView extends GetView<ProductcController> {
                                                                           int.parse(quanity.text) ??
                                                                               1,
                                                                       unitPrice:
-                                                                          controller.returnPrice(
-                                                                              productCode: '${controller.products[i]['PRODUCT_CODE']}'),
+                                                                          double.parse(
+                                                                              '${controller.products[i]['MPR']}'),
                                                                     );
                                                                     controller
                                                                         .addToCart(

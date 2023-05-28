@@ -637,6 +637,7 @@ class CartView extends GetView<CartController> {
               ),
             ),
         pageBuilder: (ctx, anim1, anim2) {
+          controller.findCartItemIndex(controller.cartItems[index].productId!);
           TextEditingController quanity = TextEditingController();
           quanity.text = 1.toString();
 

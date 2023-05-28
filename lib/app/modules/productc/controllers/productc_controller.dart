@@ -127,7 +127,7 @@ class ProductcController extends GetxController {
 
   offlineDataModule() async {
     offlineUpdater(status: true);
-    dynamic offline = Pref.readData(key: 'offlineData');
+    dynamic offline = Pref.readData(key: Pref.OFFLINE_DATA);
     products.value =
         offline['${tempData['brand']}']['${tempData['type']}'] ?? [];
     products.refresh();

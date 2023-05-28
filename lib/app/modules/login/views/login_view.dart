@@ -112,7 +112,7 @@ class LoginView extends GetView<LoginController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Obx(() => controller.isLogingIn.value
-                        ? SpinKitRipple(
+                        ? SpinKitDoubleBounce(
                             color: AppThemes.mainBlue,
                           )
                         : ZoomTapAnimation(

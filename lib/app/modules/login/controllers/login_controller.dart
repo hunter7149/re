@@ -9,6 +9,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:sales/app/components/app_strings.dart';
 import 'package:sales/app/components/internet_connection_checker.dart';
 
+import '../../../api/firebase/pushnotificationservice.dart';
 import '../../../api/repository/repository.dart';
 import '../../../api/service/prefrences.dart';
 import '../../../components/connection_checker.dart';
@@ -72,6 +73,7 @@ class LoginController extends GetxController {
               // }
               isLogingIn.value = false;
               update();
+              Platform.isAndroid ? await FirebaseService.initialize() : () {};
               Platform.isAndroid ? firebaseStore() : () {};
 
               bool restrictionstatus =

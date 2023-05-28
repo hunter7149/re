@@ -566,6 +566,16 @@ class CartController extends GetxController {
     }
   }
 
+  int findCartItemIndex(String productId) {
+    for (int index = 0; index < cartItems.length; index++) {
+      if (cartItems[index].productId == productId) {
+        print("The index is : ${index}");
+        return index;
+      }
+    }
+    return -1; // If no match is found
+  }
+
   @override
   Future<void> onInit() async {
     super.onInit();

@@ -2,20 +2,21 @@ import 'package:get_storage/get_storage.dart';
 
 class Pref {
   static final box = GetStorage('remark_sales_app_data');
-  static var FCM_TOKEN = "fcm_token";
-  static var DEVICE_ID = 'device-id';
-  static var LOGIN_INFORMATION = 'login_information';
-  static var USER_ID = 'user_id';
-  static var USER_PASSWORD = "user_password";
-  static var DEVICE_IDENTITY = 'device-identity';
-  static var BEAT_NAME = 'beat_name';
-  static var CUSTOMER_NAME = 'customer_name';
-  static var NOTICE_LIST = "notice_list";
-  static var CUSTOMER_CODE = "customer_code";
-  static var BEATLIST = "beatlist";
-  static var CUSTOMERLIST = "customerlist";
-  static var RESTRICTION_STATUS = 'restriction_status';
-  static var RESTRICTION_MESSAGE = 'restriction_message';
+  static var FCM_TOKEN = "fcm_token_sales";
+  static var DEVICE_ID = 'device-id_sales';
+  static var LOGIN_INFORMATION = 'login_information_sales';
+  static var USER_ID = 'user_id_sales';
+  static var USER_PASSWORD = "user_password_sales";
+  static var DEVICE_IDENTITY = 'device-identity_sales';
+  static var BEAT_NAME = 'beat_name_sales';
+  static var CUSTOMER_NAME = 'customer_name_sales';
+  static var NOTICE_LIST = "notice_list_sales";
+  static var CUSTOMER_CODE = "customer_code_sales";
+  static var BEATLIST = "beatlist_sales";
+  static var CUSTOMERLIST = "customerlist_sales";
+  static var RESTRICTION_STATUS = 'restriction_status_sales';
+  static var RESTRICTION_MESSAGE = 'restriction_message_sales';
+  static var OFFLINE_DATA = 'offline_data_product_sales';
 
   static void writeData({required String key, required dynamic value}) =>
       box.write(key, value);

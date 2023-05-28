@@ -87,7 +87,7 @@ class ProductbController extends GetxController {
 
   offlineProductsModule() async {
     offlineUpdater(status: true);
-    dynamic offline = Pref.readData(key: 'offlineData');
+    dynamic offline = Pref.readData(key: Pref.OFFLINE_DATA);
     Map<String, dynamic> offline2 = offline['${data['brand']}'] ?? {};
     List<String> offline2Keys = offline2.keys.toList();
     products.clear();

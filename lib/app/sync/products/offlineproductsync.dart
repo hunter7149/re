@@ -1,6 +1,7 @@
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../api/repository/repository.dart';
 import '../../components/connection_checker.dart';
@@ -43,7 +44,7 @@ class OFFLINEPRODUCTSYNC {
               Update();
               // Iterate over the categories
               for (var category in categories) {
-                String genericName = category['GENERIC_NAME'];
+                String genericName = category['GENERIC_NAME'] ?? 'NO NAME';
 
                 // Check if the generic name exists for the brand, otherwise add it
                 if (!ProductData[brand]!.containsKey(genericName)) {
@@ -92,7 +93,8 @@ class OFFLINEPRODUCTSYNC {
           stepTwo.value == true &&
           isSyncing.value == false) {
         print(ProductData);
-        a.Pref.writeData(key: "offlineData", value: ProductData);
+        await GetStorage.init("remark_sales_app_data");
+        a.Pref.writeData(key: a.Pref.OFFLINE_DATA, value: ProductData);
         a.Pref.writeData(
             key: 'offlineDataSyncDate', value: DateTime.now().toString());
         Get.closeAllSnackbars();

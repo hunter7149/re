@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sales/app/api/service/prefrences.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -110,6 +111,7 @@ class DashboardView extends GetView<DashboardController> {
                               title: "Product Catalogue",
                               valid: true,
                               function: () async {
+                                print('${Pref.readData(key: Pref.FCM_TOKEN)}');
                                 var result;
                                 Get.put(DashboardController());
                                 result = await Get.toNamed(Routes.PRODUCT,

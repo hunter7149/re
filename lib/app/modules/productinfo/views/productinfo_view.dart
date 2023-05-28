@@ -20,10 +20,9 @@ class ProductinfoView extends GetView<ProductinfoController> {
     controller.setData(data: argument);
     TextEditingController quanity = TextEditingController(text: '1');
     controller.calculation(
-        price: controller.returnPrice(
-            productCode: controller.products['PRODUCT_CODE']),
+        price: double.parse('${controller.products['MPR']}'),
         quanity: int.parse(quanity.text));
-    double unitprice = controller.totalPrice.value;
+    double unitprice = double.parse('${controller.products['MPR']}');
     return Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -120,7 +119,8 @@ class ProductinfoView extends GetView<ProductinfoController> {
                     height: 10,
                   ),
                   Text(
-                    ' ${controller.totalPrice.value} Tk',
+                    // ' ${controller.products['MPR']} Tk',
+                    '${controller.totalPrice.value}',
                     style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500,
@@ -147,7 +147,8 @@ class ProductinfoView extends GetView<ProductinfoController> {
 
                           quanity.text = a.toString();
                           controller.calculation(
-                              price: double.parse(unitprice.toString()),
+                              price:
+                                  double.parse('${controller.products['MPR']}'),
                               quanity: a);
                         },
                         child: Container(
@@ -176,23 +177,27 @@ class ProductinfoView extends GetView<ProductinfoController> {
                             if (quanity.text.isNotEmpty) {
                               if (int.parse(quanity.text) > 0) {
                                 controller.calculation(
-                                    price: double.parse(unitprice.toString()),
+                                    price: double.parse(
+                                        '${controller.products['MPR']}'),
                                     quanity: int.parse(quanity.text));
                               } else if (int.parse(quanity.text) <= 0) {
                                 quanity.text = '1';
                                 controller.calculation(
-                                    price: double.parse(unitprice.toString()),
+                                    price: double.parse(
+                                        '${controller.products['MPR']}'),
                                     quanity: int.parse(quanity.text));
                               } else {
                                 quanity.text = '1';
                                 controller.calculation(
-                                    price: double.parse(unitprice.toString()),
+                                    price: double.parse(
+                                        '${controller.products['MPR']}'),
                                     quanity: int.parse(quanity.text));
                               }
                             } else {
                               quanity.text = '1';
                               controller.calculation(
-                                  price: double.parse(unitprice.toString()),
+                                  price: double.parse(
+                                      '${controller.products['MPR']}'),
                                   quanity: int.parse(quanity.text));
                             }
                           },
@@ -223,7 +228,8 @@ class ProductinfoView extends GetView<ProductinfoController> {
                           a++;
                           quanity.text = a.toString();
                           controller.calculation(
-                              price: double.parse(unitprice.toString()),
+                              price:
+                                  double.parse('${controller.products['MPR']}'),
                               quanity: a);
                         },
                         child: Container(
@@ -264,11 +270,14 @@ class ProductinfoView extends GetView<ProductinfoController> {
                                   unit: controller.products["UOM"],
                                   image:
                                       "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
-                                  price: controller.totalPrice.value,
+                                  price: controller.calculation(
+                                      price: double.parse(
+                                          '${controller.products['MPR']}'),
+                                      quanity: int.parse(quanity.text)),
                                   brand: controller.products["BRAND_NAME"],
                                   quantity: int.tryParse(quanity.text),
-                                  unitPrice:
-                                      controller.products['PRICE'] ?? 500.10,
+                                  unitPrice: double.parse(
+                                      '${controller.products['MPR']}'),
                                 );
                                 controller.addToCart(data: product);
                                 // addAlert(controller: controller, data: i);

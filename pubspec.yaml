@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_background_service: ^2.4.6
   quickalert: ^1.0.1
   cupertino_icons: ^1.0.2
   get: 4.6.5
