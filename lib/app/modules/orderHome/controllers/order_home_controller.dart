@@ -9,6 +9,7 @@ import 'package:sales/app/api/repository/repository.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/models/cartproduct.dart';
 
+import '../../../DAO/offlineOrderDao.dart';
 import '../../../DAO/orderItemDao.dart';
 import '../../../DAO/saleRequisitionDao.dart';
 import '../../../api/service/prefrences.dart';
@@ -281,14 +282,26 @@ class OrderHomeController extends GetxController {
     cartItemDao = database.cartItemDao;
     orderItemDao = database.orderItemDao;
     saleRequisitionDao = database.saleRequisitionDao;
+    offlineOrderDao = database.offlineOrderDao;
     await reqOrderList();
 
     initialDropdownValue();
+    await offlineOrderCounter();
+  }
+
+  RxInt offlineOrderCount = 0.obs;
+  offlineOrderCounter() async {
+    await offlineOrderDao.findAllOfflineOrder().then((value) {
+      List<dynamic> orderList = value ?? [];
+      offlineOrderCount.value = orderList.length ?? 0;
+      Update();
+    });
   }
 
 //----------------------------Code for previous order suggestion-------------------///
   late OrderItemDao orderItemDao;
   late SaleRequisitionDao saleRequisitionDao;
+  late OfflineOrderDao offlineOrderDao;
   RxList<OrderItem> orderItem = <OrderItem>[].obs;
 //-----------------------Get Main Order List----------------------//
   reqOrderList() async {

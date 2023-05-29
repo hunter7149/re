@@ -1,10 +1,12 @@
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sales/app/api/service/prefrences.dart';
 
 import '../../DAO/offlineOrderDao.dart';
 import '../../DAO/orderItemDao.dart';
 import '../../DAO/saleRequisitionDao.dart';
+import '../../api/repository/repository.dart';
 import '../../config/app_themes.dart';
 import '../../database/database.dart';
 import '../../models/offlineorder.dart';
@@ -84,7 +86,8 @@ class OFFLINEORDERSYNC {
             "dateTime": orderItem[0].dateTime,
             "totalPrice": orderItem[0].totalPrice,
             "beatName": orderItem[0].beatName,
-            "CustomerName": orderItem[0].CustomerName,
+            "customerName": orderItem[0].CustomerName,
+            "createBy": Pref.readData(key: Pref.USER_ID),
             "items": allItems.length == 0 ? [] : allItems,
           }; //Final json for order placement
           print("ORDER REQ----->${saleRequisation}");
@@ -92,21 +95,63 @@ class OFFLINEORDERSYNC {
           orderItem.clear();
           itemList.refresh();
           orderItem.refresh();
-          print("Sync done of order id: ${element.orderId}");
-          await offlineOrderDao.deleteOrderItemByID(element.orderId!);
-        });
 
-        Get.snackbar(
-            "SYNC SUCCESS", "OFFLINE ORDERS HAS BEEN SYNCED WITH THE SERVER",
-            backgroundColor: AppThemes.modernGreen,
-            duration: Duration(seconds: 2),
-            animationDuration: Duration(seconds: 0),
-            borderRadius: 0,
-            colorText: Colors.white);
+          try {
+            await Repository().requestSaleRequistion(
+                body: {"data": "${saleRequisation}"}).then((value) async {
+              print(value);
+              if (value != null) {
+                if (value['result'].toString().contains('cess')) {
+                  Get.closeAllSnackbars();
+                  Get.snackbar("SYNC SUCCESS",
+                      "OFFLINE ORDERS HAS BEEN SYNCED WITH THE SERVER",
+                      backgroundColor: AppThemes.modernGreen,
+                      duration: Duration(seconds: 2),
+                      animationDuration: Duration(seconds: 0),
+                      borderRadius: 0,
+                      colorText: Colors.white);
+                  await offlineOrderDao.deleteOrderItemByID(element.orderId!);
+                }
+              } else {
+                Get.snackbar("ORDER SYNC FAILED", "SERVER UNAVAILABLE",
+                    backgroundColor: AppThemes.modernGreen,
+                    duration: Duration(seconds: 2),
+                    animationDuration: Duration(seconds: 0),
+                    borderRadius: 0,
+                    colorText: Colors.white);
+              }
+            });
+          } on Exception catch (e) {
+            Get.snackbar("ORDER SYNC FAILED", "SERVER UNAVAILABLE",
+                backgroundColor: AppThemes.modernSexyRed,
+                duration: Duration(seconds: 2),
+                animationDuration: Duration(seconds: 0),
+                borderRadius: 0,
+                colorText: Colors.white);
+            print(e);
+          }
+        });
       } else {
         print("No order found to sync");
       }
     });
 //lets see
   }
+
+  // requestOnlineCheckout({required dynamic data}) async {
+  //   try {
+  //     await Repository()
+  //         .requestSaleRequistion(body: {"data": "${data.value}"}).then((value) {
+  //       print(value);
+  //       if (value != null) {
+  //         return value;
+  //       } else
+  //         return {};
+  //     });
+  //   } on Exception catch (e) {
+  //     print(e);
+  //     return e;
+  //   }
+  //   print("ORDER REQ----->${data}");
+  // }
 }

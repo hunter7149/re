@@ -59,7 +59,7 @@ class ProductinfoController extends GetxController {
     tempData.refresh();
     products.value = data as Map<String, dynamic> ?? {};
     products.refresh();
-    calculation(price: 500, quanity: 1);
+    // calculation(price: 500, quanity: 1);
     update();
   }
 
@@ -74,7 +74,7 @@ class ProductinfoController extends GetxController {
     totalPrice.value = price * quanity;
 
     update();
-    return totalPrice;
+    return totalPrice.value;
   }
 
   addToCart({required CartItem data}) async {

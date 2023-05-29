@@ -97,7 +97,7 @@ class OFFLINEPRODUCTSYNC {
         a.Pref.writeData(key: a.Pref.OFFLINE_DATA, value: ProductData);
         a.Pref.writeData(
             key: 'offlineDataSyncDate', value: DateTime.now().toString());
-        Get.closeAllSnackbars();
+        Get.closeCurrentSnackbar();
         Get.snackbar('SYNC COMPLETE', 'OFFLINE PRODUCTS UPDATED',
             colorText: Colors.white,
             backgroundColor: AppThemes.modernGreen,

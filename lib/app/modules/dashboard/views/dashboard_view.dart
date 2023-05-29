@@ -2,7 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sales/app/api/service/prefrences.dart';
+import 'package:sales/app/components/app_strings.dart';
 import 'package:sales/app/config/app_themes.dart';
+import 'package:sales/app/sync/products/offlineordersync.dart';
+import 'package:sales/app/sync/products/offlineproductsync.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
@@ -136,6 +139,16 @@ class DashboardView extends GetView<DashboardController> {
                               function: () {
                                 Get.toNamed(Routes.NOTICESCREEN,
                                     id: Constants.nestedNavigationNavigatorId);
+                              }),
+                          menuItem(
+                              icon: Icons.sync,
+                              color: Colors.teal,
+                              title: "Sync",
+                              valid: true,
+                              function: () async {
+                                await OFFLINEPRODUCTSYNC()
+                                    .offlineDataSync(brands: AppStrings.brands);
+                                await OFFLINEORDERSYNC().onlineSync();
                               }),
                           menuItem(
                               icon: Icons.discount,

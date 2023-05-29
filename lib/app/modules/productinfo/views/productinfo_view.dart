@@ -95,7 +95,7 @@ class ProductinfoView extends GetView<ProductinfoController> {
                     height: 5,
                   ),
                   Text(
-                    'Weight: ${controller.products['WEIGHT_SIZE']}',
+                    'Manufacturer: ${controller.products['MANUFACTURER']}',
                     style:
                         TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
                   ),
@@ -103,10 +103,11 @@ class ProductinfoView extends GetView<ProductinfoController> {
                     height: 5,
                   ),
                   Text(
-                    'Manufacturer: ${controller.products['MANUFACTURER']}',
+                    'Weight: ${controller.products['WEIGHT_SIZE']}',
                     style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
                   ),
+
                   SizedBox(
                     height: 5,
                   ),
@@ -120,7 +121,7 @@ class ProductinfoView extends GetView<ProductinfoController> {
                   ),
                   Text(
                     // ' ${controller.products['MPR']} Tk',
-                    '${controller.totalPrice.value}',
+                    '${controller.totalPrice.value} Tk / ${quanity.text} ${controller.products['UOM']} ',
                     style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500,
@@ -292,8 +293,51 @@ class ProductinfoView extends GetView<ProductinfoController> {
                     color: Colors.grey.shade300,
                   ),
 
+                  Text(
+                    'Description',
+                    style:
+                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    height: 1,
+                    color: Colors.grey.shade300,
+                  ),
                   SizedBox(
-                    height: 20,
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Category: ${controller.products['CATEGORY']}',
+                              style: TextStyle(
+                                  fontSize: 18.0, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Variant: ${controller.products['VARIANT']}',
+                              style: TextStyle(
+                                  fontSize: 18.0, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Fragrance: ${controller.products['FRAGRANCE']}',
+                              style: TextStyle(
+                                  fontSize: 18.0, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

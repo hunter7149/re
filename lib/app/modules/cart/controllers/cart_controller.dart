@@ -91,7 +91,7 @@ class CartController extends GetxController {
     //   print("Updated row count->${value}");
     // });
     await cartItemDao.updateCartItem(newItem);
-    cartItems.clear();
+    // cartItems.clear();
     // cartItems.refresh();
     await cartItemDao.findAllCartItem().then((value) {
       cartItems.value = value;
@@ -117,9 +117,17 @@ class CartController extends GetxController {
         isRequesting.value = false;
         Update();
         print(value);
+        if (value != null) {
+          Submitstatus.value = value['result'];
+          Update();
+        } else {
+          Submitstatus.value = '';
+          Update();
+        }
       });
     } on Exception catch (e) {
       isRequesting.value = false;
+      Submitstatus.value = '';
       Update();
       print(e);
     }
@@ -134,7 +142,7 @@ class CartController extends GetxController {
   //Paste  unused codes for location here
 
   RxBool isRequesting = false.obs;
-
+  RxString Submitstatus = ''.obs;
   requestCheckout() async {
     Random random = Random();
     int orderId = random.nextInt(99999);
@@ -165,19 +173,68 @@ class CartController extends GetxController {
               .toString(), // looks like 2023-05-10 09:55:06.602402
           "totalPrice": totalPrice.value, // like 2034.23
           "beatName": dropdownBeatValue.value, //String
-          "CustomerName": dropdownCustomerValue.value, //String
+          "customerName": dropdownCustomerValue.value,
+          "createBy:": Pref.readData(key: Pref.USER_ID), //String
           "items": allItems.length == 0
               ? []
               : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
         };
-        requestOnlineCheckout(data: saleRequisation);
+        await requestOnlineCheckout(data: saleRequisation);
+        if (Submitstatus.value != '') {
+          print('success');
+        } else {
+          OfflineOrder item =
+              OfflineOrder(orderId: "ORD${orderId}", status: "offline");
+          await offlineOrderDao.insertOfflineOrdertItem(
+              item); //Saving this info in offline sync list database
+          await offlineOrderDao
+              .findAllOfflineOrder()
+              .then((value) => print(value[0].orderId));
+
+          OrderItem orderItem = OrderItem(
+              orderId: "ORD${orderId}",
+              userId: 1,
+              lattitude: lattitude.value,
+              longitude: longitude.value,
+              CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
+              status: "Pending",
+              totalItem: cartItems.length,
+              dateTime: DateTime.now().toString(),
+              totalPrice: totalPrice.value,
+              beatName: dropdownBeatValue.value,
+              CustomerName: dropdownCustomerValue.value);
+          await orderItemDao.insertOrderItem(orderItem);
+          cartItems.forEach((element) async {
+            SaleRequisition item = SaleRequisition(
+                userId: 1,
+                orderId: "ORD${orderId}",
+                productId: element.productId.toString(),
+                customerName: dropdownCustomerValue.value,
+                beatName: dropdownBeatValue.value,
+                productName: element.productName,
+                catagory: element.catagory,
+                unit: element.unit,
+                image: element.image,
+                price: element.price!,
+                brand: element.brand,
+                quantity: element.quantity);
+            await saleRequisitionDao.insertSaleItem(item);
+          });
+          await cartItemDao.deleteCartItemByuserID(1).then((value) {
+            cartItems.clear();
+            cartItems.refresh();
+          });
+
+          Update();
+        }
+
         OrderItem orderItem = OrderItem(
             orderId: "ORD${orderId}",
             userId: 1,
             CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
             lattitude: lattitude.value,
             longitude: longitude.value,
-            status: "Pending",
+            status: Submitstatus.value != '' ? Submitstatus.value : "Pending",
             totalItem: cartItems.length,
             dateTime: DateTime.now().toString(),
             totalPrice: totalPrice.value,

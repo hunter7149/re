@@ -9,10 +9,10 @@ enum Method { POST, GET, PUT, DELETE, PATCH }
 // const BASE_URL = 'http://192.168.10.204:8090/dp/';
 const BASE_URL =
 //LOCAL//
-    'http://192.168.10.127:8090/dp/';
+    // 'http://192.168.10.127:8090/dp/';
 
 //LIVE//
-// 'http://182.160.114.100:7171/dp/';
+    'http://182.160.114.100:7171/dp/';
 
 class ApiService extends GetxService {
   late Dio _dio;
@@ -80,7 +80,11 @@ class ApiService extends GetxService {
     } on DioError catch (e) {
       // throw Exception(e.response?.data);
       if (e.response != null && e.response!.data != '') {
-        return e.response!.data;
+        if (e.response!.data.toString().contains('<html><head>')) {
+          throw Exception("Something Went Wrong");
+        } else {
+          return e.response!.data;
+        }
       } else {
         throw Exception("Something Went Wrong");
       }

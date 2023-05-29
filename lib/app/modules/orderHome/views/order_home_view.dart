@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:sales/app/components/AppColors.dart';
 import 'package:sales/app/components/common_widgets.dart';
 import 'package:sales/app/config/app_themes.dart';
+import 'package:sales/app/sync/products/offlineordersync.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
 import '../../../routes/app_pages.dart';
@@ -48,6 +50,58 @@ class OrderHomeView extends GetView<OrderHomeController> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Obx(
+                    () => controller.offlineOrderCount.value == 0
+                        ? Container()
+                        : Container(
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                                color: AppThemes.modernRed,
+                                border: Border.all(
+                                    width: .8, color: AppThemes.modernRed),
+                                borderRadius: BorderRadius.circular(5)),
+                            // height: 50,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "${controller.offlineOrderCount.value} ORDERS WAITING TO BE SYNCED",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: ZoomTapAnimation(
+                                    onTap: () {
+                                      OFFLINEORDERSYNC().onlineSync();
+                                      controller.offlineOrderCount();
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      // width: 50,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: Center(
+                                        child: Text("SYNC NOW"),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Obx(() {
                     return controller.isBeatLoading.value
                         ? Container(
