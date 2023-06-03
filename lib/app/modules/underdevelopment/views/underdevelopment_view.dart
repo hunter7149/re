@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../components/common_widgets.dart';
 import '../controllers/underdevelopment_controller.dart';

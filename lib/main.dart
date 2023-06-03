@@ -1,15 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sales/app/components/app_strings.dart';
-import 'package:sales/app/sync/products/offlineordersync.dart';
-import 'package:sales/app/sync/products/offlineproductsync.dart';
-import 'package:workmanager/workmanager.dart';
 import 'app/api/service/prefrences.dart';
 import 'app/modules/underdevelopment/bindings/underdevelopment_binding.dart';
 import 'app/modules/underdevelopment/views/underdevelopment_view.dart';

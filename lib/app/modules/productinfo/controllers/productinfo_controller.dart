@@ -57,7 +57,7 @@ class ProductinfoController extends GetxController {
   setData({required dynamic data}) async {
     tempData.value = data as Map<String, dynamic> ?? {};
     tempData.refresh();
-    products.value = data as Map<String, dynamic> ?? {};
+    products.value = data ?? {};
     products.refresh();
     // calculation(price: 500, quanity: 1);
     update();
@@ -88,7 +88,7 @@ class ProductinfoController extends GetxController {
     CartItem? existingItem =
         await cartItemDao.findCartItemById(data.productId!).first;
 
-    if (existingItem != null && data != null) {
+    if (existingItem != null) {
       // If the item already exists, update its quantity
       CartItem temporaryItem = existingItem;
 

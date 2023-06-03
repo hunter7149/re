@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sales/app/modules/dashboard/bindings/dashboard_binding.dart';
 import 'package:sales/app/modules/leadershippage/bindings/leadershippage_binding.dart';
 import 'package:sales/app/modules/leadershippage/views/leadershippage_view.dart';
 import 'package:sales/app/modules/noticescreen/bindings/noticescreen_binding.dart';
@@ -131,6 +130,7 @@ class IndexView extends GetView<IndexController> {
                               ),
                           binding: NoticescreenBinding());
                     }
+                    return null;
                   },
                 ),
                 ServicesView(),

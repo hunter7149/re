@@ -2,7 +2,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sales/app/components/AppColors.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/routes/app_pages.dart';

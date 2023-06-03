@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:sales/app/api/firebase/pushnotificationservice.dart';
 import 'package:sales/app/api/service/prefrences.dart';
 import 'package:sales/app/routes/app_pages.dart';
 

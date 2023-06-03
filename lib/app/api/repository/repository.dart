@@ -1,7 +1,4 @@
-import 'package:get/get_connect/http/src/request/request.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sales/app/api/service/app_url.dart';
-import 'package:sales/app/components/app_strings.dart';
 
 import '../provider/provider.dart';
 import '../service/api_service.dart';

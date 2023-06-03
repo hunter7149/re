@@ -1,13 +1,9 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sales/app/components/app_strings.dart';
-import 'package:sales/app/components/internet_connection_checker.dart';
 
 import '../../../api/firebase/pushnotificationservice.dart';
 import '../../../api/repository/repository.dart';
@@ -94,7 +90,7 @@ class LoginController extends GetxController {
                   snackPosition: SnackPosition.BOTTOM);
             }
           });
-        } on Exception catch (e) {
+        } on Exception {
           isLogingIn.value = false;
           update();
           Get.snackbar("SERVER ERROR", "TRY AGAIN LATER",

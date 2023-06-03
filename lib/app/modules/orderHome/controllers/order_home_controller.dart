@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
@@ -169,7 +168,7 @@ class OrderHomeController extends GetxController {
       }
       isBeatLoading.value = false;
       Update();
-    } on Exception catch (e) {
+    } on Exception {
       offlineDropDowns();
       isBeatLoading.value = false;
       Update();
@@ -189,7 +188,7 @@ class OrderHomeController extends GetxController {
       }
       isCustomerLoading.value = false;
       Update();
-    } on Exception catch (e) {
+    } on Exception {
       isCustomerLoading.value = false;
       Update();
     }

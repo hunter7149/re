@@ -44,39 +44,41 @@ class OFFLINEPRODUCTSYNC {
               Update();
               // Iterate over the categories
               for (var category in categories) {
-                String genericName = category['GENERIC_NAME'] ?? 'NO NAME';
+                if (category['GENERIC_NAME'] != null) {
+                  String genericName = category['GENERIC_NAME'] ?? 'NO NAME';
 
-                // Check if the generic name exists for the brand, otherwise add it
-                if (!ProductData[brand]!.containsKey(genericName)) {
-                  ProductData[brand]![genericName] = [];
-                }
+                  // Check if the generic name exists for the brand, otherwise add it
+                  if (!ProductData[brand]!.containsKey(genericName)) {
+                    ProductData[brand]![genericName] = [];
+                  }
 
-                // Fetch the products for the current brand and generic name
-                try {
-                  await Repository().getAllProducts(body: {
-                    "brand": brand,
-                    "generic_name": genericName.toLowerCase()
-                  }).then((value) {
-                    if (value != null &&
-                        value['value'] != null &&
-                        value['value'].isNotEmpty) {
-                      List<dynamic> products = value['value'];
+                  // Fetch the products for the current brand and generic name
+                  try {
+                    await Repository().getAllProducts(body: {
+                      "brand": brand,
+                      "generic_name": genericName.toLowerCase()
+                    }).then((value) {
+                      if (value != null &&
+                          value['value'] != null &&
+                          value['value'].isNotEmpty) {
+                        List<dynamic> products = value['value'];
 
-                      // Add the products to the corresponding brand and generic name
-                      ProductData[brand]![genericName]!.addAll(products);
-                      isSyncing.value = false;
+                        // Add the products to the corresponding brand and generic name
+                        ProductData[brand]![genericName]!.addAll(products);
+                        isSyncing.value = false;
 
-                      stepTwo.value = true;
-                      Update();
-                    } else {
-                      isSyncing.value = false;
-                      stepTwo.value = false;
-                      Update();
-                    }
-                  });
-                } on Exception catch (e) {
-                  isSyncing.value = false;
-                  Update();
+                        stepTwo.value = true;
+                        Update();
+                      } else {
+                        isSyncing.value = false;
+                        stepTwo.value = false;
+                        Update();
+                      }
+                    });
+                  } on Exception {
+                    isSyncing.value = false;
+                    Update();
+                  }
                 }
               }
             } else {
@@ -84,7 +86,7 @@ class OFFLINEPRODUCTSYNC {
               Update();
             }
           });
-        } on Exception catch (e) {
+        } on Exception {
           isSyncing.value = false;
           Update();
         }

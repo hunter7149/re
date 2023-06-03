@@ -4,27 +4,20 @@ import 'dart:ui';
 
 import 'package:chewie/chewie.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/request/request.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sales/app/api/repository/repository.dart';
 import 'package:sales/app/components/cart_value.dart';
 import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/components/internet_connection_checker.dart';
 import 'package:sales/app/models/cartproduct.dart';
-import 'package:sales/app/modules/index/controllers/index_controller.dart';
 
 import 'package:video_player/video_player.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../DAO/cartitemdao.dart';
 import '../../../api/service/prefrences.dart';
 import '../../../config/app_themes.dart';
 import '../../../database/database.dart';
-import '../../../routes/app_pages.dart';
 
 class ProductcController extends GetxController {
   RxBool isOffline = false.obs;
@@ -96,7 +89,7 @@ class ProductcController extends GetxController {
         });
         isProductLoading.value = false;
         update();
-      } on Exception catch (e) {
+      } on Exception {
         offlineDataModule();
         // Get.snackbar("Server error", "Data loaded in offline mode!",
         //     backgroundColor: AppThemes.modernSexyRed,
@@ -231,7 +224,7 @@ class ProductcController extends GetxController {
     CartItem? existingItem =
         await cartItemDao.findCartItemById(data.productId!).first;
 
-    if (existingItem != null && data != null) {
+    if (existingItem != null) {
       // If the item already exists, update its quantity
       CartItem temporaryItem = existingItem;
 

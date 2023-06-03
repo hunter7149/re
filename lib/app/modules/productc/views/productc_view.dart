@@ -1,6 +1,4 @@
-import 'dart:ffi';
 import 'dart:math';
-import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:chewie/chewie.dart';
@@ -36,37 +34,39 @@ class ProductcView extends GetView<ProductcController> {
             elevation: 0.0,
             titleTextStyle: TextStyle(color: Colors.grey.shade700),
             title: Obx(() => Text(
-                "${controller.tempData['type']}" ?? "Products".toUpperCase())),
-            actions: [
-              Obx(() => controller.isProductLoading.value
-                  ? Container(
-                      margin: EdgeInsets.only(right: 10),
-                      child: SpinKitSpinningLines(
-                        color: AppThemes.modernGreen,
-                        size: 20,
-                      ),
-                    )
-                  : Container(
-                      child: controller.products.isNotEmpty
-                          ? Container(
-                              margin: EdgeInsets.all(5),
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              height: 40,
-                              // width: 50,
-                              decoration: BoxDecoration(
-                                  color: controller.randomeColor[randome],
-                                  borderRadius: BorderRadius.circular(100)),
-                              child: Center(
-                                  child: Text(
-                                "Total: ${controller.products.length}",
-                                style: TextStyle(
-                                    // color: AppThemes.modernSexyRed,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                            )
-                          : Container(),
-                    ))
-            ], //<Widget>[]
+                "${controller.tempData['brand']}-${controller.tempData['type']}"
+                        .toUpperCase() ??
+                    "Products".toUpperCase())),
+            // actions: [
+            //   Obx(() => controller.isProductLoading.value
+            //       ? Container(
+            //           margin: EdgeInsets.only(right: 10),
+            //           child: SpinKitSpinningLines(
+            //             color: AppThemes.modernGreen,
+            //             size: 20,
+            //           ),
+            //         )
+            //       : Container(
+            //           child: controller.products.isNotEmpty
+            //               ? Container(
+            //                   margin: EdgeInsets.all(5),
+            //                   padding: EdgeInsets.symmetric(horizontal: 10),
+            //                   height: 40,
+            //                   // width: 50,
+            //                   decoration: BoxDecoration(
+            //                       color: controller.randomeColor[randome],
+            //                       borderRadius: BorderRadius.circular(100)),
+            //                   child: Center(
+            //                       child: Text(
+            //                     "Total: ${controller.products.length}",
+            //                     style: TextStyle(
+            //                         // color: AppThemes.modernSexyRed,
+            //                         fontWeight: FontWeight.bold),
+            //                   )),
+            //                 )
+            //               : Container(),
+            //         ))
+            // ], //<Widget>[]
 
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -211,19 +211,18 @@ class ProductcView extends GetView<ProductcController> {
                                                                   14)),
                                                   child: CachedNetworkImage(
                                                     width: double.maxFinite,
-                                                    imageUrl:
-                                                        // "",
-                                                        controller.imageLinkReturn(
-                                                            brand: controller
-                                                                    .products[i]
-                                                                ['BRAND_NAME'],
-                                                            category: controller
-                                                                    .products[i]
-                                                                ['CATEGORY'],
-                                                            productid: controller
-                                                                    .products[i]
-                                                                [
-                                                                'PRODUCT_CODE']),
+                                                    imageUrl: "",
+                                                    // controller.imageLinkReturn(
+                                                    //     brand: controller
+                                                    //             .products[i]
+                                                    //         ['BRAND_NAME'],
+                                                    //     category: controller
+                                                    //             .products[i]
+                                                    //         ['CATEGORY'],
+                                                    //     productid: controller
+                                                    //             .products[i]
+                                                    //         [
+                                                    //         'PRODUCT_CODE']),
                                                     // height: 160,
                                                     fit: BoxFit.cover,
                                                     placeholder: (context,
@@ -400,11 +399,9 @@ class ProductcView extends GetView<ProductcController> {
                                                                 quanity.text =
                                                                     '1';
                                                                 controller.calculation(
-                                                                    price: double.parse(controller
-                                                                        .returnPrice(
-                                                                            productCode:
-                                                                                '${controller.products[i]['PRODUCT_CODE']}')
-                                                                        .toString()),
+                                                                    price: double
+                                                                        .parse(
+                                                                            '${controller.products[i]['MPR']}'),
                                                                     quanity: int
                                                                         .parse(quanity
                                                                             .text));

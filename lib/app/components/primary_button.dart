@@ -12,7 +12,7 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: AppThemes.PrimaryColor,
+      style: ElevatedButton.styleFrom(backgroundColor: AppThemes.PrimaryColor,
         shape: RoundedRectangleBorder(
           borderRadius:
           BorderRadius.circular(20),

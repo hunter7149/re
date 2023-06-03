@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 
 import '../../../api/service/prefrences.dart';

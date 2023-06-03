@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:sales/app/components/common_widgets.dart';
-import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/modules/product/controllers/product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

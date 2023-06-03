@@ -1,4 +1,3 @@
-import 'package:sales/app/components/thanalist.dart';
 
 class BANGLADESHGEOCODE {
   static returnThana({required String districtName}) {

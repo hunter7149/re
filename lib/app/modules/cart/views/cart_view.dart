@@ -5,7 +5,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-import '../../../config/app_assets.dart';
 import '../../../config/app_themes.dart';
 import 'package:flutter/material.dart';
 

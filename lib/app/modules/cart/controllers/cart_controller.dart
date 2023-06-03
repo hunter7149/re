@@ -2,13 +2,9 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:floor/floor.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:location/location.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:sales/app/DAO/offlineOrderDao.dart';
 import 'package:sales/app/DAO/orderItemDao.dart';
 import 'package:sales/app/DAO/saleRequisitionDao.dart';
@@ -557,7 +553,7 @@ class CartController extends GetxController {
       }
       isBeatLoading.value = false;
       Update();
-    } on Exception catch (e) {
+    } on Exception {
       offlineDropDowns();
       isBeatLoading.value = true;
       Update();
@@ -579,7 +575,7 @@ class CartController extends GetxController {
       }
       isCustomerLoading.value = false;
       Update();
-    } on Exception catch (e) {
+    } on Exception {
       offlineDropDowns();
       isCustomerLoading.value = false;
       Update();

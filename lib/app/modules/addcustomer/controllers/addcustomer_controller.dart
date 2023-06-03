@@ -77,7 +77,7 @@ class AddcustomerController extends GetxController {
       }
       isBeatLoading.value = false;
       Update();
-    } on Exception catch (e) {
+    } on Exception {
       offlineDropDowns();
       isBeatLoading.value = false;
       Update();

@@ -1,5 +1,4 @@
 import 'package:floor/floor.dart';
-import 'package:sales/app/models/cartproduct.dart';
 
 import '../models/saleRequisition.dart';
 

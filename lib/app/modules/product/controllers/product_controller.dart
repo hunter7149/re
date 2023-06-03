@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:sales/app/api/repository/repository.dart';
-import 'package:sales/app/api/service/prefrences.dart' as a;
-import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/config/app_themes.dart';
-import 'package:sales/app/sync/products/offlineproductsync.dart';
 
-import '../../../routes/app_pages.dart';
 
 class ProductController extends GetxController {
   List<Color> randomeColor = [

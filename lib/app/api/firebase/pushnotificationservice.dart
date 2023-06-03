@@ -1,13 +1,10 @@
-import 'dart:ffi';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:sales/app/routes/app_pages.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../constants.dart';
 import '../../components/common_widgets.dart';
@@ -131,9 +128,9 @@ class FirebaseService {
 
   static noticeViewer({required RemoteMessage message}) {
     bool isImportantOrUrgent =
-        (message.notification?.title?.toLowerCase()?.contains("important") ??
+        (message.notification?.title?.toLowerCase().contains("important") ??
                 false) ||
-            (message.notification?.title?.toLowerCase()?.contains("urgent") ??
+            (message.notification?.title?.toLowerCase().contains("urgent") ??
                 false);
 
     if (isImportantOrUrgent) {

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:sales/app/components/common_widgets.dart';
 import 'package:sales/app/components/image_picker.dart';
 import 'package:sales/app/config/app_themes.dart';
