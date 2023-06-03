@@ -59,13 +59,12 @@ class ProductbController extends GetxController {
     isProductsLoading.value = true;
     Update();
     dynamic brandProducts = Pref.readData(key: Pref.OFFLINE_DATA);
+    if (brandProducts.isEmpty) {
+      await OFFLINEPRODUCTSYNC();
+    }
     products.value = brandProducts['${data['brand']}'] ?? {};
     products.refresh();
-    if (products.isEmpty) {
-      await OFFLINEPRODUCTSYNC();
 
-      loadProducts();
-    }
     isProductsLoading.value = false;
     Update;
   }
