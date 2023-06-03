@@ -106,19 +106,19 @@ class OFFLINEORDERSYNC {
                   Get.snackbar("SYNC SUCCESS",
                       "OFFLINE ORDERS HAS BEEN SYNCED WITH THE SERVER",
                       backgroundColor: AppThemes.modernGreen,
-                      duration: Duration(seconds: 2),
+                      duration: Duration(seconds: 1),
                       animationDuration: Duration(seconds: 0),
                       borderRadius: 0,
                       colorText: Colors.white);
                   await offlineOrderDao.deleteOrderItemByID(element.orderId!);
                 }
               } else {
-                Get.snackbar("ORDER SYNC FAILED", "SERVER UNAVAILABLE",
-                    backgroundColor: AppThemes.modernGreen,
-                    duration: Duration(seconds: 2),
-                    animationDuration: Duration(seconds: 0),
-                    borderRadius: 0,
-                    colorText: Colors.white);
+                // Get.snackbar("ORDER SYNC FAILED", "SERVER UNAVAILABLE",
+                //     backgroundColor: AppThemes.modernGreen,
+                //     duration: Duration(seconds: 2),
+                //     animationDuration: Duration(seconds: 0),
+                //     borderRadius: 0,
+                //     colorText: Colors.white);
               }
             });
           } on Exception catch (e) {
