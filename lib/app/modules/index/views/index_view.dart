@@ -19,10 +19,12 @@ import 'package:sales/app/modules/promotionalads/bindings/promotionalads_binding
 import 'package:sales/app/modules/promotionalads/views/promotionalads_view.dart';
 import 'package:sales/app/modules/statisticspage/bindings/statisticspage_binding.dart';
 import 'package:sales/app/modules/statisticspage/views/statisticspage_view.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
 import '../../../routes/app_pages.dart';
 import '../../account/views/account_view.dart';
 import '../../cart/views/cart_view.dart';
+import '../../dashboard/bindings/dashboard_binding.dart';
 import '../../dashboard/views/dashboard_view.dart';
 import '../../productc/bindings/productc_binding.dart';
 import '../../productc/views/productc_view.dart';
@@ -66,9 +68,16 @@ class IndexView extends GetView<IndexController> {
                       //     routeName: Routes.DASHBOARD,
                       //     page: () => DashboardView(),
                       //     binding: DashboardBinding());
-                      return MaterialPageRoute(builder: (context) {
-                        return DashboardView();
-                      });
+                      return GetPageRoute(
+                        routeName: Routes.DASHBOARD,
+                        page: () => DashboardView(),
+                        binding: DashboardBinding(),
+                        transition:
+                            Transition.fadeIn, // Add a custom transition
+                      );
+                      // return MaterialPageRoute(builder: (context) {
+                      //   return DashboardView();
+                      // });
                     } else if (routeSettings.name == Routes.PRODUCT) {
                       return GetPageRoute(
                           routeName: Routes.PRODUCT,
@@ -129,8 +138,9 @@ class IndexView extends GetView<IndexController> {
                               // argument: routeSettings.arguments,
                               ),
                           binding: NoticescreenBinding());
+                    } else {
+                      return null;
                     }
-                    return null;
                   },
                 ),
                 ServicesView(),
@@ -140,12 +150,24 @@ class IndexView extends GetView<IndexController> {
               ],
             ),
           ),
+          // onDoubleTap: () {
+          //     // Get.back(
+          //     //   result: 1,
+          //     //   id: 1,
+          //     // );
+          //     print(controller.tabIndex.value);
+          //   },
           bottomNavigationBar: Obx(() => GestureDetector(
                 onDoubleTap: () {
-                  Get.back(
-                    result: 1,
-                    id: Constants.nestedNavigationNavigatorId,
-                  );
+                  print(controller.tabIndex.value);
+                  if (controller.tabIndex.value == 0) {
+                    Get.nestedKey(Constants.nestedNavigationNavigatorId)
+                        ?.currentState
+                        ?.popUntil((route) => route.isFirst);
+                    // Get.key.currentState!
+                    //     .popUntil((route) => route.isFirst);
+                    // Get.toNamed(Routes.DASHBOARD);
+                  }
                 },
                 child: BottomNavigationBar(
                   type: BottomNavigationBarType.shifting,

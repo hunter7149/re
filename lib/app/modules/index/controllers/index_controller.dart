@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:sales/app/components/app_strings.dart';
@@ -11,6 +12,7 @@ import 'package:sales/app/sync/products/offlineordersync.dart';
 import 'package:sales/app/sync/products/offlineproductsync.dart';
 
 class IndexController extends GetxController {
+  RxBool isBeatCustomerSelected = false.obs;
   RxBool shouldQuit = false.obs;
   RxBool isDeviceConnected = false.obs;
   updateShouldQuit() {
@@ -79,7 +81,7 @@ class IndexController extends GetxController {
         Get.find<CartController>()
             .connectionUpdater(status: isDeviceConnected.value);
         if (await InternetConnectionChecker().hasConnection) {
-          await OFFLINEORDERSYNC().onlineSync();
+          // await OFFLINEORDERSYNC().onlineSync();
           await OFFLINEPRODUCTSYNC().offlineDataSync(brands: AppStrings.brands);
         }
 
@@ -95,6 +97,7 @@ class IndexController extends GetxController {
       }
     });
   }
+//-------------------Beat customer select---------------//
 
   @override
   void onInit() {

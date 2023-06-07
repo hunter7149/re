@@ -142,6 +142,8 @@ class OrderHomeController extends GetxController {
     } else {
       offlineDropDowns();
     }
+
+    readBeatCustomerStatus();
   }
 
   offlineDropDowns() {
@@ -334,6 +336,19 @@ class OrderHomeController extends GetxController {
       itemList.refresh();
       Update();
     });
+  }
+
+  readBeatCustomerStatus() {
+    String beatName = Pref.readData(key: Pref.BEAT_NAME) ?? '';
+    String CustomerName = Pref.readData(key: Pref.CUSTOMER_NAME) ?? '';
+    String customerCode = Pref.readData(key: Pref.CUSTOMER_CODE) ?? '';
+    if (beatName != '' && CustomerName != '' && customerCode != '') {
+      dropdownBeatValue.value = beatName;
+      dropdownCustomerValue.value = CustomerName;
+      selectedCustomerId.value = customerCode;
+
+      Update();
+    }
   }
 
   @override

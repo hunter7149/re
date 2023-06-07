@@ -597,7 +597,8 @@ class CartView extends GetView<CartController> {
                           left: 0,
                           child: ZoomTapAnimation(
                             onTap: () {
-                              beatSelection(controller: controller);
+                              controller.requestCheckout();
+                              // beatSelection(controller: controller);
                               // confirmAlert(controller: controller);
                             },
                             child: Container(

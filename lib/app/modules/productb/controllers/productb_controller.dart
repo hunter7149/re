@@ -4,9 +4,7 @@ import 'dart:ui';
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sales/app/api/repository/repository.dart';
 import 'package:sales/app/api/service/prefrences.dart';
-import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/sync/products/offlineproductsync.dart';
 
