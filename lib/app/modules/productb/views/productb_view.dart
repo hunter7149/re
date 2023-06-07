@@ -137,7 +137,7 @@ productViewFromList(
     required int randome,
     required dynamic argument}) {
   return Container(
-      height: 240,
+      height: 320,
       // width: 200,
       // decoration: BoxDecoration(
       //     color: Colors.white,
@@ -161,8 +161,8 @@ productViewFromList(
                       id: Constants.nestedNavigationNavigatorId);
                 },
                 child: Container(
-                  height: 200,
-                  width: 150,
+                  height: 280,
+                  width: 200,
                   margin: EdgeInsets.only(right: 10),
                   decoration: BoxDecoration(
                     color: controller.randomeColor[randome],
@@ -187,8 +187,8 @@ productViewFromList(
             } else {
               TextEditingController quanity = TextEditingController(text: "1");
               return Container(
-                height: 200,
-                width: 150,
+                height: 280,
+                width: 200,
                 margin: EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -199,44 +199,52 @@ productViewFromList(
                   child: Column(
                     children: [
                       Expanded(
-                        flex: 1,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 20, left: 20),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1,
-                                  color: controller.randomeColor[randome]
-                                      .withOpacity(0.3)),
+                        flex: 3,
+                        child: ZoomTapAnimation(
+                          onTap: () {
+                            Get.toNamed(Routes.PRODUCTINFO,
+                                arguments: controller.products[category][index],
+                                id: Constants.nestedNavigationNavigatorId);
+                          },
+                          child: Container(
+                            // height: 120,
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 1,
+                                    color: controller.randomeColor[randome]
+                                        .withOpacity(0.3)),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    bottomLeft: Radius.circular(15))),
+                            child: ClipRRect(
                               borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  bottomLeft: Radius.circular(15))),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(14),
-                                bottomLeft: Radius.circular(14)),
-                            child: CachedNetworkImage(
-                              width: double.maxFinite,
-                              imageUrl: "",
-                              // controller.imageLinkReturn(
-                              //     brand: controller.products[i]['BRAND_NAME'],
-                              //     category: controller.products[i]['CATEGORY'],
-                              //     productid: controller.products[i]['PRODUCT_CODE']),
-                              // height: 160,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Center(
-                                  child: SpinKitThreeBounce(
-                                color: controller.randomeColor[randome],
-                              )),
-                              errorWidget: (ctx, url, err) => Image.asset(
-                                'assets/images/noprev.png',
-                                height: 70,
+                                  topLeft: Radius.circular(14),
+                                  bottomLeft: Radius.circular(14)),
+                              child: CachedNetworkImage(
+                                width: double.maxFinite,
+                                imageUrl: "",
+                                // controller.imageLinkReturn(
+                                //     brand: controller.products[i]['BRAND_NAME'],
+                                //     category: controller.products[i]['CATEGORY'],
+                                //     productid: controller.products[i]['PRODUCT_CODE']),
+                                // height: 160,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => Center(
+                                    child: SpinKitThreeBounce(
+                                  color: controller.randomeColor[randome],
+                                )),
+                                errorWidget: (ctx, url, err) => Image.asset(
+                                  'assets/images/noprev.png',
+                                  height: 120,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                       Expanded(
-                        flex: 2,
+                        flex: 4,
                         child: Column(
                           children: [
                             SizedBox(
@@ -254,26 +262,30 @@ productViewFromList(
                                   : "${controller.products[category][index]['PRODUCT_NAME']}"
                                       .toString(),
                               style: TextStyle(
+                                  fontSize: 16,
                                   color: Colors.grey.shade700,
                                   fontWeight: FontWeight.w500),
                               textAlign: TextAlign.center,
                             ),
-                            Text(
-                              "Variant: ${controller.products[category][index]['VARIANT']}",
-                              style: TextStyle(
-                                  color: Colors.grey.shade500,
-                                  // fontWeight:
-                                  //     FontWeight.w500,
-                                  fontSize: 12),
-                              textAlign: TextAlign.center,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                "Variant: ${controller.products[category][index]['VARIANT']}",
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    // fontWeight:
+                                    //     FontWeight.w500,
+                                    fontSize: 14),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                             Text(
                               "Size: ${controller.products[category][index]['WEIGHT_SIZE']}",
                               style: TextStyle(
-                                  color: Colors.grey.shade500,
+                                  color: Colors.grey.shade600,
                                   // fontWeight:
                                   // FontWeight.w500,
-                                  fontSize: 12),
+                                  fontSize: 14),
                               textAlign: TextAlign.center,
                             ),
                             Text(
@@ -282,7 +294,7 @@ productViewFromList(
                               style: TextStyle(
                                   color: controller.randomeColor[randome],
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 14),
+                                  fontSize: 16),
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(
@@ -310,8 +322,8 @@ productViewFromList(
                                         quanity: a);
                                   },
                                   child: Container(
-                                    height: 20,
-                                    width: 20,
+                                    height: 30,
+                                    width: 40,
                                     padding: EdgeInsets.all(5),
                                     child: Center(
                                         child: Icon(
@@ -331,7 +343,7 @@ productViewFromList(
                                 ),
                                 Container(
                                   width: 60,
-                                  height: 20,
+                                  height: 30,
                                   child: TextField(
                                     onChanged: (value) {
                                       if (quanity.text.isNotEmpty) {
@@ -395,8 +407,8 @@ productViewFromList(
                                         quanity: a);
                                   },
                                   child: Container(
-                                    height: 20,
-                                    width: 20,
+                                    height: 30,
+                                    width: 40,
                                     padding: EdgeInsets.all(5),
                                     child: Center(
                                         child: Icon(
@@ -449,9 +461,9 @@ productViewFromList(
                                           controller.addToCart(data: product);
                                         },
                                   child: Container(
-                                    height: 30,
+                                    height: 40,
                                     margin: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
+                                        horizontal: 10, vertical: 10),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         color:
