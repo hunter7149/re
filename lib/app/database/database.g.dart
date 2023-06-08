@@ -69,6 +69,8 @@ class _$AppDatabase extends AppDatabase {
 
   OfflineOrderDao? _offlineOrderDaoInstance;
 
+  SaveItemDao? _saveItemDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -98,6 +100,8 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `userId` TEXT, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT, `CustomerId` TEXT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `OfflineOrder` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `status` TEXT)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `SaveItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `saveId` TEXT, `userId` TEXT, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT, `CustomerId` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -125,6 +129,11 @@ class _$AppDatabase extends AppDatabase {
   OfflineOrderDao get offlineOrderDao {
     return _offlineOrderDaoInstance ??=
         _$OfflineOrderDao(database, changeListener);
+  }
+
+  @override
+  SaveItemDao get saveItemDao {
+    return _saveItemDaoInstance ??= _$SaveItemDao(database, changeListener);
   }
 }
 
@@ -233,7 +242,7 @@ class _$CartItemDao extends CartItemDao {
   }
 
   @override
-  Future<void> deleteCartItemByuserID(int userId) async {
+  Future<void> deleteCartItemByuserID(String userId) async {
     await _queryAdapter.queryNoReturn('DELETE FROM CartItem WHERE userId = ?1',
         arguments: [userId]);
   }
@@ -307,7 +316,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
   @override
   Future<List<SaleRequisition>> findAllSaleItemBySaleId(
     String orderId,
-    int userId,
+    String userId,
   ) async {
     return _queryAdapter.queryList(
         'SELECT * FROM SaleRequisition WHERE orderId = ?1 AND userId =?2',
@@ -351,6 +360,13 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
         arguments: [id],
         queryableName: 'SaleRequisition',
         isView: false);
+  }
+
+  @override
+  Future<void> deleteBySaveId(String saveId) async {
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM SaleRequisition WHERE orderId = ?1',
+        arguments: [saveId]);
   }
 
   @override
@@ -542,5 +558,107 @@ class _$OfflineOrderDao extends OfflineOrderDao {
   Future<int> updateOrderItem(OfflineOrder item) {
     return _offlineOrderUpdateAdapter.updateAndReturnChangedRows(
         item, OnConflictStrategy.abort);
+  }
+}
+
+class _$SaveItemDao extends SaveItemDao {
+  _$SaveItemDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database, changeListener),
+        _saveItemInsertionAdapter = InsertionAdapter(
+            database,
+            'SaveItem',
+            (SaveItem item) => <String, Object?>{
+                  'id': item.id,
+                  'saveId': item.saveId,
+                  'userId': item.userId,
+                  'status': item.status,
+                  'totalItem': item.totalItem,
+                  'dateTime': item.dateTime,
+                  'lattitude': item.lattitude,
+                  'longitude': item.longitude,
+                  'totalPrice': item.totalPrice,
+                  'beatName': item.beatName,
+                  'CustomerName': item.CustomerName,
+                  'CustomerId': item.CustomerId
+                },
+            changeListener);
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<SaveItem> _saveItemInsertionAdapter;
+
+  @override
+  Future<List<SaveItem>> findAllSaveItem() async {
+    return _queryAdapter.queryList('SELECT * FROM SaveItem',
+        mapper: (Map<String, Object?> row) => SaveItem(
+            id: row['id'] as int?,
+            saveId: row['saveId'] as String?,
+            userId: row['userId'] as String?,
+            CustomerId: row['CustomerId'] as String?,
+            status: row['status'] as String?,
+            totalItem: row['totalItem'] as int?,
+            totalPrice: row['totalPrice'] as double?,
+            dateTime: row['dateTime'] as String?,
+            lattitude: row['lattitude'] as double?,
+            longitude: row['longitude'] as double?,
+            beatName: row['beatName'] as String?,
+            CustomerName: row['CustomerName'] as String?));
+  }
+
+  @override
+  Future<List<SaveItem>> findAllSaveItemBySaveId(String saveId) async {
+    return _queryAdapter.queryList('SELECT * FROM SaveItem WHERE saveId=?1',
+        mapper: (Map<String, Object?> row) => SaveItem(
+            id: row['id'] as int?,
+            saveId: row['saveId'] as String?,
+            userId: row['userId'] as String?,
+            CustomerId: row['CustomerId'] as String?,
+            status: row['status'] as String?,
+            totalItem: row['totalItem'] as int?,
+            totalPrice: row['totalPrice'] as double?,
+            dateTime: row['dateTime'] as String?,
+            lattitude: row['lattitude'] as double?,
+            longitude: row['longitude'] as double?,
+            beatName: row['beatName'] as String?,
+            CustomerName: row['CustomerName'] as String?),
+        arguments: [saveId]);
+  }
+
+  @override
+  Stream<SaveItem?> findSaveItemById(String id) {
+    return _queryAdapter.queryStream('SELECT * FROM SaveItem WHERE saveId = ?1',
+        mapper: (Map<String, Object?> row) => SaveItem(
+            id: row['id'] as int?,
+            saveId: row['saveId'] as String?,
+            userId: row['userId'] as String?,
+            CustomerId: row['CustomerId'] as String?,
+            status: row['status'] as String?,
+            totalItem: row['totalItem'] as int?,
+            totalPrice: row['totalPrice'] as double?,
+            dateTime: row['dateTime'] as String?,
+            lattitude: row['lattitude'] as double?,
+            longitude: row['longitude'] as double?,
+            beatName: row['beatName'] as String?,
+            CustomerName: row['CustomerName'] as String?),
+        arguments: [id],
+        queryableName: 'SaveItem',
+        isView: false);
+  }
+
+  @override
+  Future<void> deleteBySaveId(String saveId) async {
+    await _queryAdapter.queryNoReturn('DELETE FROM SaveItem WHERE saveId = ?1',
+        arguments: [saveId]);
+  }
+
+  @override
+  Future<void> insertSaveItem(SaveItem item) async {
+    await _saveItemInsertionAdapter.insert(item, OnConflictStrategy.abort);
   }
 }

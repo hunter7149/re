@@ -15,7 +15,7 @@ abstract class CartItemDao {
   @Query('DELETE FROM CartItem WHERE productId = :id')
   Future<void> deleteCartItemByID(String id);
   @Query('DELETE FROM CartItem WHERE userId = :userId')
-  Future<void> deleteCartItemByuserID(int userId);
+  Future<void> deleteCartItemByuserID(String userId);
   @update
   Future<int?> updateCartItem(CartItem item);
   // @Query(

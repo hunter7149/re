@@ -57,8 +57,11 @@ class OFFLINEORDERSYNC {
           RxList<SaleRequisition> itemList = <SaleRequisition>[].obs;
 
           await saleRequisitionDao
-              .findAllSaleItemBySaleId(element.orderId!,
-                  1) //Requesting product list of this specific order from sale requisation table
+              .findAllSaleItemBySaleId(
+                  element.orderId!,
+                  Pref.readData(
+                      key: Pref
+                          .USER_ID)) //Requesting product list of this specific order from sale requisation table
               .then((value) {
             itemList.clear();
             itemList.refresh();

@@ -77,10 +77,23 @@ class ProductView extends GetView<ProductController> {
                         // height: 100,
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //       color: Colors.white.withOpacity(0.7),
+                            //       offset: Offset(-4, -2),
+                            //       spreadRadius: 1,
+                            //       blurRadius: 5),
+                            //   BoxShadow(
+                            //       color: Colors.black.withOpacity(0.4),
+                            //       offset: Offset(4, 2),
+                            //       spreadRadius: 1,
+                            //       blurRadius: 5),
+                            // ],
                             color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
+                            // borderRadius: BorderRadius.only(
+                            //     // topLeft: Radius.circular(20),
+                            //     bottomRight: Radius.circular(20)),
+                            borderRadius: BorderRadius.circular(4),
                             border: Border.all(
                                 width: 1, color: controller.randomeColor[1])),
                         child: ClipRRect(

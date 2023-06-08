@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:floor/floor.dart';
@@ -8,12 +9,14 @@ import 'package:quickalert/quickalert.dart';
 import 'package:sales/app/DAO/offlineOrderDao.dart';
 import 'package:sales/app/DAO/orderItemDao.dart';
 import 'package:sales/app/DAO/saleRequisitionDao.dart';
+import 'package:sales/app/DAO/saveItemDao.dart';
 import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/models/offlineorder.dart';
 import 'package:sales/app/models/orderItem.dart';
 import 'package:sales/app/models/saleRequisition.dart';
 import 'package:geocoding/geocoding.dart' as gcode;
+import 'package:sales/app/models/saveItem.dart';
 import '../../../DAO/cartitemdao.dart';
 import '../../../api/repository/repository.dart';
 import '../../../api/service/prefrences.dart';
@@ -25,6 +28,7 @@ class CartController extends GetxController {
   late OrderItemDao orderItemDao;
   late OfflineOrderDao offlineOrderDao;
   late SaleRequisitionDao saleRequisitionDao;
+  late SaveItemDao saveItemDao;
   RxBool isDeviceConnected = false.obs;
   connectionUpdater({required bool status}) {
     isDeviceConnected.value = status;
@@ -224,7 +228,9 @@ class CartController extends GetxController {
                   quantity: element.quantity);
               await saleRequisitionDao.insertSaleItem(item);
             });
-            await cartItemDao.deleteCartItemByuserID(1).then((value) {
+            await cartItemDao
+                .deleteCartItemByuserID(Pref.readData(key: Pref.USER_ID))
+                .then((value) {
               cartItems.clear();
               cartItems.refresh();
             });
@@ -263,7 +269,9 @@ class CartController extends GetxController {
             await saleRequisitionDao.insertSaleItem(item);
           });
           //Inserting products agains order id one by one.A single order can have multiple products
-          await cartItemDao.deleteCartItemByuserID(1).then((value) {
+          await cartItemDao
+              .deleteCartItemByuserID(Pref.readData(key: Pref.USER_ID))
+              .then((value) {
             cartItems.clear();
             cartItems.refresh();
             QuickAlert.show(
@@ -313,7 +321,9 @@ class CartController extends GetxController {
                 quantity: element.quantity);
             await saleRequisitionDao.insertSaleItem(item);
           });
-          await cartItemDao.deleteCartItemByuserID(1).then((value) {
+          await cartItemDao
+              .deleteCartItemByuserID(Pref.readData(key: Pref.USER_ID))
+              .then((value) {
             cartItems.clear();
             cartItems.refresh();
             QuickAlert.show(
@@ -337,6 +347,45 @@ class CartController extends GetxController {
     }
   }
 
+  saveOrder() async {
+    Random random = Random();
+    int saveId = random.nextInt(99999);
+    SaveItem saveItem = SaveItem(
+        saveId: "SAVE${saveId}",
+        userId: "${Pref.readData(key: Pref.USER_ID)}",
+        lattitude: lattitude.value,
+        longitude: longitude.value,
+        CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
+        status: "SAVED",
+        totalItem: cartItems.length,
+        dateTime: DateTime.now().toString(),
+        totalPrice: totalPrice.value,
+        beatName: dropdownBeatValue.value,
+        CustomerName: dropdownCustomerValue.value);
+    await saveItemDao.insertSaveItem(saveItem);
+    cartItems.forEach((element) async {
+      SaleRequisition item = SaleRequisition(
+          userId: "${Pref.readData(key: Pref.USER_ID)}",
+          orderId: "SAVE${saveId}",
+          productId: element.productId.toString(),
+          customerName: dropdownCustomerValue.value,
+          beatName: dropdownBeatValue.value,
+          productName: element.productName,
+          catagory: element.catagory,
+          unit: element.unit,
+          image: element.image,
+          price: element.price!,
+          brand: element.brand,
+          quantity: element.quantity);
+      await saleRequisitionDao.insertSaleItem(item);
+    });
+
+    Update();
+    await successAlert();
+    Timer(Duration(seconds: 1), () {
+      Get.back();
+    });
+  }
   //sync//
 
   RxDouble totalPrice = 0.0.obs;
@@ -661,6 +710,58 @@ class CartController extends GetxController {
     }
   }
 
+  successAlert() async {
+    Get.closeAllSnackbars();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.generalDialog(
+          transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 4 * anim1.value,
+                  sigmaY: 4 * anim1.value,
+                ),
+                child: FadeTransition(
+                  child: child,
+                  opacity: anim1,
+                ),
+              ),
+          pageBuilder: (ctx, anim1, anim2) {
+            return MediaQuery(
+              data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                content: Container(
+                  height: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              height: 100,
+                              width: 100,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Image.asset("assets/images/success.png")),
+                          Text(
+                            "Saved for later!",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 18),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                actionsPadding: EdgeInsets.all(10),
+                actions: [],
+              ),
+            );
+          });
+    });
+  }
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -670,6 +771,7 @@ class CartController extends GetxController {
     saleRequisitionDao = database.saleRequisitionDao;
     orderItemDao = database.orderItemDao;
     offlineOrderDao = database.offlineOrderDao;
+    saveItemDao = database.saveItemDao;
     readBeatCustomerStatus();
     loadData();
   }

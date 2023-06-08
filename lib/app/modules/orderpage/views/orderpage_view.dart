@@ -52,12 +52,14 @@ class OrderpageView extends GetView<OrderpageController> {
                             String time = formatter.format(DateTime.parse(
                                 "${controller.orderItem[index].dateTime.toString().split(".")[0]}"));
                             return ZoomTapAnimation(
-                              onTap: () {
-                                controller.reqOrderedItemsList(
+                              onTap: () async {
+                                await controller.reqOrderedItemsList(
                                     orderId:
                                         controller.orderItem[index].orderId ??
                                             "");
-                                confirmAlert(data: controller.itemList);
+                                if (controller.itemList.isNotEmpty) {
+                                  confirmAlert(data: controller.itemList);
+                                }
                               },
                               child: Container(
                                 margin: EdgeInsets.symmetric(

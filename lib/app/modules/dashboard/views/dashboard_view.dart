@@ -282,7 +282,7 @@ class DashboardView extends GetView<DashboardController> {
         //                                 : 0),
         decoration: BoxDecoration(
             color: valid ? color.shade100 : Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(15)),
+            borderRadius: BorderRadius.circular(10)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -328,10 +328,10 @@ class DashboardView extends GetView<DashboardController> {
       // height: 175,
       width: 175,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(width: 0.5, color: AppThemes.modernGreen)),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10),
         child: CachedNetworkImage(
           imageUrl: dataLink,
           // height: 160,
@@ -339,7 +339,7 @@ class DashboardView extends GetView<DashboardController> {
           placeholder: (context, url) =>
               Center(child: CircularProgressIndicator()),
           errorWidget: (ctx, url, err) => Image.asset(
-            'assets/images/noprev.png',
+            'assets/images/noprevvec.jpg',
             height: 70,
           ),
         ),

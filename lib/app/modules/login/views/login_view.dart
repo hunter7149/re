@@ -98,7 +98,7 @@ class LoginView extends GetView<LoginController> {
                 ),
                 COMMONWIDGET.loginInput(
                     controller: controller.email,
-                    hinttext: "Enter your email",
+                    hinttext: "Enter your ID",
                     obsecure: false),
                 SizedBox(
                   height: 20,

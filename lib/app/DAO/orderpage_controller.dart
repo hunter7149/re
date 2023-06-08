@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sales/app/DAO/saleRequisitionDao.dart';
+import 'package:sales/app/api/service/prefrences.dart';
 import 'package:sales/app/models/orderItem.dart';
 import 'package:sales/app/models/saleRequisition.dart';
 
@@ -26,7 +27,9 @@ class OrderpageController extends GetxController {
 //---------------------Get Detailed Order List------------------------//
   RxList<SaleRequisition> itemList = <SaleRequisition>[].obs;
   reqOrderedItemsList({required String orderId}) async {
-    saleRequisitionDao.findAllSaleItemBySaleId(orderId, 1).then((value) {
+    saleRequisitionDao
+        .findAllSaleItemBySaleId(orderId, Pref.readData(key: Pref.USER_ID))
+        .then((value) {
       itemList.clear();
       itemList.refresh();
       itemList.value = value;

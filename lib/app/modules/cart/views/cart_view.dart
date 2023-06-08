@@ -595,26 +595,55 @@ class CartView extends GetView<CartController> {
                           bottom: 0,
                           right: 0,
                           left: 0,
-                          child: ZoomTapAnimation(
-                            onTap: () {
-                              controller.requestCheckout();
-                              // beatSelection(controller: controller);
-                              // confirmAlert(controller: controller);
-                            },
-                            child: Container(
-                              height: 50,
-                              width: double.maxFinite,
-                              color: AppThemes.modernGreen,
-                              child: Center(
-                                child: Text(
-                                  "PLACE ORDER",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: ZoomTapAnimation(
+                                  onTap: () {
+                                    controller.saveOrder();
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: AppThemes.modernBlue),
+                                    child: Center(
+                                      child: Text(
+                                        "SAVE",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              Expanded(
+                                flex: 3,
+                                child: ZoomTapAnimation(
+                                  onTap: () {
+                                    controller.requestCheckout();
+                                    // beatSelection(controller: controller);
+                                    // confirmAlert(controller: controller);
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    width: double.maxFinite,
+                                    color: AppThemes.modernGreen,
+                                    child: Center(
+                                      child: Text(
+                                        "PLACE ORDER",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ))
                     ],
                   ),

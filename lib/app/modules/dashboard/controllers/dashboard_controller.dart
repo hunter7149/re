@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -230,7 +231,7 @@ class DashboardController extends GetxController {
     }
   }
 
-  setBeatCustomer() {
+  setBeatCustomer() async {
     Pref.writeData(key: Pref.BEAT_NAME, value: dropdownBeatValue.value);
     Pref.writeData(key: Pref.CUSTOMER_NAME, value: dropdownCustomerValue.value);
     Pref.writeData(key: Pref.CUSTOMER_CODE, value: selectedCustomerId.value);
@@ -238,7 +239,23 @@ class DashboardController extends GetxController {
     String beatName = Pref.readData(key: Pref.BEAT_NAME) ?? '';
     String CustomerName = Pref.readData(key: Pref.CUSTOMER_NAME) ?? '';
     String customerCode = Pref.readData(key: Pref.CUSTOMER_CODE) ?? '';
+    await firebaseStore();
     update();
+  }
+
+  firebaseStore() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference stringsCollection = firestore.collection('fcm_token');
+    try {
+      await stringsCollection.doc("${Pref.readData(key: Pref.USER_ID)}").set({
+        'device': Pref.readData(key: Pref.DEVICE_IDENTITY).toString(),
+        'token': Pref.readData(key: Pref.FCM_TOKEN).toString(),
+        'userId': "${Pref.readData(key: Pref.USER_ID)}"
+      });
+      print('String uploaded successfully');
+    } catch (e) {
+      print('Error uploading string: $e');
+    }
   }
 
   assignBeatData() {

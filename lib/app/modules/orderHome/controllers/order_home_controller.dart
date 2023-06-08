@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sales/app/DAO/cartitemdao.dart';
+import 'package:sales/app/DAO/saveItemDao.dart';
 import 'package:sales/app/api/repository/repository.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/models/cartproduct.dart';
+import 'package:sales/app/models/saveItem.dart';
 
 import '../../../DAO/offlineOrderDao.dart';
 import '../../../DAO/orderItemDao.dart';
@@ -254,7 +258,24 @@ class OrderHomeController extends GetxController {
           price: double.tryParse(element.price.toString()) ?? 0.0,
           brand: element.brand,
           quantity: element.quantity);
-      await cartItemDao.insertCartItem(item);
+      CartItem? existingItem =
+          await cartItemDao.findCartItemById(item.productId!).first;
+
+      if (existingItem != null) {
+        // If the item already exists, update its quantity
+        CartItem temporaryItem = existingItem;
+
+        existingItem.quantity = (existingItem.quantity! + item.quantity!);
+        existingItem.price = (existingItem.price! + item.price!);
+
+        if (await cartItemDao
+            .updateCartItem(existingItem)
+            .then((value) => true)) {
+          CartCounter.cartCounter();
+        } else {}
+      } else {
+        await cartItemDao.insertCartItem(item);
+      }
     });
     CartCounter.cartCounter();
     // final data = await cartItemDao.findAllCartItem() as List<CartItem>;
@@ -274,7 +295,7 @@ class OrderHomeController extends GetxController {
   loadData() async {
     await cartItemDao.findAllCartItem().then((value) {
       cartItems.value = value;
-      print("dta length -> ${cartItems[0].beatName}");
+      print("dta length -> ${cartItems.length}");
     });
   }
 
@@ -287,9 +308,12 @@ class OrderHomeController extends GetxController {
     orderItemDao = database.orderItemDao;
     saleRequisitionDao = database.saleRequisitionDao;
     offlineOrderDao = database.offlineOrderDao;
+    saveItemDao = database.saveItemDao;
+
     await readBeatCustomerStatus();
 
     await reqOrderList();
+    await reqSaveList();
 
     initialDropdownValue();
 
@@ -310,7 +334,9 @@ class OrderHomeController extends GetxController {
   late OrderItemDao orderItemDao;
   late SaleRequisitionDao saleRequisitionDao;
   late OfflineOrderDao offlineOrderDao;
+  late SaveItemDao saveItemDao;
   RxList<OrderItem> orderItem = <OrderItem>[].obs;
+
 //-----------------------Get Main Order List----------------------//
   reqOrderList() async {
     await orderItemDao.findAllOrderItem().then((value) async {
@@ -336,7 +362,9 @@ class OrderHomeController extends GetxController {
 //---------------------Get Detailed Order List------------------------//
   RxList<SaleRequisition> itemList = <SaleRequisition>[].obs;
   reqOrderedItemsList({required String orderId}) async {
-    saleRequisitionDao.findAllSaleItemBySaleId(orderId, 1).then((value) {
+    saleRequisitionDao
+        .findAllSaleItemBySaleId(orderId, Pref.readData(key: Pref.USER_ID))
+        .then((value) {
       itemList.clear();
       itemList.refresh();
       itemList.value = value;
@@ -368,6 +396,150 @@ class OrderHomeController extends GetxController {
 
       Update();
     }
+  }
+
+  RxList<SaveItem> saveItem = <SaveItem>[].obs;
+//-----------------------Get Main Save List----------------------//
+  reqSaveList() async {
+    await saveItemDao.findAllSaveItem().then((value) {
+      saveItem.clear();
+      saveItem.refresh();
+      saveItem.value = value;
+      saveItem.reversed;
+      saveItem.refresh();
+      print(saveItem.length);
+
+      Update();
+    });
+  }
+
+//---------------------Get Detailed Save List------------------------//
+  RxList<SaleRequisition> savedItems = <SaleRequisition>[].obs;
+  reqSavedItemsList({required String saveId}) async {
+    await saleRequisitionDao
+        .findAllSaleItemBySaleId(saveId, Pref.readData(key: Pref.USER_ID))
+        .then((value) {
+      savedItems.clear();
+
+      savedItems.value = value;
+      savedItems.refresh();
+      Update();
+    });
+  }
+
+  addAllSavedToCart() async {
+    // final tempList = previousOrder[0]["products"];
+    savedItems.forEach((element) async {
+      CartItem item = CartItem(
+          userId: "${Pref.readData(key: Pref.USER_ID)}",
+          productId: element.productId,
+          beatName: dropdownBeatValue.value,
+          customerName: dropdownCustomerValue.value,
+          productName: element.productName,
+          catagory: element.catagory,
+          unit: element.unit,
+          image: element.image,
+          price: double.tryParse(element.price.toString()) ?? 0.0,
+          brand: element.brand,
+          quantity: element.quantity);
+
+      CartItem? existingItem =
+          await cartItemDao.findCartItemById(item.productId!).first;
+
+      if (existingItem != null) {
+        // If the item already exists, update its quantity
+        CartItem temporaryItem = existingItem;
+
+        existingItem.quantity = (existingItem.quantity! + item.quantity!);
+        existingItem.price = (existingItem.price! + item.price!);
+
+        if (await cartItemDao
+            .updateCartItem(existingItem)
+            .then((value) => true)) {
+          CartCounter.cartCounter();
+        } else {}
+      } else {
+        await cartItemDao.insertCartItem(item);
+      }
+    });
+    CartCounter.cartCounter();
+    // final data = await cartItemDao.findAllCartItem() as List<CartItem>;
+    print("=======================");
+    await successAlert(remove: false);
+    Timer(Duration(seconds: 1), () {
+      Get.back();
+    });
+    // print(data);
+  }
+
+  removeSavedItem({required int index}) async {
+    await saleRequisitionDao
+        .deleteBySaveId(saveItem[index].saveId!)
+        .then((value) async {
+      print("{value}");
+      await saveItemDao.deleteBySaveId(saveItem[index].saveId!).then((value) {
+        print("Deleted saved id ${saveItem[index].saveId}");
+      });
+    });
+    saveItem.removeAt(index);
+    saveItem.refresh();
+    await successAlert(remove: true);
+    Timer(Duration(seconds: 1), () {
+      Get.back();
+    });
+    Update();
+  }
+
+  successAlert({required bool remove}) async {
+    Get.closeAllSnackbars();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.generalDialog(
+          transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 4 * anim1.value,
+                  sigmaY: 4 * anim1.value,
+                ),
+                child: FadeTransition(
+                  child: child,
+                  opacity: anim1,
+                ),
+              ),
+          pageBuilder: (ctx, anim1, anim2) {
+            return MediaQuery(
+              data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                content: Container(
+                  height: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              height: 100,
+                              width: 100,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Image.asset("assets/images/success.png")),
+                          Text(
+                            remove ? "Removed" : "Added to cart!",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 18),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                actionsPadding: EdgeInsets.all(10),
+                actions: [],
+              ),
+            );
+          });
+    });
   }
 
   @override
