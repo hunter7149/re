@@ -15,6 +15,8 @@ import '../../models/saleRequisition.dart';
 
 class OFFLINEORDERSYNC {
   onlineSync() async {
+    RxInt count = 0.obs;
+    RxInt total = 0.obs;
     late OrderItemDao orderItemDao;
     late OfflineOrderDao offlineOrderDao;
     late SaleRequisitionDao saleRequisitionDao;
@@ -31,6 +33,8 @@ class OFFLINEORDERSYNC {
       orderList.value = value;
       orderList
           .refresh(); //Assigned a list of offline order [id,orderId,status]
+      total.value = orderList.length;
+      print("Order item length-------->> ${orderList.length}");
       if (orderList.isNotEmpty) {
         orderList.forEach((element) async {
           RxList<OrderItem> orderItem = <OrderItem>[].obs;
@@ -45,7 +49,6 @@ class OFFLINEORDERSYNC {
 
             orderItem.value = value;
             orderItem.refresh();
-            print(orderItem.length);
 
             Update();
           });
@@ -102,14 +105,8 @@ class OFFLINEORDERSYNC {
               print(value);
               if (value != null) {
                 if (value['result'].toString().contains('cess')) {
-                  Get.closeAllSnackbars();
-                  Get.snackbar("SYNC SUCCESS",
-                      "OFFLINE ORDERS HAS BEEN SYNCED WITH THE SERVER",
-                      backgroundColor: AppThemes.modernGreen,
-                      duration: Duration(seconds: 1),
-                      animationDuration: Duration(seconds: 0),
-                      borderRadius: 0,
-                      colorText: Colors.white);
+                  count.value += 1;
+                  Update();
                   await offlineOrderDao.deleteOrderItemByID(element.orderId!);
                 }
               } else {
@@ -122,13 +119,33 @@ class OFFLINEORDERSYNC {
               }
             });
           } on Exception catch (e) {
+            // Get.snackbar("ORDER SYNC FAILED", "SERVER UNAVAILABLE",
+            //     backgroundColor: AppThemes.modernSexyRed,
+            //     duration: Duration(seconds: 2),
+            //     animationDuration: Duration(seconds: 0),
+            //     borderRadius: 0,
+            //     colorText: Colors.white);
+            print(e);
+          }
+
+          if (count.value != 0) {
+            Get.closeAllSnackbars();
+
+            Get.snackbar("SYNC SUCCESS",
+                "${count} of ${total} ORDERS HAS BEEN SYNCED WITH THE SERVER",
+                backgroundColor: AppThemes.modernGreen,
+                duration: Duration(seconds: 1),
+                animationDuration: Duration(seconds: 0),
+                borderRadius: 0,
+                colorText: Colors.white);
+          } else {
+            Get.closeAllSnackbars();
             Get.snackbar("ORDER SYNC FAILED", "SERVER UNAVAILABLE",
                 backgroundColor: AppThemes.modernSexyRed,
                 duration: Duration(seconds: 2),
                 animationDuration: Duration(seconds: 0),
                 borderRadius: 0,
                 colorText: Colors.white);
-            print(e);
           }
         });
       } else {

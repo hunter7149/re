@@ -173,13 +173,46 @@ productViewFromList(
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
-                    child: Text(
-                      'View All',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.white.withOpacity(0.2),
+                                    offset: Offset(-4, -2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5),
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.4),
+                                    offset: Offset(4, 2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5),
+                              ],
+                              borderRadius: BorderRadius.circular(100),
+                              color: controller.randomeColor[randome]),
+                          child: Center(
+                            child: Icon(
+                              Icons.visibility,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'View All',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -235,7 +268,7 @@ productViewFromList(
                                   color: controller.randomeColor[randome],
                                 )),
                                 errorWidget: (ctx, url, err) => Image.asset(
-                                  'assets/images/noprev.png',
+                                  'assets/images/noprevvec.jpg',
                                   height: 120,
                                 ),
                               ),

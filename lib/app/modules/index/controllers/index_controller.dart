@@ -81,7 +81,7 @@ class IndexController extends GetxController {
         Get.find<CartController>()
             .connectionUpdater(status: isDeviceConnected.value);
         if (await InternetConnectionChecker().hasConnection) {
-          // await OFFLINEORDERSYNC().onlineSync();
+          await OFFLINEORDERSYNC().onlineSync();
           await OFFLINEPRODUCTSYNC().offlineDataSync(brands: AppStrings.brands);
         }
 

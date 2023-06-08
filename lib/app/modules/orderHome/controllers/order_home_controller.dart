@@ -20,6 +20,9 @@ import '../../../models/saleRequisition.dart';
 
 class OrderHomeController extends GetxController {
   final count = 0.0.obs;
+  RxString savedBeatName = ''.obs;
+  RxString savedCustomerName = ''.obs;
+  RxString savedSelectedCustomerId = ''.obs;
   List<Color> randomeColor = [
     AppThemes.modernBlue,
     AppThemes.modernGreen,
@@ -142,8 +145,8 @@ class OrderHomeController extends GetxController {
     } else {
       offlineDropDowns();
     }
-
-    readBeatCustomerStatus();
+    setIfSaved();
+    // readBeatCustomerStatus();
   }
 
   offlineDropDowns() {
@@ -284,10 +287,14 @@ class OrderHomeController extends GetxController {
     orderItemDao = database.orderItemDao;
     saleRequisitionDao = database.saleRequisitionDao;
     offlineOrderDao = database.offlineOrderDao;
+    await readBeatCustomerStatus();
+
     await reqOrderList();
 
     initialDropdownValue();
+
     await offlineOrderCounter();
+    // setIfSaved();
   }
 
   RxInt offlineOrderCount = 0.obs;
@@ -342,10 +349,22 @@ class OrderHomeController extends GetxController {
     String beatName = Pref.readData(key: Pref.BEAT_NAME) ?? '';
     String CustomerName = Pref.readData(key: Pref.CUSTOMER_NAME) ?? '';
     String customerCode = Pref.readData(key: Pref.CUSTOMER_CODE) ?? '';
-    if (beatName != '' && CustomerName != '' && customerCode != '') {
-      dropdownBeatValue.value = beatName;
-      dropdownCustomerValue.value = CustomerName;
-      selectedCustomerId.value = customerCode;
+    savedBeatName.value = beatName;
+    savedCustomerName.value = CustomerName;
+    savedSelectedCustomerId.value = customerCode;
+    Update();
+    print(
+        "${beatName} ----------- ${CustomerName} ------------ ${customerCode}");
+  }
+
+  setIfSaved() {
+    if (savedBeatName.value != '' &&
+        savedCustomerName.value != '' &&
+        savedSelectedCustomerId.value != '') {
+      DropdownBeatValueUpdater(savedBeatName.value);
+      DropdownCustomerValueUpdater(savedCustomerName.value);
+
+      selectedCustomerId.value = savedSelectedCustomerId.value;
 
       Update();
     }

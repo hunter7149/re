@@ -174,7 +174,7 @@ class ProductcView extends GetView<ProductcController> {
                                       child: Column(
                                         children: [
                                           Expanded(
-                                            flex: 2,
+                                            flex: 3,
                                             child: ZoomTapAnimation(
                                               onTap: () {
                                                 Get.toNamed(Routes.PRODUCTINFO,
@@ -187,12 +187,15 @@ class ProductcView extends GetView<ProductcController> {
                                                 margin: EdgeInsets.only(
                                                     top: 20, left: 20),
                                                 decoration: BoxDecoration(
+                                                    // color: controller
+                                                    //     .randomeColor[randome]
+                                                    //     .withOpacity(0.3),
                                                     border: Border.all(
                                                         width: 1,
                                                         color: controller
                                                             .randomeColor[
                                                                 randome]
-                                                            .withOpacity(0.3)),
+                                                            .withOpacity(0.5)),
                                                     borderRadius:
                                                         BorderRadius.only(
                                                             topLeft: Radius
@@ -237,7 +240,8 @@ class ProductcView extends GetView<ProductcController> {
                                                     errorWidget:
                                                         (ctx, url, err) =>
                                                             Image.asset(
-                                                      'assets/images/noprev.png',
+                                                      'assets/images/noprevvec.jpg',
+                                                      fit: BoxFit.cover,
                                                       height: 70,
                                                     ),
                                                   ),
@@ -246,7 +250,7 @@ class ProductcView extends GetView<ProductcController> {
                                             ),
                                           ),
                                           Expanded(
-                                              flex: 2,
+                                              flex: 4,
                                               child: Column(
                                                 children: [
                                                   SizedBox(
@@ -265,6 +269,7 @@ class ProductcView extends GetView<ProductcController> {
                                                         : "${controller.products[i]['PRODUCT_NAME']}"
                                                             .toString(),
                                                     style: TextStyle(
+                                                        fontSize: 16,
                                                         color: Colors
                                                             .grey.shade700,
                                                         fontWeight:
@@ -278,7 +283,7 @@ class ProductcView extends GetView<ProductcController> {
                                                             .grey.shade500,
                                                         // fontWeight:
                                                         //     FontWeight.w500,
-                                                        fontSize: 12),
+                                                        fontSize: 14),
                                                     textAlign: TextAlign.center,
                                                   ),
                                                   Text(
@@ -288,7 +293,7 @@ class ProductcView extends GetView<ProductcController> {
                                                             .grey.shade500,
                                                         // fontWeight:
                                                         // FontWeight.w500,
-                                                        fontSize: 12),
+                                                        fontSize: 14),
                                                     textAlign: TextAlign.center,
                                                   ),
                                                   Text(
@@ -300,7 +305,7 @@ class ProductcView extends GetView<ProductcController> {
                                                             randome],
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        fontSize: 14),
+                                                        fontSize: 16),
                                                     textAlign: TextAlign.center,
                                                   ),
                                                   SizedBox(
@@ -337,8 +342,8 @@ class ProductcView extends GetView<ProductcController> {
                                                               quanity: a);
                                                         },
                                                         child: Container(
-                                                          height: 20,
-                                                          width: 20,
+                                                          height: 30,
+                                                          width: 30,
                                                           padding:
                                                               EdgeInsets.all(5),
                                                           child: Center(
@@ -365,8 +370,8 @@ class ProductcView extends GetView<ProductcController> {
                                                         width: 5,
                                                       ),
                                                       Container(
-                                                        width: 60,
-                                                        height: 20,
+                                                        width: 70,
+                                                        height: 30,
                                                         child: TextField(
                                                           onChanged: (value) {
                                                             if (quanity.text
@@ -471,8 +476,8 @@ class ProductcView extends GetView<ProductcController> {
                                                               quanity: a);
                                                         },
                                                         child: Container(
-                                                          height: 20,
-                                                          width: 20,
+                                                          height: 30,
+                                                          width: 30,
                                                           padding:
                                                               EdgeInsets.all(5),
                                                           child: Center(
@@ -553,7 +558,7 @@ class ProductcView extends GetView<ProductcController> {
                                                                     // addAlert(controller: controller, data: i);
                                                                   },
                                                         child: Container(
-                                                          height: 30,
+                                                          height: 40,
                                                           margin: EdgeInsets
                                                               .symmetric(
                                                                   horizontal:
