@@ -5,7 +5,7 @@ class OrderItem {
   @PrimaryKey(autoGenerate: true)
   int? id;
   String? orderId;
-  int? userId;
+  String? userId;
   String? status;
   int? totalItem;
   String? dateTime;

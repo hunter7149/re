@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sales/app/models/cartproduct.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
+import '../../../api/service/prefrences.dart';
 import '../../../config/app_themes.dart';
 import 'package:flutter/material.dart';
 
@@ -511,7 +512,8 @@ class ProductcView extends GetView<ProductcController> {
                                                                     CartItem
                                                                         product =
                                                                         CartItem(
-                                                                      userId: 1,
+                                                                      userId:
+                                                                          "${Pref.readData(key: Pref.USER_ID)}",
                                                                       productId:
                                                                           controller.products[i]
                                                                               [

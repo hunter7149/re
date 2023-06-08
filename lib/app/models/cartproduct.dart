@@ -4,7 +4,7 @@ import 'package:floor/floor.dart';
 class CartItem {
   @PrimaryKey(autoGenerate: true)
   int? id;
-  int? userId;
+  String? userId;
   String? productId;
   String? customerName;
   String? beatName;

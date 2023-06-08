@@ -91,11 +91,11 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitPrice` REAL)');
+            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` TEXT, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitPrice` REAL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` INTEGER, `orderId` TEXT, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitprice` REAL)');
+            'CREATE TABLE IF NOT EXISTS `SaleRequisition` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userId` TEXT, `orderId` TEXT, `productId` TEXT, `customerName` TEXT, `beatName` TEXT, `productName` TEXT, `catagory` TEXT, `unit` TEXT, `image` TEXT, `price` REAL, `brand` TEXT, `quantity` INTEGER, `unitprice` REAL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `userId` INTEGER, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT, `CustomerId` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `OrderItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `userId` TEXT, `status` TEXT, `totalItem` INTEGER, `dateTime` TEXT, `lattitude` REAL, `longitude` REAL, `totalPrice` REAL, `beatName` TEXT, `CustomerName` TEXT, `CustomerId` TEXT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `OfflineOrder` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `orderId` TEXT, `status` TEXT)');
 
@@ -188,7 +188,7 @@ class _$CartItemDao extends CartItemDao {
     return _queryAdapter.queryList('SELECT * FROM CartItem',
         mapper: (Map<String, Object?> row) => CartItem(
             id: row['id'] as int?,
-            userId: row['userId'] as int?,
+            userId: row['userId'] as String?,
             productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
@@ -208,7 +208,7 @@ class _$CartItemDao extends CartItemDao {
         'SELECT * FROM CartItem WHERE productId = ?1',
         mapper: (Map<String, Object?> row) => CartItem(
             id: row['id'] as int?,
-            userId: row['userId'] as int?,
+            userId: row['userId'] as String?,
             productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
             beatName: row['beatName'] as String?,
@@ -289,7 +289,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
     return _queryAdapter.queryList('SELECT * FROM SaleRequisition',
         mapper: (Map<String, Object?> row) => SaleRequisition(
             id: row['id'] as int?,
-            userId: row['userId'] as int?,
+            userId: row['userId'] as String?,
             orderId: row['orderId'] as String?,
             productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
@@ -313,7 +313,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
         'SELECT * FROM SaleRequisition WHERE orderId = ?1 AND userId =?2',
         mapper: (Map<String, Object?> row) => SaleRequisition(
             id: row['id'] as int?,
-            userId: row['userId'] as int?,
+            userId: row['userId'] as String?,
             orderId: row['orderId'] as String?,
             productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
@@ -335,7 +335,7 @@ class _$SaleRequisitionDao extends SaleRequisitionDao {
         'SELECT * FROM SaleRequisition WHERE orderId = ?1',
         mapper: (Map<String, Object?> row) => SaleRequisition(
             id: row['id'] as int?,
-            userId: row['userId'] as int?,
+            userId: row['userId'] as String?,
             orderId: row['orderId'] as String?,
             productId: row['productId'] as String?,
             customerName: row['customerName'] as String?,
@@ -398,7 +398,7 @@ class _$OrderItemDao extends OrderItemDao {
         mapper: (Map<String, Object?> row) => OrderItem(
             id: row['id'] as int?,
             orderId: row['orderId'] as String?,
-            userId: row['userId'] as int?,
+            userId: row['userId'] as String?,
             CustomerId: row['CustomerId'] as String?,
             status: row['status'] as String?,
             totalItem: row['totalItem'] as int?,
@@ -416,7 +416,7 @@ class _$OrderItemDao extends OrderItemDao {
         mapper: (Map<String, Object?> row) => OrderItem(
             id: row['id'] as int?,
             orderId: row['orderId'] as String?,
-            userId: row['userId'] as int?,
+            userId: row['userId'] as String?,
             CustomerId: row['CustomerId'] as String?,
             status: row['status'] as String?,
             totalItem: row['totalItem'] as int?,
@@ -436,7 +436,7 @@ class _$OrderItemDao extends OrderItemDao {
         mapper: (Map<String, Object?> row) => OrderItem(
             id: row['id'] as int?,
             orderId: row['orderId'] as String?,
-            userId: row['userId'] as int?,
+            userId: row['userId'] as String?,
             CustomerId: row['CustomerId'] as String?,
             status: row['status'] as String?,
             totalItem: row['totalItem'] as int?,

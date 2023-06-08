@@ -60,7 +60,7 @@ class CartController extends GetxController {
       required String price}) async {
     CartItem newItem = CartItem(
         id: cartItems[index].id,
-        userId: 1,
+        userId: "${Pref.readData(key: Pref.USER_ID)}",
         productId: cartItems[index].productId,
         beatName: cartItems[index].beatName!.toString().isEmpty
             ? ""
@@ -197,7 +197,7 @@ class CartController extends GetxController {
 
             OrderItem orderItem = OrderItem(
                 orderId: "ORD${orderId}",
-                userId: 1,
+                userId: "${Pref.readData(key: Pref.USER_ID)}",
                 lattitude: lattitude.value,
                 longitude: longitude.value,
                 CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
@@ -210,7 +210,7 @@ class CartController extends GetxController {
             await orderItemDao.insertOrderItem(orderItem);
             cartItems.forEach((element) async {
               SaleRequisition item = SaleRequisition(
-                  userId: 1,
+                  userId: "${Pref.readData(key: Pref.USER_ID)}",
                   orderId: "ORD${orderId}",
                   productId: element.productId.toString(),
                   customerName: dropdownCustomerValue.value,
@@ -234,7 +234,7 @@ class CartController extends GetxController {
 
           OrderItem orderItem = OrderItem(
               orderId: "ORD${orderId}",
-              userId: 1,
+              userId: "${Pref.readData(key: Pref.USER_ID)}",
               CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
               lattitude: lattitude.value,
               longitude: longitude.value,
@@ -248,7 +248,7 @@ class CartController extends GetxController {
               orderItem); //Saving a single order info where order Id is the primary key
           cartItems.forEach((element) async {
             SaleRequisition item = SaleRequisition(
-                userId: 1,
+                userId: "${Pref.readData(key: Pref.USER_ID)}",
                 orderId: "ORD${orderId}",
                 productId: element.productId.toString(),
                 customerName: dropdownCustomerValue.value,
@@ -286,7 +286,7 @@ class CartController extends GetxController {
 
           OrderItem orderItem = OrderItem(
               orderId: "ORD${orderId}",
-              userId: 1,
+              userId: "${Pref.readData(key: Pref.USER_ID)}",
               lattitude: lattitude.value,
               longitude: longitude.value,
               CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
@@ -299,7 +299,7 @@ class CartController extends GetxController {
           await orderItemDao.insertOrderItem(orderItem);
           cartItems.forEach((element) async {
             SaleRequisition item = SaleRequisition(
-                userId: 1,
+                userId: "${Pref.readData(key: Pref.USER_ID)}",
                 orderId: "ORD${orderId}",
                 productId: element.productId.toString(),
                 customerName: dropdownCustomerValue.value,

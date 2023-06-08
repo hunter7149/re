@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../constants.dart';
+import '../../../api/service/prefrences.dart';
 import '../../../components/common_widgets.dart';
 import '../../../config/app_themes.dart';
 import '../../../models/cartproduct.dart';
@@ -261,7 +262,7 @@ class ProductinfoView extends GetView<ProductinfoController> {
                             ? () {}
                             : () {
                                 CartItem product = CartItem(
-                                  userId: 1,
+                                  userId: "${Pref.readData(key: Pref.USER_ID)}",
                                   productId: controller.products["SKU_CODE"],
                                   customerName: "",
                                   beatName: "",

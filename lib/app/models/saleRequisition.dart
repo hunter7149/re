@@ -4,7 +4,7 @@ import 'package:floor/floor.dart';
 class SaleRequisition {
   @PrimaryKey(autoGenerate: true)
   int? id;
-  int? userId;
+  String? userId;
   String? orderId;
   String? productId;
 

@@ -11,6 +11,7 @@ import 'package:sales/app/config/app_themes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../constants.dart';
+import '../../../api/service/prefrences.dart';
 import '../../../models/cartproduct.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/productb_controller.dart';
@@ -463,7 +464,8 @@ productViewFromList(
                                       ? () {}
                                       : () {
                                           CartItem product = CartItem(
-                                            userId: 1,
+                                            userId:
+                                                "${Pref.readData(key: Pref.USER_ID)}",
                                             productId:
                                                 controller.products[category]
                                                     [index]["SKU_CODE"],
