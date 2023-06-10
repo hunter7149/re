@@ -304,7 +304,7 @@ productViewFromList(
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                "Variant: ${controller.products[category][index]['VARIANT']}",
+                                "Variant: ${controller.products[category][index]['VARIANT'].toString().length > 15 ? "${controller.products[category][index]['VARIANT']}".toString().substring(0, 15) + "..." : controller.products[category][index]['VARIANT']}",
                                 style: TextStyle(
                                     color: Colors.grey.shade600,
                                     // fontWeight:
