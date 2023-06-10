@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 
+import '../../../api/firebase/pushnotificationservice.dart';
 import '../../../api/service/prefrences.dart';
 import '../../../routes/app_pages.dart';
 
@@ -20,6 +22,7 @@ class SplashController extends GetxController {
   }
 
   navigate() async {
+    Platform.isAndroid ? await FirebaseService.initialize() : () {};
     await saveDeviceInfo();
     String token = await Pref.readData(key: Pref.LOGIN_INFORMATION) ?? "";
     if (token.isNotEmpty) {
