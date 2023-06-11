@@ -746,304 +746,302 @@ class OrderHomeView extends GetView<OrderHomeController> {
 
   static confirmAlert({required OrderHomeController controller}) {
     Get.generalDialog(
-        transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 4 * anim1.value,
-                sigmaY: 4 * anim1.value,
-              ),
-              child: FadeTransition(
-                child: child,
-                opacity: anim1,
-              ),
-            ),
+        // transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+        //       filter: ImageFilter.blur(
+        //         sigmaX: 4 * anim1.value,
+        //         sigmaY: 4 * anim1.value,
+        //       ),
+        //       child: FadeTransition(
+        //         child: child,
+        //         opacity: anim1,
+        //       ),
+        //     ),
         pageBuilder: (ctx, anim1, anim2) {
-          TextEditingController quanity = TextEditingController();
-          quanity.text = 1.toString();
+      TextEditingController quanity = TextEditingController();
+      quanity.text = 1.toString();
 
-          return MediaQuery(
-            data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Confirmation",
-                    style: TextStyle(),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      child: Center(
-                          child: Icon(
-                        Icons.close,
-                        color: Colors.red.shade800,
-                        size: 20,
-                      )),
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(100)),
-                    ),
-                  )
-                ],
+      return MediaQuery(
+        data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+        child: AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Confirmation",
+                style: TextStyle(),
               ),
-              content: Container(
-                // height: 80,
-                child: Text("Are you sure to palce this order again?"),
+              InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  child: Center(
+                      child: Icon(
+                    Icons.close,
+                    color: Colors.red.shade800,
+                    size: 20,
+                  )),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              )
+            ],
+          ),
+          content: Container(
+            // height: 80,
+            child: Text("Are you sure to palce this order again?"),
+          ),
+          actionsPadding: EdgeInsets.all(10),
+          actions: [
+            InkWell(
+              onTap: () {
+                Get.back();
+                controller.addAllToCart();
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                    color: AppThemes.modernGreen,
+                    borderRadius: BorderRadius.circular(10)),
+                alignment: Alignment.center,
+                child:
+                    Text("Place Order", style: TextStyle(color: Colors.white)),
               ),
-              actionsPadding: EdgeInsets.all(10),
-              actions: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                    controller.addAllToCart();
-                  },
-                  child: Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: AppThemes.modernGreen,
-                        borderRadius: BorderRadius.circular(10)),
-                    alignment: Alignment.center,
-                    child: Text("Place Order",
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                )
-              ],
-            ),
-          );
-        });
+            )
+          ],
+        ),
+      );
+    });
   }
 
   static savedOrderItemShow({required OrderHomeController controller}) {
     Get.generalDialog(
-        transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 4 * anim1.value,
-                sigmaY: 4 * anim1.value,
-              ),
-              child: FadeTransition(
-                child: child,
-                opacity: anim1,
-              ),
-            ),
+        // transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+        //       filter: ImageFilter.blur(
+        //         sigmaX: 4 * anim1.value,
+        //         sigmaY: 4 * anim1.value,
+        //       ),
+        //       child: FadeTransition(
+        //         child: child,
+        //         opacity: anim1,
+        //       ),
+        //     ),
         pageBuilder: (ctx, anim1, anim2) {
-          return MediaQuery(
-            data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Items",
-                    style: TextStyle(),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      child: Center(
-                          child: Icon(
-                        Icons.close,
-                        color: Colors.red.shade800,
-                        size: 20,
-                      )),
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(100)),
-                    ),
-                  )
-                ],
+      return MediaQuery(
+        data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+        child: AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Items",
+                style: TextStyle(),
               ),
-              content: Container(
-                  height: 400,
-                  width: double.maxFinite,
-                  child: ListView.builder(
-                      itemCount: controller.savedItems.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.all(5),
-                          // height: 10,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 0.7, color: Colors.grey.shade400),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Expanded(
-                                // flex: 1,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  // borderRadius: BorderRadius.only(
-                                  //     topRight: Radius.circular(15),
-                                  //     bottomRight: Radius.circular(15)
-                                  // ),
-                                  child: CachedNetworkImage(
-                                    imageUrl: controller.savedItems[index].image
-                                        .toString(),
-                                    // height: 160,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => Center(
-                                        child: CircularProgressIndicator()),
-                                    errorWidget: (ctx, url, err) => Image.asset(
-                                      'assets/images/noprev.png',
-                                      height: 70,
-                                    ),
-                                  ),
+              InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  child: Center(
+                      child: Icon(
+                    Icons.close,
+                    color: Colors.red.shade800,
+                    size: 20,
+                  )),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              )
+            ],
+          ),
+          content: Container(
+              height: 400,
+              width: double.maxFinite,
+              child: ListView.builder(
+                  itemCount: controller.savedItems.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5),
+                      // height: 10,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 0.7, color: Colors.grey.shade400),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            // flex: 1,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              // borderRadius: BorderRadius.only(
+                              //     topRight: Radius.circular(15),
+                              //     bottomRight: Radius.circular(15)
+                              // ),
+                              child: CachedNetworkImage(
+                                imageUrl: controller.savedItems[index].image
+                                    .toString(),
+                                // height: 160,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) =>
+                                    Center(child: CircularProgressIndicator()),
+                                errorWidget: (ctx, url, err) => Image.asset(
+                                  'assets/images/noprev.png',
+                                  height: 70,
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "${controller.savedItems[index].productName}",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "ID:${controller.savedItems[index].productId}",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      Text(
-                                        "${controller.savedItems[index].brand}",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      Text(
-                                        "Quantity: ${controller.savedItems[index].quantity}",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      Text(
-                                        "Price: ${controller.savedItems[index].price}",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    ],
-                                  ))
-                            ],
+                            ),
                           ),
-                        );
-                      })),
-              actionsPadding: EdgeInsets.all(10),
-              actions: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                    controller.addAllSavedToCart();
-                  },
-                  child: Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: AppThemes.modernGreen,
-                        borderRadius: BorderRadius.circular(10)),
-                    alignment: Alignment.center,
-                    child: Text("Add to cart",
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                )
-              ],
-            ),
-          );
-        });
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${controller.savedItems[index].productName}",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "ID:${controller.savedItems[index].productId}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    "${controller.savedItems[index].brand}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    "Quantity: ${controller.savedItems[index].quantity}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    "Price: ${controller.savedItems[index].price}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              ))
+                        ],
+                      ),
+                    );
+                  })),
+          actionsPadding: EdgeInsets.all(10),
+          actions: [
+            InkWell(
+              onTap: () {
+                Get.back();
+                controller.addAllSavedToCart();
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                    color: AppThemes.modernGreen,
+                    borderRadius: BorderRadius.circular(10)),
+                alignment: Alignment.center,
+                child:
+                    Text("Add to cart", style: TextStyle(color: Colors.white)),
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 
   static deleteAlert(
       {required int index, required OrderHomeController controller}) {
     Get.generalDialog(
-        transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 4 * anim1.value,
-                sigmaY: 4 * anim1.value,
-              ),
-              child: FadeTransition(
-                child: child,
-                opacity: anim1,
-              ),
-            ),
+        // transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+        //       filter: ImageFilter.blur(
+        //         sigmaX: 4 * anim1.value,
+        //         sigmaY: 4 * anim1.value,
+        //       ),
+        //       child: FadeTransition(
+        //         child: child,
+        //         opacity: anim1,
+        //       ),
+        //     ),
         pageBuilder: (ctx, anim1, anim2) {
-          TextEditingController quanity = TextEditingController();
-          quanity.text = 1.toString();
+      TextEditingController quanity = TextEditingController();
+      quanity.text = 1.toString();
 
-          return MediaQuery(
-            data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Confirmation",
-                    style: TextStyle(),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      child: Center(
-                          child: Icon(
-                        Icons.close,
-                        color: Colors.red.shade800,
-                        size: 20,
-                      )),
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(100)),
-                    ),
-                  )
-                ],
+      return MediaQuery(
+        data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+        child: AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Confirmation",
+                style: TextStyle(),
               ),
-              content: Container(
-                // height: 80,
-                child: Text("Are you sure remove this from your saved list?"),
+              InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  child: Center(
+                      child: Icon(
+                    Icons.close,
+                    color: Colors.red.shade800,
+                    size: 20,
+                  )),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              )
+            ],
+          ),
+          content: Container(
+            // height: 80,
+            child: Text("Are you sure remove this from your saved list?"),
+          ),
+          actionsPadding: EdgeInsets.all(10),
+          actions: [
+            InkWell(
+              onTap: () {
+                Get.back();
+                controller.removeSavedItem(index: index);
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                    color: AppThemes.modernSexyRed,
+                    borderRadius: BorderRadius.circular(10)),
+                alignment: Alignment.center,
+                child: Text("Remove", style: TextStyle(color: Colors.white)),
               ),
-              actionsPadding: EdgeInsets.all(10),
-              actions: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                    controller.removeSavedItem(index: index);
-                  },
-                  child: Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: AppThemes.modernSexyRed,
-                        borderRadius: BorderRadius.circular(10)),
-                    alignment: Alignment.center,
-                    child:
-                        Text("Remove", style: TextStyle(color: Colors.white)),
-                  ),
-                )
-              ],
-            ),
-          );
-        });
+            )
+          ],
+        ),
+      );
+    });
   }
 }

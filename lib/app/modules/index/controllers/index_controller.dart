@@ -49,6 +49,7 @@ class IndexController extends GetxController {
       Get.find<CartController>().readBeatCustomerStatus();
       // Get.find<CartController>().initialDropdownValue();
       Get.find<CartController>().getlocation();
+      Get.find<CartController>().isSavedUpdater(status: false);
       Get.find<CartController>().loadData();
       hasNewValueUpdater(value: false);
     } else {

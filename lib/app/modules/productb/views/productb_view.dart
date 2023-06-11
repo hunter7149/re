@@ -223,7 +223,7 @@ productViewFromList(
               return Container(
                 height: 280,
                 width: 200,
-                margin: EdgeInsets.only(right: 10),
+                margin: EdgeInsets.only(right: 20),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(

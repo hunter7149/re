@@ -24,7 +24,7 @@ class AccountView extends GetView<AccountController> {
 
           // height: 300,
           decoration: BoxDecoration(
-              color: AppThemes.modernGreen,
+              color: AppThemes.modernBlue,
               borderRadius:
                   BorderRadius.only(bottomRight: Radius.circular(200))),
           child: Column(
@@ -147,7 +147,7 @@ class AccountView extends GetView<AccountController> {
                     margin: EdgeInsets.symmetric(horizontal: 24),
                     height: 200,
                     decoration: BoxDecoration(
-                        color: AppThemes.modernBlue,
+                        color: AppThemes.modernGreen,
                         borderRadius: BorderRadius.circular(20)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -90,10 +90,10 @@ class ProductView extends GetView<ProductController> {
                             //       blurRadius: 5),
                             // ],
                             color: Colors.white,
-                            // borderRadius: BorderRadius.only(
-                            //     // topLeft: Radius.circular(20),
-                            //     bottomRight: Radius.circular(20)),
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
+                            // borderRadius: BorderRadius.circular(4),
                             border: Border.all(
                                 width: 1, color: controller.randomeColor[1])),
                         child: ClipRRect(

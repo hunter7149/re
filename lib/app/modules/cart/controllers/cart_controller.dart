@@ -347,6 +347,12 @@ class CartController extends GetxController {
     }
   }
 
+  RxBool isSaved = false.obs;
+  isSavedUpdater({required bool status}) {
+    isSaved.value = status;
+    Update();
+  }
+
   saveOrder() async {
     Random random = Random();
     int saveId = random.nextInt(99999);
@@ -379,7 +385,7 @@ class CartController extends GetxController {
           quantity: element.quantity);
       await saleRequisitionDao.insertSaleItem(item);
     });
-
+    isSavedUpdater(status: true);
     Update();
     await successAlert();
     Timer(Duration(seconds: 1), () {

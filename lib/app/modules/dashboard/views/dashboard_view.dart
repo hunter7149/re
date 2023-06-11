@@ -8,6 +8,7 @@ import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/sync/products/offlineordersync.dart';
 import 'package:sales/app/sync/products/offlineproductsync.dart';
 import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
 import 'package:flutter/material.dart';
@@ -52,19 +53,41 @@ class DashboardView extends GetView<DashboardController> {
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 10.0),
-                height: 320,
+                height: 400,
                 child: Obx(() => ListView(
                     scrollDirection: Axis.horizontal,
                     children: controller.urls.map((e) {
-                      if (e["type"] == 0) {
-                        return offerItem(dataLink: e['link']);
-                      } else {
-                        return Container();
-                        // return offerItemVideo(dataLink: e['link']);
-                      }
+                      return ZoomTapAnimation(
+                          onTap: () {
+                            offerDialogue(link: e['link'], type: e['type']);
+                          },
+                          child: Container(
+                              // height: 400,
+                              width: 200,
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                      top: 0,
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: offerItem(dataLink: e["thumb"])),
+                                  e['type'] == 0
+                                      ? Container()
+                                      : Center(
+                                          child: Container(
+                                              child: Icon(
+                                            Icons.play_arrow,
+                                            size: 80,
+                                            color: AppThemes.modernGreen
+                                                .withOpacity(0.6),
+                                          )),
+                                        )
+                                ],
+                              )));
                     }).toList()
 
                     //     <Widget>[
@@ -90,7 +113,7 @@ class DashboardView extends GetView<DashboardController> {
             ),
 
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Container(
                 // height: MediaQuery.of(context).size.height / 1.5,
                 child: GridView.count(
@@ -101,7 +124,7 @@ class DashboardView extends GetView<DashboardController> {
                     children: [
                       menuItem(
                           icon: Icons.shopping_cart_checkout,
-                          color: Colors.blue,
+                          color: AppThemes.modernBlue,
                           valid: true,
                           title: "Order Management",
                           function: () {
@@ -110,7 +133,7 @@ class DashboardView extends GetView<DashboardController> {
                           }),
                       menuItem(
                         icon: Icons.list,
-                        color: Colors.deepOrange,
+                        color: AppThemes.modernPurple,
                         title: "Product Catalogue",
                         valid: true,
                         function: () async {
@@ -151,7 +174,7 @@ class DashboardView extends GetView<DashboardController> {
                       //     }),
                       menuItem(
                           icon: Icons.notifications_active_rounded,
-                          color: Colors.green,
+                          color: AppThemes.modernCoolPink,
                           title: "Notice",
                           valid: true,
                           function: () {
@@ -160,7 +183,7 @@ class DashboardView extends GetView<DashboardController> {
                           }),
                       menuItem(
                           icon: Icons.sync,
-                          color: Colors.teal,
+                          color: AppThemes.modernGreen,
                           title: "Sync",
                           valid: true,
                           function: () async {
@@ -191,7 +214,7 @@ class DashboardView extends GetView<DashboardController> {
                           }),
                       menuItem(
                           icon: FontAwesomeIcons.lineChart,
-                          color: Colors.teal,
+                          color: AppThemes.modernBlue,
                           title: "Statistics",
                           valid: false,
                           function: () {
@@ -264,7 +287,7 @@ class DashboardView extends GetView<DashboardController> {
 
   static menuItem(
       {required IconData icon,
-      required MaterialColor color,
+      required Color color,
       required String title,
       required VoidCallback function,
       required bool valid}) {
@@ -281,27 +304,31 @@ class DashboardView extends GetView<DashboardController> {
         //                                 ? 8
         //                                 : 0),
         decoration: BoxDecoration(
-            color: valid ? color.shade100 : Colors.grey.shade100,
+            color: valid ? color.withOpacity(0.6) : Colors.grey.shade100,
             borderRadius: BorderRadius.circular(10)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
               decoration: BoxDecoration(
-                  color: valid ? color.shade200 : Colors.grey.shade200,
+                  color: valid ? color.withOpacity(0.5) : Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(100)),
               padding: EdgeInsets.all(15),
               child: Icon(
                 icon,
                 size: 50,
-                color: valid ? color.shade500 : Colors.grey.shade500,
+                color: valid
+                    ? Colors.white.withOpacity(0.8)
+                    : Colors.grey.shade500,
               ),
             ),
             Text(
               title,
               style: TextStyle(
                   fontSize: 18,
-                  color: valid ? color.shade500 : Colors.grey.shade500,
+                  color: valid
+                      ? Colors.white.withOpacity(0.8)
+                      : Colors.grey.shade500,
                   fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
             )
@@ -326,10 +353,10 @@ class DashboardView extends GetView<DashboardController> {
     return Container(
       margin: EdgeInsets.all(10),
       // height: 175,
-      width: 175,
+      // width: 175,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 0.5, color: AppThemes.modernGreen)),
+          border: Border.all(width: 0.5, color: Colors.grey.shade400)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: CachedNetworkImage(
@@ -351,30 +378,20 @@ class DashboardView extends GetView<DashboardController> {
     VideoPlayerController videoPlayerController =
         new VideoPlayerController.network(dataLink);
 
-    // initController() async {
-    //   if (videoPlayerController.value.isInitialized) {
-    //     videoPlayerController.dispose();
-    //   } else {
-    //     await videoPlayerController.initialize();
-    //   }
-    // }
-
-    // initController();
-
     ChewieController chewieController = new ChewieController(
         videoPlayerController: videoPlayerController,
-        autoPlay: true,
+        // autoPlay: true,
         looping: true,
         autoInitialize: true,
         showOptions: false,
         showControls: false,
-        aspectRatio: 0.8);
+        aspectRatio: 0.9);
 
     return Container(
       margin: EdgeInsets.all(10),
-      // height: 175,
-      width: 170,
-      height: double.maxFinite,
+      // height: 500,
+      // // width: 190,
+      // height: double.maxFinite,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           border: Border.all(width: 0.7, color: Colors.grey)),
@@ -385,5 +402,116 @@ class DashboardView extends GetView<DashboardController> {
         ),
       ),
     );
+  }
+
+  static offerDialogue({required String link, required int type}) {
+    VideoPlayerController? videoPlayerController;
+    ChewieController? chewieController;
+    YoutubePlayerController? youtubePlayerController;
+    if (link.contains("youtube")) {
+      youtubePlayerController = YoutubePlayerController(
+        initialVideoId: YoutubePlayer.convertUrlToId(link)!,
+        flags: YoutubePlayerFlags(
+          hideControls: true,
+          autoPlay: true,
+          mute: false,
+        ),
+      );
+    } else {
+      videoPlayerController = new VideoPlayerController.network(link);
+
+      chewieController = ChewieController(
+        videoPlayerController: videoPlayerController,
+        looping: true,
+        autoInitialize: true,
+        showOptions: true,
+        autoPlay: true,
+        draggableProgressBar: false,
+        materialProgressColors: ChewieProgressColors(),
+        allowFullScreen: false,
+        allowMuting: false,
+        showControls: false,
+        aspectRatio: 1,
+      );
+    }
+
+    Get.generalDialog(pageBuilder: (ctx, anim1, anim2) {
+      return MediaQuery(
+        data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+        child: AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Promotion",
+                style: TextStyle(),
+              ),
+              // InkWell(
+              //   onTap: () async {
+              //     chewieController.dispose();
+              //     videoPlayerController.dispose();
+              //     Get.back();
+              //   },
+              //   child: Container(
+              //     // padding: EdgeInsets.all(5),
+              //     child: Center(
+              //         child: Icon(
+              //       Icons.close,
+              //       color: Colors.red.shade800,
+              //       size: 20,
+              //     )),
+              //     decoration: BoxDecoration(
+              //         color: Colors.grey.shade200,
+              //         borderRadius: BorderRadius.circular(100)),
+              //   ),
+              // )
+            ],
+          ),
+          content: type == 0
+              ? Container(height: 400, child: offerItem(dataLink: link))
+              : Container(
+                  height: 400,
+                  // margin: EdgeInsets.all(10),
+                  // decoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(15),
+                  //   border: Border.all(width: 0.7, color: Colors.grey),
+                  // ),
+                  child: link.contains("youtube")
+                      ? YoutubePlayer(
+                          controller: youtubePlayerController!,
+                          showVideoProgressIndicator: true,
+                          progressIndicatorColor: Colors.red,
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Chewie(
+                            controller: chewieController!,
+                          ),
+                        ),
+                ),
+          actionsPadding: EdgeInsets.all(10),
+          actions: [
+            InkWell(
+              onTap: () {
+                chewieController?.dispose();
+                videoPlayerController?.dispose();
+                youtubePlayerController?.dispose();
+                Get.back();
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                    color: AppThemes.modernGreen,
+                    borderRadius: BorderRadius.circular(10)),
+                alignment: Alignment.center,
+                child: Text("CLOSE", style: TextStyle(color: Colors.white)),
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 }

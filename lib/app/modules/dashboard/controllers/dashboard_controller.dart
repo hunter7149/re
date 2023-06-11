@@ -19,38 +19,36 @@ class DashboardController extends GetxController {
   final RxString argumentFromDetailPage = RxString('no argument yet');
   RxList<Map<String, dynamic>> urls = <Map<String, dynamic>>[
     {
+      "thumb":
+          "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Serum-2.jpg",
       "link":
-          "https://scontent-sin6-2.cdninstagram.com/v/t51.2885-15/321196686_502727611988849_2682759865500846730_n.webp?stp=dst-jpg_e35&_nc_ht=scontent-sin6-2.cdninstagram.com&_nc_cat=105&_nc_ohc=5WgzPBoj-skAX-6FQ0j&edm=AP_V10EBAAAA&ccb=7-5&oh=00_AfBRi4b0_Sa0pvuEQWiUZwcHSfQM3nJ3jnoq6KHvkhBTCA&oe=643C8A90&_nc_sid=4f375e.jpg",
+          "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Brightening-Serum-2.jpg",
       "type": 0
     },
+    // {
+    //   "thumb":
+    //       "https://www.kablewala.com.bd/images/detailed/285/cfd1e87276e96026dd0a8730df47221b.jpg",
+    //   "link":
+    //       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+    //   "type": 1
+    // },
     {
-      "link":
-          "https://scontent-sin6-4.cdninstagram.com/v/t51.2885-15/325163181_561365272306959_3614961255418031332_n.webp?stp=dst-jpg_e35&_nc_ht=scontent-sin6-4.cdninstagram.com&_nc_cat=103&_nc_ohc=4b3MSNws7iUAX-1mTWw&edm=AP_V10EBAAAA&ccb=7-5&oh=00_AfBhrzgT_X9KFy4ZJsemSrTrghrH2NeqEK_1K6oUpSGs-Q&oe=643D3C8B&_nc_sid=4f375e.jpg",
-      "type": 0
-    },
-    {
-      "link":
-          "https://scontent-sin6-3.cdninstagram.com/v/t51.2885-15/325532289_688561939674642_4020122134276188352_n.webp?stp=dst-jpg_e35&_nc_ht=scontent-sin6-3.cdninstagram.com&_nc_cat=106&_nc_ohc=n5vqAKFeUjsAX_fXtFV&edm=AP_V10EBAAAA&ccb=7-5&oh=00_AfC5ffMGiVqcD6kwn-d-Z88oUI4a-y2xNKQnNo7fCXQidA&oe=643CE157&_nc_sid=4f375e.jpg",
-      "type": 0
-    },
-    {
-      "link":
-          "https://scontent-sin6-2.cdninstagram.com/v/t51.2885-15/292994728_5280264228754532_2416232431058552638_n.jpg?stp=dst-jpg_e35_p1080x1080&_nc_ht=scontent-sin6-2.cdninstagram.com&_nc_cat=108&_nc_ohc=t2CnAxFDwvcAX_RcH0M&edm=AP_V10EBAAAA&ccb=7-5&oh=00_AfDTvY8egQvfGIemdqy1CJUMo6_sN821nur-ZNwwHxCJRA&oe=643CB7D1&_nc_sid=4f375e.jpg",
-      "type": 0
-    },
-    {
-      "link":
-          "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4",
+      "thumb":
+          "https://www.kablewala.com.bd/images/detailed/285/cfd1e87276e96026dd0a8730df47221b.jpg",
+      "link": "https://www.youtube.com/watch?v=qx6xsMA6Si4&ab_channel=NIORBD",
       "type": 1
     },
     {
-      "link":
-          "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4",
+      "thumb":
+          "https://i0.wp.com/www.pinkflashbd.com/wp-content/uploads/2023/02/Nior-Matte-Lipstick-Pencil-10.jpg",
+      "link": "https://www.youtube.com/watch?v=78-RWURXBQM&ab_channel=NIORBD",
       "type": 1
     },
     {
+      "thumb":
+          "https://nior.com/wp-content/uploads/elementor/thumbs/1920x-645-1-q5a0om4ufcsk62isizpw39ri6mc711xgk55nwnjn8w.png",
       "link":
-          "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4",
+          "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
       "type": 1
     },
   ].obs;
@@ -470,6 +468,7 @@ class DashboardController extends GetxController {
               actions: [
                 InkWell(
                   onTap: () {
+                    Get.closeCurrentSnackbar();
                     Get.back();
                     // controller.requestCheckout();
                     setBeatCustomer();
