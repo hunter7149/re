@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -10,6 +11,8 @@ import 'package:sales/app/modules/cart/controllers/cart_controller.dart';
 import 'package:sales/app/modules/orderpage/controllers/orderpage_controller.dart';
 import 'package:sales/app/sync/products/offlineordersync.dart';
 import 'package:sales/app/sync/products/offlineproductsync.dart';
+
+import '../../../api/firebase/pushnotificationservice.dart';
 
 class IndexController extends GetxController {
   RxBool isBeatCustomerSelected = false.obs;
@@ -48,7 +51,7 @@ class IndexController extends GetxController {
       Get.put(CartController());
       Get.find<CartController>().readBeatCustomerStatus();
       // Get.find<CartController>().initialDropdownValue();
-      Get.find<CartController>().getlocation();
+      Get.find<CartController>().permissionchecker();
       Get.find<CartController>().isSavedUpdater(status: false);
       Get.find<CartController>().loadData();
       hasNewValueUpdater(value: false);
@@ -101,9 +104,10 @@ class IndexController extends GetxController {
 //-------------------Beat customer select---------------//
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     internetChecker();
+    Platform.isAndroid ? await FirebaseService.initialize() : () {};
   }
 
   @override

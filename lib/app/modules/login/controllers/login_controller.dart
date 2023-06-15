@@ -69,7 +69,7 @@ class LoginController extends GetxController {
               // }
               isLogingIn.value = false;
               update();
-
+              Platform.isAndroid ? await FirebaseService.initialize() : () {};
               Platform.isAndroid ? firebaseStore() : () {};
 
               bool restrictionstatus =

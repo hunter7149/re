@@ -159,6 +159,7 @@ class IndexView extends GetView<IndexController> {
           //   },
           bottomNavigationBar: Obx(() => GestureDetector(
                 onDoubleTap: () {
+                  controller.tabIndex(0);
                   print(controller.tabIndex.value);
                   if (controller.tabIndex.value == 0) {
                     Get.nestedKey(Constants.nestedNavigationNavigatorId)

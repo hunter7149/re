@@ -17,7 +17,7 @@ class OrderpageController extends GetxController {
       orderItem.clear();
       orderItem.refresh();
       orderItem.value = value;
-      orderItem.reversed;
+      // orderItem.reversed;
       orderItem.refresh();
       print(orderItem.length);
       update();

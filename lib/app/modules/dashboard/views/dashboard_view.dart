@@ -24,264 +24,193 @@ class DashboardView extends GetView<DashboardController> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-          child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            // const TextField(
-            //   decoration: InputDecoration(
-            //       contentPadding: EdgeInsets.only(left: 16),
-            //       hintText: 'Search Customer',
-            //       border: OutlineInputBorder(
-            //         borderRadius: BorderRadius.all(
-            //           Radius.circular(32.0),
-            //         ),
-            //       )),
-            //   style: TextStyle(color: Colors.black),
-            // ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Text(
-                    "Today's deal",
-                    // textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 20, color: Colors.grey.shade800),
-                  ),
-                ],
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              expandedHeight: 320,
+              pinned: false,
+              title: Text(
+                "Today's deal",
+                style: TextStyle(color: AppThemes.modernBlue),
               ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
-                height: 400,
-                child: Obx(() => ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: controller.urls.map((e) {
-                      return ZoomTapAnimation(
+              flexibleSpace: FlexibleSpaceBar(
+                // titlePadding: EdgeInsets.all(16),
+                background: Container(
+                  margin: EdgeInsets.only(top: 40),
+                  child: Obx(
+                    () => ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: controller.urls.map((e) {
+                        return ZoomTapAnimation(
                           onTap: () {
                             offerDialogue(link: e['link'], type: e['type']);
                           },
                           child: Container(
-                              // height: 400,
-                              width: 200,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                      top: 0,
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: offerItem(dataLink: e["thumb"])),
-                                  e['type'] == 0
-                                      ? Container()
-                                      : Center(
-                                          child: Container(
-                                              child: Icon(
-                                            Icons.play_arrow,
-                                            size: 80,
-                                            color: AppThemes.modernGreen
-                                                .withOpacity(0.6),
-                                          )),
-                                        )
-                                ],
-                              )));
-                    }).toList()
-
-                    //     <Widget>[
-                    //   // offerItem(
-                    //   //     dataLink:
-                    //   //         "https://shop.shajgoj.com/wp-content/uploads/2022/08/NIOR-Dreamy-Glow-Dreamy-Glow-Brightening-Cream-2.jpg")
-                    // ],
-                    )),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Text(
-                    "Dashboard",
-                    // textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 20, color: Colors.grey.shade800),
-                  ),
-                ],
-              ),
-            ),
-
-            Expanded(
-              flex: 4,
-              child: Container(
-                // height: MediaQuery.of(context).size.height / 1.5,
-                child: GridView.count(
-                    //scrollDirection: Axis.vertical,
-                    crossAxisCount: _getCrossAxisCount(context),
-                    childAspectRatio: (0.88),
-                    shrinkWrap: true,
-                    children: [
-                      menuItem(
-                          icon: Icons.shopping_cart_checkout,
-                          color: AppThemes.modernBlue,
-                          valid: true,
-                          title: "Order Management",
-                          function: () {
-                            Get.toNamed(Routes.ORDERHOME,
-                                id: Constants.nestedNavigationNavigatorId);
-                          }),
-                      menuItem(
-                        icon: Icons.list,
-                        color: AppThemes.modernPurple,
-                        title: "Product Catalogue",
-                        valid: true,
-                        function: () async {
-                          var result = await Get.toNamed(Routes.PRODUCT,
-                                  arguments:
-                                      controller.argumentToDetailPage.value,
-                                  id: Constants.nestedNavigationNavigatorId) ??
-                              1.0;
-                          print(result);
-                          double result2 = 1.0;
-                          // double.parse(result.toString());
-                          if (result != null) {
-                            controller.argumentUpdater(result: result2);
-                          }
-                        },
-                      ),
-                      // menuItem(
-                      //     icon: Icons.list,
-                      //     color: Colors.deepOrange,
-                      //     title: "Product Catalogue",
-                      //     valid: true,
-                      //     function: () async {
-                      //       print('${Pref.readData(key: Pref.FCM_TOKEN)}');
-                      //       var result;
-                      //       Get.put(DashboardController());
-                      //       result = await Get.toNamed(Routes.PRODUCT,
-                      //           arguments:
-                      //               controller.argumentToDetailPage.value,
-                      //           id: Constants.nestedNavigationNavigatorId);
-                      //       double result2 = double.parse(result.toString());
-                      //       if (result != null) {
-                      //         controller.argumentUpdater(result: result2);
-                      //       }
-                      //       // controller.argumentFromDetailPage.value =
-                      //       //     result == null
-                      //       //         ? 'No argument'
-                      //       //         : (result as double).toStringAsFixed(0);
-                      //     }),
-                      menuItem(
-                          icon: Icons.notifications_active_rounded,
-                          color: AppThemes.modernCoolPink,
-                          title: "Notice",
-                          valid: true,
-                          function: () {
-                            Get.toNamed(Routes.NOTICESCREEN,
-                                id: Constants.nestedNavigationNavigatorId);
-                          }),
-                      menuItem(
-                          icon: Icons.sync,
-                          color: AppThemes.modernGreen,
-                          title: "Sync",
-                          valid: true,
-                          function: () async {
-                            Fluttertoast.showToast(
-                                msg: "SYNC STARTED!",
-                                backgroundColor: AppThemes.modernBlue);
-                            await OFFLINEPRODUCTSYNC()
-                                .offlineDataSync(brands: AppStrings.brands);
-                            // await OFFLINEORDERSYNC().onlineSync();
-                          }),
-                      menuItem(
-                          icon: Icons.discount,
-                          color: Colors.pink,
-                          title: "Offers",
-                          valid: false,
-                          function: () {
-                            Get.toNamed(Routes.OFFERINFO,
-                                id: Constants.nestedNavigationNavigatorId);
-                          }),
-                      menuItem(
-                          icon: Icons.tv,
-                          color: Colors.green,
-                          title: "Promotionals",
-                          valid: false,
-                          function: () {
-                            Get.toNamed(Routes.PROMOTIONALADS,
-                                id: Constants.nestedNavigationNavigatorId);
-                          }),
-                      menuItem(
-                          icon: FontAwesomeIcons.lineChart,
-                          color: AppThemes.modernBlue,
-                          title: "Statistics",
-                          valid: false,
-                          function: () {
-                            Get.toNamed(Routes.STATISTICSPAGE,
-                                id: Constants.nestedNavigationNavigatorId);
-                          }),
-                      menuItem(
-                          icon: Icons.list,
-                          color: Colors.deepPurple,
-                          title: "Leadership Board",
-                          valid: false,
-                          function: () {
-                            Get.toNamed(Routes.LEADERSHIPPAGE,
-                                id: Constants.nestedNavigationNavigatorId);
-                          })
-                    ]
-                    //-----------------------------New system with dynamic data-----------------//
-                    //  controller.data
-                    //     .map((element) => Container(
-                    //           height: 50,
-                    //           width: 50,
-                    //           color: Colors.red,
-                    //         ))
-                    //     .toList(),
-                    //-----------------------------Previous system with dynamic data-----------------//
-                    //   List.generate(6,(index){
-                    //    return GestureDetector(
-                    //      onTap: () async {
-                    //        // print("Tapped a Container");
-                    //        //     Fluttertoast.showToast(
-                    //        //         msg: "This is Center Short Toast ${index} ",
-                    //        //         toastLength: Toast.LENGTH_SHORT,
-                    //        //         gravity: ToastGravity.CENTER,
-                    //        //         timeInSecForIosWeb: 1,
-                    //        //         backgroundColor: Colors.red,
-                    //        //         textColor: Colors.white,
-                    //        //         fontSize: 16.0
-                    //        //     );
-                    //        //Navigator.of(context).pushNamed('/product');
-                    //        // Get.toNamed('/product');
-                    //        controller.goToDetailPage(index);
-
-                    //      },
-                    //      child:Container(
-                    //         width: 100,
-                    //        height: 100,
-                    //        child: Card(
-                    //          shape: RoundedRectangleBorder(
-                    //            borderRadius: BorderRadius.circular(15.0),
-                    //          ),
-                    //          color: Colors.white,
-                    //          child:
-                    //          // Text("Item ${index}"),
-                    //          Image(
-                    //            image:AssetImage("assets/images/${index}.jpg") ,
-                    //          ),
-                    //        ),
-                    //      ),);
-                    //  }),
+                            width: 200,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  top: 0,
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: offerItem(dataLink: e["thumb"]),
+                                ),
+                                if (e['type'] == 0)
+                                  Container()
+                                else
+                                  Center(
+                                    child: Container(
+                                      child: Icon(
+                                        Icons.play_arrow,
+                                        size: 80,
+                                        color: AppThemes.modernGreen
+                                            .withOpacity(0.6),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
+                  ),
+                ),
               ),
             ),
-
-            //const SizedBox(height: 80),
+            SliverToBoxAdapter(
+              child: SizedBox(height: 10),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      "Dashboard",
+                      style:
+                          TextStyle(fontSize: 20, color: Colors.grey.shade800),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverGrid.count(
+              crossAxisCount: _getCrossAxisCount(context),
+              childAspectRatio: 0.88,
+              children: [
+                menuItem(
+                  icon: Icons.shopping_cart_checkout,
+                  color: AppThemes.modernBlue,
+                  valid: true,
+                  title: "Order Management",
+                  function: () {
+                    Get.toNamed(
+                      Routes.ORDERHOME,
+                      id: Constants.nestedNavigationNavigatorId,
+                    );
+                  },
+                ),
+                menuItem(
+                  icon: Icons.list,
+                  color: AppThemes.modernPurple,
+                  title: "Product Catalogue",
+                  valid: true,
+                  function: () async {
+                    var result = await Get.toNamed(
+                          Routes.PRODUCT,
+                          arguments: controller.argumentToDetailPage.value,
+                          id: Constants.nestedNavigationNavigatorId,
+                        ) ??
+                        1.0;
+                    print(result);
+                    double result2 = 1.0;
+                    if (result != null) {
+                      controller.argumentUpdater(result: result2);
+                    }
+                  },
+                ),
+                menuItem(
+                  icon: Icons.notifications_active_rounded,
+                  color: AppThemes.modernCoolPink,
+                  title: "Notice",
+                  valid: true,
+                  function: () {
+                    Get.toNamed(
+                      Routes.NOTICESCREEN,
+                      id: Constants.nestedNavigationNavigatorId,
+                    );
+                  },
+                ),
+                menuItem(
+                  icon: Icons.sync,
+                  color: AppThemes.modernGreen,
+                  title: "Sync",
+                  valid: true,
+                  function: () async {
+                    Fluttertoast.showToast(
+                      msg: "SYNC STARTED!",
+                      backgroundColor: AppThemes.modernBlue,
+                    );
+                    await OFFLINEPRODUCTSYNC()
+                        .offlineDataSync(brands: AppStrings.brands);
+                  },
+                ),
+                menuItem(
+                  icon: FontAwesomeIcons.chartLine,
+                  color: AppThemes.modernChocolate,
+                  title: "Statistics",
+                  valid: true,
+                  function: () {
+                    Get.toNamed(
+                      Routes.STATISTICSPAGE,
+                      id: Constants.nestedNavigationNavigatorId,
+                    );
+                  },
+                ),
+                menuItem(
+                  icon: Icons.discount,
+                  color: Colors.pink,
+                  title: "Offers",
+                  valid: false,
+                  function: () {
+                    Get.toNamed(
+                      Routes.OFFERINFO,
+                      id: Constants.nestedNavigationNavigatorId,
+                    );
+                  },
+                ),
+                menuItem(
+                  icon: Icons.tv,
+                  color: Colors.green,
+                  title: "Promotionals",
+                  valid: false,
+                  function: () {
+                    Get.toNamed(
+                      Routes.PROMOTIONALADS,
+                      id: Constants.nestedNavigationNavigatorId,
+                    );
+                  },
+                ),
+                menuItem(
+                  icon: Icons.list,
+                  color: Colors.deepPurple,
+                  title: "Leadership Board",
+                  valid: false,
+                  function: () {
+                    Get.toNamed(
+                      Routes.LEADERSHIPPAGE,
+                      id: Constants.nestedNavigationNavigatorId,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
-      )),
+      ),
     );
   }
 
@@ -494,7 +423,7 @@ class DashboardView extends GetView<DashboardController> {
           actionsPadding: EdgeInsets.all(10),
           actions: [
             InkWell(
-              onTap: () {
+              onTap: () async {
                 chewieController?.dispose();
                 videoPlayerController?.dispose();
                 youtubePlayerController?.dispose();

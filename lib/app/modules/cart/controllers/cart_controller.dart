@@ -199,43 +199,43 @@ class CartController extends GetxController {
                 .findAllOfflineOrder()
                 .then((value) => print(value[0].orderId));
 
-            OrderItem orderItem = OrderItem(
-                orderId: "ORD${orderId}",
-                userId: "${Pref.readData(key: Pref.USER_ID)}",
-                lattitude: lattitude.value,
-                longitude: longitude.value,
-                CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
-                status: "Pending",
-                totalItem: cartItems.length,
-                dateTime: DateTime.now().toString(),
-                totalPrice: totalPrice.value,
-                beatName: dropdownBeatValue.value,
-                CustomerName: dropdownCustomerValue.value);
-            await orderItemDao.insertOrderItem(orderItem);
-            cartItems.forEach((element) async {
-              SaleRequisition item = SaleRequisition(
-                  userId: "${Pref.readData(key: Pref.USER_ID)}",
-                  orderId: "ORD${orderId}",
-                  productId: element.productId.toString(),
-                  customerName: dropdownCustomerValue.value,
-                  beatName: dropdownBeatValue.value,
-                  productName: element.productName,
-                  catagory: element.catagory,
-                  unit: element.unit,
-                  image: element.image,
-                  price: element.price!,
-                  brand: element.brand,
-                  quantity: element.quantity);
-              await saleRequisitionDao.insertSaleItem(item);
-            });
-            await cartItemDao
-                .deleteCartItemByuserID(Pref.readData(key: Pref.USER_ID))
-                .then((value) {
-              cartItems.clear();
-              cartItems.refresh();
-            });
+            // OrderItem orderItem = OrderItem(
+            //     orderId: "ORD${orderId}",
+            //     userId: "${Pref.readData(key: Pref.USER_ID)}",
+            //     lattitude: lattitude.value,
+            //     longitude: longitude.value,
+            //     CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
+            //     status: "Pending",
+            //     totalItem: cartItems.length,
+            //     dateTime: DateTime.now().toString(),
+            //     totalPrice: totalPrice.value,
+            //     beatName: dropdownBeatValue.value,
+            //     CustomerName: dropdownCustomerValue.value);
+            // await orderItemDao.insertOrderItem(orderItem);
+            // cartItems.forEach((element) async {
+            //   SaleRequisition item = SaleRequisition(
+            //       userId: "${Pref.readData(key: Pref.USER_ID)}",
+            //       orderId: "ORD${orderId}",
+            //       productId: element.productId.toString(),
+            //       customerName: dropdownCustomerValue.value,
+            //       beatName: dropdownBeatValue.value,
+            //       productName: element.productName,
+            //       catagory: element.catagory,
+            //       unit: element.unit,
+            //       image: element.image,
+            //       price: element.price!,
+            //       brand: element.brand,
+            //       quantity: element.quantity);
+            //   await saleRequisitionDao.insertSaleItem(item);
+            // });
+            // await cartItemDao
+            //     .deleteCartItemByuserID(Pref.readData(key: Pref.USER_ID))
+            //     .then((value) {
+            //   cartItems.clear();
+            //   cartItems.refresh();
+            // });
 
-            Update();
+            // Update();
           }
 
           OrderItem orderItem = OrderItem(
@@ -342,7 +342,7 @@ class CartController extends GetxController {
             animationDuration: Duration(seconds: 0),
             borderRadius: 0,
             duration: Duration(seconds: 1));
-        await getlocation();
+        await permissionchecker();
       }
     }
   }
@@ -766,6 +766,125 @@ class CartController extends GetxController {
             );
           });
     });
+  }
+//--------------Location concent---------------//
+
+  permissionchecker() async {
+    Location location = new Location();
+    PermissionStatus _permissionGranted;
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.granted) {
+      print("has permission");
+      await getlocation();
+      await requestWeather();
+    } else {
+      await userconsent();
+    }
+  }
+
+  userconsent() {
+    return Get.generalDialog(
+        barrierDismissible: false,
+        transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 4 * anim1.value,
+                sigmaY: 4 * anim1.value,
+              ),
+              child: FadeTransition(
+                child: child,
+                opacity: anim1,
+              ),
+            ),
+        pageBuilder: (ctx, anim1, anim2) => MediaQuery(
+              data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+              child: WillPopScope(
+                onWillPop: () async => false,
+                child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Prominent Disclosure for Remark Sales",
+                          style: TextStyle(),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Center(
+                              child: Icon(
+                            Icons.close,
+                            color: Colors.red.shade800,
+                            size: 20,
+                          )),
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(100)),
+                        ),
+                      )
+                    ],
+                  ),
+                  content: Container(
+                    height: MediaQuery.of(Get.context!).size.height / 1.5,
+                    width: double.maxFinite,
+                    child: SingleChildScrollView(
+                      child: Center(
+                        child: Text(
+                            "Prominent Disclosure for Remark Sales \n Before you grant location access to Remark Sales, please review the following information: \n This app collects location data to enable the following features: \n Employee attendance tracking: Allows us to record your location when you check-in or check-out of your workplace. \n Geo-fencing: Enables us to create virtual boundaries for designated work areas and provide location-based notifications. \n Route optimization: Helps us suggest the most efficient routes for employees traveling to different work locations."),
+                      ),
+                    ),
+                  ),
+                  actionsPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  actions: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                              onTap: () async {
+                                Get.back();
+                              },
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: AppThemes.modernSexyRed,
+                                    borderRadius: BorderRadius.circular(2)),
+                                alignment: Alignment.center,
+                                child: Text("Decline",
+                                    style: TextStyle(color: Colors.white)),
+                              )),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: InkWell(
+                              onTap: () async {
+                                Get.back();
+                                await getlocation();
+                              },
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: AppThemes.modernGreen,
+                                    borderRadius: BorderRadius.circular(2)),
+                                alignment: Alignment.center,
+                                child: Text("Allow",
+                                    style: TextStyle(color: Colors.white)),
+                              )),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ));
   }
 
   @override

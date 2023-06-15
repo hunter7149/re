@@ -1,11 +1,16 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../constants.dart';
+import '../../../api/firebase/pushnotificationservice.dart';
 import '../../../api/repository/repository.dart';
 import '../../../api/service/prefrences.dart';
 import '../../../components/connection_checker.dart';
@@ -237,13 +242,25 @@ class DashboardController extends GetxController {
     String beatName = Pref.readData(key: Pref.BEAT_NAME) ?? '';
     String CustomerName = Pref.readData(key: Pref.CUSTOMER_NAME) ?? '';
     String customerCode = Pref.readData(key: Pref.CUSTOMER_CODE) ?? '';
+
     await firebaseStore();
+    _checkVersion();
     update();
   }
 
   firebaseStore() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference stringsCollection = firestore.collection('fcm_token');
+
+    DocumentReference documentRef =
+        firestore.collection('fcm_token').doc("latest_version");
+    DocumentSnapshot<Object?> snapshot = await documentRef.get();
+    dynamic tempVer = snapshot.data();
+    latestVersion.value = tempVer?['verson'] ?? '';
+    isForce.value = tempVer?['force'] ?? false;
+    updateMessage.value = tempVer?['message'] ?? "";
+    update();
+    print(snapshot.data());
     try {
       await stringsCollection.doc("${Pref.readData(key: Pref.USER_ID)}").set({
         'device': Pref.readData(key: Pref.DEVICE_IDENTITY).toString(),
@@ -468,10 +485,11 @@ class DashboardController extends GetxController {
               actions: [
                 InkWell(
                   onTap: () {
-                    Get.closeCurrentSnackbar();
+                    Get.closeAllSnackbars();
                     Get.back();
                     // controller.requestCheckout();
                     setBeatCustomer();
+                    // _checkVersion();
                   },
                   child: Container(
                     height: 40,
@@ -486,6 +504,151 @@ class DashboardController extends GetxController {
             ),
           );
         });
+  }
+
+  //------------------Code for version check---------------------//
+  PackageInfo? _packageInfo;
+  RxString latestVersion = ''.obs;
+  RxBool isLoading = false.obs;
+  RxBool isForce = false.obs;
+  RxString updateMessage = ''.obs;
+
+  Future<void> _checkVersion() async {
+    isLoading.value = true;
+    update();
+
+    try {
+      // Retrieve the current installed version
+      final packageInfo = await PackageInfo.fromPlatform();
+      _packageInfo = packageInfo;
+
+      // Retrieve the latest version from Google Play Store
+      final url = Uri.parse(
+          'https://play.google.com/store/apps/details?id=com.remark.sales');
+      // if (await canLaunchUrl(url)) {
+      //   await launchUrl(
+      //     url,
+      //   );
+      // }
+
+      // Compare the versions
+
+      if (_packageInfo != null && latestVersion.value != '') {
+        final installedVersion = _packageInfo!.version;
+
+        final isNewVersionAvailable =
+            latestVersion.value.compareTo(installedVersion) > 0;
+
+        if (isNewVersionAvailable) {
+          // Prompt the user to update
+          updateAlert(
+              message: updateMessage.value,
+              version: latestVersion.value,
+              force: isForce.value);
+        }
+      }
+    } catch (e) {
+      isLoading.value = false;
+      update();
+      print('Failed to check version: $e');
+    } finally {
+      isLoading.value = false;
+      update();
+    }
+  }
+
+  //  onPressed: () async {
+  //               // Open the app page in Google Play Store
+  //               final storeUrl = Uri.parse(
+  //                   'https://play.google.com/store/apps/details?id=com.remark.attendance');
+  //               if (await canLaunchUrl(storeUrl)) {
+  //                 await launchUrl(storeUrl);
+  //               }
+  //             },
+
+  static updateAlert(
+      {required String message, required String version, required bool force}) {
+    return Get.generalDialog(
+        barrierDismissible: false,
+        transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 4 * anim1.value,
+                sigmaY: 4 * anim1.value,
+              ),
+              child: FadeTransition(
+                child: child,
+                opacity: anim1,
+              ),
+            ),
+        pageBuilder: (ctx, anim1, anim2) => MediaQuery(
+              data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+              child: WillPopScope(
+                onWillPop: () async => false,
+                child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Update available",
+                        style: TextStyle(),
+                      ),
+                      force
+                          ? Container()
+                          : InkWell(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                child: Center(
+                                    child: Icon(
+                                  Icons.close,
+                                  color: Colors.red.shade800,
+                                  size: 20,
+                                )),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(100)),
+                              ),
+                            )
+                    ],
+                  ),
+                  content: Container(
+                      // height: 300,
+                      width: double.maxFinite,
+                      child: Text("${message}",
+                          style: TextStyle(color: Colors.black))),
+                  actionsPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  actions: [
+                    Row(
+                      children: [
+                        Expanded(
+                            child: ZoomTapAnimation(
+                          onTap: () async {
+                            final storeUrl = Uri.parse(
+                                'https://play.google.com/store/apps/details?id=com.remark.sales');
+                            if (await canLaunchUrl(storeUrl)) {
+                              await launchUrl(storeUrl);
+                            }
+                          },
+                          child: Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: AppThemes.modernGreen,
+                                  borderRadius: BorderRadius.circular(10)),
+                              alignment: Alignment.center,
+                              child: Text("Update",
+                                  style: TextStyle(color: Colors.white))),
+                        ))
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ));
   }
 
   @override
