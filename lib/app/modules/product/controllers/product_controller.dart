@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sales/app/config/app_themes.dart';
 
-
 class ProductController extends GetxController {
   List<Color> randomeColor = [
     AppThemes.modernBlue,
@@ -36,7 +35,7 @@ class ProductController extends GetxController {
   loadData() async {
     brands.value = [
       'acnol',
-      'blazoskin',
+      'blaze o skin',
       'elanvenezia',
       'tylox',
       'herlan',

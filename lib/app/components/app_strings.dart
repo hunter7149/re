@@ -3,7 +3,7 @@ class AppStrings {
   static const int syncInterval = 24;
   static dynamic brands = [
     'acnol',
-    'blazoskin',
+    'blaze o skin',
     'elanvenezia',
     'tylox',
     'herlan',

@@ -8,7 +8,7 @@ enum Method { POST, GET, PUT, DELETE, PATCH }
 // const BASE_URL = 'http://192.168.10.204:8090/dp/';
 const BASE_URL =
 //LOCAL//
-    // 'http://192.168.10.127:8090/dp/';
+    // 'http://192.168.68.47:8090/dp/';
 
 //LIVE//
     'http://182.160.114.100:7171/dp/';

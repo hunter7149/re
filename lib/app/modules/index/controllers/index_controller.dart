@@ -86,7 +86,7 @@ class IndexController extends GetxController {
             .connectionUpdater(status: isDeviceConnected.value);
         if (await InternetConnectionChecker().hasConnection) {
           await OFFLINEORDERSYNC().onlineSync();
-          await OFFLINEPRODUCTSYNC().offlineDataSync(brands: AppStrings.brands);
+          // await OFFLINEPRODUCTSYNC().offlineDataSync(brands: AppStrings.brands);
         }
 
         print(
