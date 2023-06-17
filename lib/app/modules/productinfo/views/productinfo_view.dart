@@ -20,10 +20,13 @@ class ProductinfoView extends GetView<ProductinfoController> {
   Widget build(BuildContext context) {
     controller.setData(data: argument);
     TextEditingController quanity = TextEditingController(text: '1');
+    String price = controller.getSellPriceByProductCode(
+            productCode: controller.products['PRODUCT_CODE'].toString(),
+            orgCode: controller.products['ORG_CODE'].toString()) ??
+        controller.products['MPR'].toString();
     controller.calculation(
-        price: double.parse('${controller.products['MPR']}'),
-        quanity: int.parse(quanity.text));
-    double unitprice = double.parse('${controller.products['MPR']}');
+        price: double.parse('${price}'), quanity: int.parse(quanity.text));
+
     return Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -121,7 +124,7 @@ class ProductinfoView extends GetView<ProductinfoController> {
                     height: 10,
                   ),
                   Text(
-                    // ' ${controller.products['MPR']} Tk',
+                    // ' ${price} Tk',
                     '${controller.totalPrice.value} Tk / ${quanity.text} ${controller.products['UOM']} ',
                     style: TextStyle(
                         fontSize: 20.0,
@@ -149,9 +152,7 @@ class ProductinfoView extends GetView<ProductinfoController> {
 
                           quanity.text = a.toString();
                           controller.calculation(
-                              price:
-                                  double.parse('${controller.products['MPR']}'),
-                              quanity: a);
+                              price: double.parse('${price}'), quanity: a);
                         },
                         child: Container(
                           height: 40,
@@ -179,27 +180,23 @@ class ProductinfoView extends GetView<ProductinfoController> {
                             if (quanity.text.isNotEmpty) {
                               if (int.parse(quanity.text) > 0) {
                                 controller.calculation(
-                                    price: double.parse(
-                                        '${controller.products['MPR']}'),
+                                    price: double.parse('${price}'),
                                     quanity: int.parse(quanity.text));
                               } else if (int.parse(quanity.text) <= 0) {
                                 quanity.text = '1';
                                 controller.calculation(
-                                    price: double.parse(
-                                        '${controller.products['MPR']}'),
+                                    price: double.parse('${price}'),
                                     quanity: int.parse(quanity.text));
                               } else {
                                 quanity.text = '1';
                                 controller.calculation(
-                                    price: double.parse(
-                                        '${controller.products['MPR']}'),
+                                    price: double.parse('${price}'),
                                     quanity: int.parse(quanity.text));
                               }
                             } else {
                               quanity.text = '1';
                               controller.calculation(
-                                  price: double.parse(
-                                      '${controller.products['MPR']}'),
+                                  price: double.parse('${price}'),
                                   quanity: int.parse(quanity.text));
                             }
                           },
@@ -230,9 +227,7 @@ class ProductinfoView extends GetView<ProductinfoController> {
                           a++;
                           quanity.text = a.toString();
                           controller.calculation(
-                              price:
-                                  double.parse('${controller.products['MPR']}'),
-                              quanity: a);
+                              price: double.parse('${price}'), quanity: a);
                         },
                         child: Container(
                           height: 40,
@@ -264,7 +259,8 @@ class ProductinfoView extends GetView<ProductinfoController> {
                                 CartItem product = CartItem(
                                   userId: "${Pref.readData(key: Pref.USER_ID)}",
                                   productId: controller.products["SKU_CODE"],
-                                  customerName: "",
+                                  customerName:
+                                      "${controller.customerCode.value}",
                                   beatName: "",
                                   productName:
                                       controller.products["PRODUCT_NAME"],
@@ -273,13 +269,11 @@ class ProductinfoView extends GetView<ProductinfoController> {
                                   image:
                                       "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
                                   price: controller.calculation(
-                                      price: double.parse(
-                                          '${controller.products['MPR']}'),
+                                      price: double.parse('${price}'),
                                       quanity: int.parse(quanity.text)),
                                   brand: controller.products["BRAND_NAME"],
                                   quantity: int.tryParse(quanity.text),
-                                  unitPrice: double.parse(
-                                      '${controller.products['MPR']}'),
+                                  unitPrice: double.parse('${price}'),
                                 );
                                 controller.addToCart(data: product);
                                 // addAlert(controller: controller, data: i);

@@ -43,13 +43,24 @@ class CartController extends GetxController {
     cartItemDao = database.cartItemDao;
   }
 
+  RxString currentCustomerCode = ''.obs;
+
   RxList<CartItem> cartItems = <CartItem>[].obs;
   loadData() async {
+    currentCustomerCode.value = Pref.readData(key: Pref.CUSTOMER_CODE);
+    Update();
     // initialDropdownValue();
     cartItems.clear();
     cartItems.refresh();
     await cartItemDao.findAllCartItem().then((value) {
-      cartItems.value = value;
+      List<CartItem> tempCart = value;
+      tempCart.forEach((element) {
+        if (element.customerName == currentCustomerCode.value) {
+          cartItems.add(element);
+        }
+      });
+      // cartItems.value = value;
+
       cartItems.refresh();
       totalPriceCounter();
       print("dta length -> ${cartItems.length}");
@@ -710,9 +721,9 @@ class CartController extends GetxController {
     if (dropdownBeatValue.value == '' ||
         dropdownCustomerValue.value == '' ||
         selectedCustomerId.value == '' ||
-        dropdownBeatValue.value != null ||
-        dropdownCustomerValue.value != null ||
-        selectedCustomerId.value != null) {
+        dropdownBeatValue.value == null ||
+        dropdownCustomerValue.value == null ||
+        selectedCustomerId.value == null) {
       return true;
     } else {
       return false;

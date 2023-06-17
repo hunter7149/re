@@ -220,6 +220,13 @@ productViewFromList(
               );
             } else {
               TextEditingController quanity = TextEditingController(text: "1");
+              String price = controller.getSellPriceByProductCode(
+                      productCode: controller.products[category][index]
+                              ['PRODUCT_CODE']
+                          .toString(),
+                      orgCode: controller.products[category][index]['ORG_CODE']
+                          .toString()) ??
+                  controller.products[category][index]['MPR'].toString();
               return Container(
                 height: 280,
                 width: 200,
@@ -324,7 +331,7 @@ productViewFromList(
                             ),
                             Text(
                               // "${'${controller.returnPrice(productCode: '${controller.       products[category][index]['PRODUCT_CODE']}')} Tk'}",
-                              "${controller.products[category][index]['MPR']} TK",
+                              "${price} TK",
                               style: TextStyle(
                                   color: controller.randomeColor[randome],
                                   fontWeight: FontWeight.w500,
@@ -351,8 +358,7 @@ productViewFromList(
 
                                     quanity.text = a.toString();
                                     controller.calculation(
-                                        price: double.parse(
-                                            "${controller.products[category][index]['MPR']}"),
+                                        price: double.parse("${price}"),
                                         quanity: a);
                                   },
                                   child: Container(
@@ -383,28 +389,24 @@ productViewFromList(
                                       if (quanity.text.isNotEmpty) {
                                         if (int.parse(quanity.text) > 0) {
                                           controller.calculation(
-                                              price: double.parse(
-                                                  '${controller.products[category][index]['MPR']}'),
+                                              price: double.parse('${price}'),
                                               quanity: int.parse(quanity.text));
                                         } else if (int.parse(quanity.text) <=
                                             0) {
                                           quanity.text = '1';
                                           controller.calculation(
-                                              price: double.parse(
-                                                  '${controller.products[category][index]['MPR']}'),
+                                              price: double.parse('${price}'),
                                               quanity: int.parse(quanity.text));
                                         } else {
                                           quanity.text = '1';
                                           controller.calculation(
-                                              price: double.parse(
-                                                  '${controller.products[category][index]['MPR']}'),
+                                              price: double.parse('${price}'),
                                               quanity: int.parse(quanity.text));
                                         }
                                       } else {
                                         quanity.text = '1';
                                         controller.calculation(
-                                            price: double.parse(
-                                                '${controller.products[category][index]['MPR']}'),
+                                            price: double.parse('${price}'),
                                             quanity: int.parse(quanity.text));
                                       }
                                     },
@@ -436,8 +438,7 @@ productViewFromList(
                                     a++;
                                     quanity.text = a.toString();
                                     controller.calculation(
-                                        price: double.parse(
-                                            '${controller.products[category][index]['MPR']}'),
+                                        price: double.parse('${price}'),
                                         quanity: a);
                                   },
                                   child: Container(
@@ -469,7 +470,8 @@ productViewFromList(
                                             productId:
                                                 controller.products[category]
                                                     [index]["SKU_CODE"],
-                                            customerName: "",
+                                            customerName:
+                                                "${controller.customerId.value}",
                                             beatName: "",
                                             productName:
                                                 controller.products[category]
@@ -482,16 +484,14 @@ productViewFromList(
                                             image:
                                                 "https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png",
                                             price: controller.calculation(
-                                                price: double.parse(
-                                                    '${controller.products[category][index]['MPR']}'),
+                                                price: double.parse('${price}'),
                                                 quanity:
                                                     int.parse(quanity.text)),
                                             brand: controller.products[category]
                                                 [index]["BRAND_NAME"],
                                             quantity:
                                                 int.parse(quanity.text) ?? 1,
-                                            unitPrice: double.parse(
-                                                '${controller.products[category][index]['MPR']}'),
+                                            unitPrice: double.parse('${price}'),
                                           );
                                           controller.addToCart(data: product);
                                         },

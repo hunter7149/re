@@ -5,5 +5,5 @@ class AppUrl {
   static String saleRequisition = 'login/salesDataSave';
   static String beatinfoView = 'login/beatinfoView';
   static String customerInfoD = 'login/customerInfoD';
-  static String getPrice = '';
+  static String getPrice = 'login/priceinfoD';
 }

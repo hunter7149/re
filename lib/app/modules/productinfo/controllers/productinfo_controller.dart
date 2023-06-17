@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../DAO/cartitemdao.dart';
+import '../../../api/service/prefrences.dart';
 import '../../../components/cart_value.dart';
 import '../../../components/internet_connection_checker.dart';
 import '../../../database/database.dart';
@@ -57,10 +58,29 @@ class ProductinfoController extends GetxController {
   setData({required dynamic data}) async {
     tempData.value = data as Map<String, dynamic> ?? {};
     tempData.refresh();
+    requestPriceList();
     products.value = data ?? {};
     products.refresh();
+    customerCode = Pref.readData(key: Pref.CUSTOMER_CODE);
     // calculation(price: 500, quanity: 1);
     update();
+  }
+
+  RxString customerCode = ''.obs;
+  RxList<dynamic> priceList = [].obs;
+  requestPriceList() {
+    priceList.value = Pref.readData(key: Pref.OFFLINE_CUSTOMIZED_DATA) ?? [];
+  }
+
+  getSellPriceByProductCode(
+      {required String productCode, required String orgCode}) {
+    for (var element in priceList) {
+      if (element['SKU_CODE'].toString() == productCode.toString() &&
+          element['ORG_CODE'].toString() == orgCode.toString()) {
+        return element['SELL_VALUE'].toString();
+      }
+    }
+    return null; // Return null if no match is found
   }
 
   initValues() async {

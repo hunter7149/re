@@ -137,82 +137,42 @@ class ProductcController extends GetxController {
     });
   }
 
-  imageLinkReturn(
-      {required String brand,
-      required String category,
-      required String productid}) {
-    if (brand == 'lily' &&
-        category.toLowerCase() == 'face care' &&
-        productid.toString() == '3000077') {
-      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/c77ab8168198481.6436822b7611f.jpg";
-    } else if (brand == 'lily' &&
-        category.toLowerCase() == 'face care' &&
-        productid.toString() == '3000078') {
-      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/30522e168198481.6436822b754e6.jpg";
-    } else if (brand.toLowerCase() == 'lily' &&
-        category.toLowerCase() == 'face care' &&
-        productid.toString() == '3000079') {
-      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e689c3168198481.6436822b76b2b.jpg";
-    } else if (brand.toLowerCase() == 'lily' &&
-        category.toLowerCase() == 'face care' &&
-        productid.toString() == '3000080') {
-      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e87ac8168198481.6436822b7320e.jpg";
-    } else if (brand.toLowerCase() == 'lily' &&
-        category.toLowerCase() == 'face care') {
-      return "https://herlan.com/wp-content/uploads/2023/04/Lily-Banner-Image-1.png";
-    } else if (brand.toLowerCase() == 'lily' &&
-        category.toLowerCase() == 'colour Cosmetics') {
-      return "https://herlan.com/wp-content/uploads/2023/04/Lily-Banner-Image-1.png";
-    } else if (brand.toLowerCase() == 'herlan' &&
-        category.toLowerCase() == 'colour cosmetics') {
-      return "https://herlan.com/wp-content/uploads/2023/04/Harlan-Eye-Color32.png";
-    } else if (brand.toLowerCase() == 'nior') {
-      return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e87ac8168198481.6436822b7320e.jpg";
-    } else {
-      return "https://img.freepik.com/premium-vector/set-beauty-make-up-vector_744040-173.jpg";
-    }
-  }
-
-  returnPrice({required String productCode}) {
-    RxDouble price = 500.00.obs;
-    if (productCode == '3000077') {
-      price.value = 110.00;
-      update();
-    } else if (productCode == "3000078") {
-      price.value = 110.00;
-      update();
-    } else if (productCode == "3000079") {
-      price.value = 110.00;
-      update();
-    } else if (productCode == "3000080") {
-      price.value = 110.00;
-      update();
-    } else if (productCode == "3000082") {
-      price.value = 222.22;
-      update();
-    } else if (productCode == "3000083") {
-      price.value = 222.22;
-      update();
-    } else if (productCode == "3000099") {
-      price.value = 675.00;
-      update();
-    } else if (productCode == "3000100") {
-      price.value = 675.00;
-      update();
-    } else if (productCode == "3000101") {
-      price.value = 675.00;
-      update();
-    } else if (productCode == "3000102") {
-      price.value = 675.00;
-      update();
-    } else if (productCode == "3000103") {
-      price.value = 675.00;
-      update();
-    }
-
-    return price.value;
-  }
-
+  // imageLinkReturn(
+  //     {required String brand,
+  //     required String category,
+  //     required String productid}) {
+  //   if (brand == 'lily' &&
+  //       category.toLowerCase() == 'face care' &&
+  //       productid.toString() == '3000077') {
+  //     return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/c77ab8168198481.6436822b7611f.jpg";
+  //   } else if (brand == 'lily' &&
+  //       category.toLowerCase() == 'face care' &&
+  //       productid.toString() == '3000078') {
+  //     return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/30522e168198481.6436822b754e6.jpg";
+  //   } else if (brand.toLowerCase() == 'lily' &&
+  //       category.toLowerCase() == 'face care' &&
+  //       productid.toString() == '3000079') {
+  //     return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e689c3168198481.6436822b76b2b.jpg";
+  //   } else if (brand.toLowerCase() == 'lily' &&
+  //       category.toLowerCase() == 'face care' &&
+  //       productid.toString() == '3000080') {
+  //     return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e87ac8168198481.6436822b7320e.jpg";
+  //   } else if (brand.toLowerCase() == 'lily' &&
+  //       category.toLowerCase() == 'face care') {
+  //     return "https://herlan.com/wp-content/uploads/2023/04/Lily-Banner-Image-1.png";
+  //   } else if (brand.toLowerCase() == 'lily' &&
+  //       category.toLowerCase() == 'colour Cosmetics') {
+  //     return "https://herlan.com/wp-content/uploads/2023/04/Lily-Banner-Image-1.png";
+  //   } else if (brand.toLowerCase() == 'herlan' &&
+  //       category.toLowerCase() == 'colour cosmetics') {
+  //     return "https://herlan.com/wp-content/uploads/2023/04/Harlan-Eye-Color32.png";
+  //   } else if (brand.toLowerCase() == 'nior') {
+  //     return "https://mir-s3-cdn-cf.behance.net/project_modules/fs/e87ac8168198481.6436822b7320e.jpg";
+  //   } else {
+  //     return "https://img.freepik.com/premium-vector/set-beauty-make-up-vector_744040-173.jpg";
+  //   }
+  // }
+  RxString customerCode = ''.obs;
   addToCart({required CartItem data}) async {
     if (await ICHECKER.checkConnection()) {
       print("INTERNET");
@@ -287,6 +247,7 @@ class ProductcController extends GetxController {
     final database =
         await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
     cartItemDao = database.cartItemDao;
+
     // requestItemCount();
   }
 
@@ -366,7 +327,10 @@ class ProductcController extends GetxController {
   setData({required dynamic data}) async {
     tempData.value = data as Map<String, dynamic>;
     tempData.refresh();
+    customerCode = Pref.readData(key: Pref.CUSTOMER_CODE);
     update();
+
+    await requestPriceList();
     await initializeProducts();
   }
 
@@ -382,6 +346,22 @@ class ProductcController extends GetxController {
 
       update();
     });
+  }
+
+  RxList<dynamic> priceList = [].obs;
+  requestPriceList() {
+    priceList.value = Pref.readData(key: Pref.OFFLINE_CUSTOMIZED_DATA) ?? [];
+  }
+
+  getSellPriceByProductCode(
+      {required String productCode, required String orgCode}) {
+    for (var element in priceList) {
+      if (element['SKU_CODE'].toString() == productCode.toString() &&
+          element['ORG_CODE'].toString() == orgCode.toString()) {
+        return element['SELL_VALUE'].toString();
+      }
+    }
+    return null; // Return null if no match is found
   }
 
   successAlert() async {

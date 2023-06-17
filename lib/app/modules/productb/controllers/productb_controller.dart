@@ -19,9 +19,12 @@ class ProductbController extends GetxController {
     final database =
         await $FloorAppDatabase.databaseBuilder('cartlist.db').build();
     cartItemDao = database.cartItemDao;
+    customerId.value = Pref.readData(key: Pref.CUSTOMER_CODE);
+    Update();
     // requestItemCount();
   }
 
+  RxString customerId = ''.obs;
   late CartItemDao cartItemDao;
   RxBool isOffline = false.obs;
   offlineUpdater({required bool status}) {
@@ -47,8 +50,25 @@ class ProductbController extends GetxController {
     data.value = es as Map<String, dynamic>;
     Update();
     print(data);
+    requestPriceList();
     loadProducts();
     // requestItemCount();
+  }
+
+  RxList<dynamic> priceList = [].obs;
+  requestPriceList() {
+    priceList.value = Pref.readData(key: Pref.OFFLINE_CUSTOMIZED_DATA) ?? [];
+  }
+
+  getSellPriceByProductCode(
+      {required String productCode, required String orgCode}) {
+    for (var element in priceList) {
+      if (element['SKU_CODE'].toString() == productCode.toString() &&
+          element['ORG_CODE'].toString() == orgCode.toString()) {
+        return element['SELL_VALUE'].toString();
+      }
+    }
+    return null; // Return null if no match is found
   }
 
   RxBool isProductsLoading = false.obs;
@@ -166,37 +186,56 @@ class ProductbController extends GetxController {
     if (existingItem != null) {
       // If the item already exists, update its quantity
       CartItem temporaryItem = existingItem;
+      if (existingItem.customerName.toString() == customerId.value) {
+        existingItem.quantity = (existingItem.quantity! + data.quantity!);
+        existingItem.price = (existingItem.price! + data.price!);
 
-      existingItem.quantity = (existingItem.quantity! + data.quantity!);
-      existingItem.price = (existingItem.price! + data.price!);
+        if (await cartItemDao
+            .updateCartItem(existingItem)
+            .then((value) => true)) {
+          totalpriceUpdater();
+          Get.closeAllSnackbars();
+          CartCounter.cartCounter();
 
-      if (await cartItemDao
-          .updateCartItem(existingItem)
-          .then((value) => true)) {
-        totalpriceUpdater();
-        Get.closeAllSnackbars();
-        CartCounter.cartCounter();
+          await isAddedUpdater();
 
-        await isAddedUpdater();
-
-        await successAlert();
-        Timer(Duration(seconds: 1), () async {
-          Get.back();
-        });
-        // Get.snackbar(
-        //   "Success",
-        //   "Product added successfully!",
-        //   backgroundColor: Colors.green,
-        //   colorText: Colors.white,
-        // );
+          await successAlert();
+          Timer(Duration(seconds: 1), () async {
+            Get.back();
+          });
+          // Get.snackbar(
+          //   "Success",
+          //   "Product added successfully!",
+          //   backgroundColor: Colors.green,
+          //   colorText: Colors.white,
+          // );
+        } else {
+          totalpriceUpdater();
+          Get.snackbar(
+            "Failure",
+            "Product quantity was not updated!",
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
       } else {
-        totalpriceUpdater();
-        Get.snackbar(
-          "Failure",
-          "Product quantity was not updated!",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+        if (await cartItemDao.insertCartItem(data).then((value) => true)) {
+          totalpriceUpdater();
+          CartCounter.cartCounter();
+          isAddedUpdater();
+          await successAlert();
+          Timer(Duration(seconds: 1), () {
+            Get.back();
+          });
+        } else {
+          totalpriceUpdater();
+          Get.snackbar(
+            "Failure",
+            "Product was not added!",
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
       }
     } else {
       // If the item does not exist, insert it into the cart

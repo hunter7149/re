@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -97,6 +98,7 @@ class DashboardController extends GetxController {
   }
 
   RxString selectedCustomerId = ''.obs;
+  RxString selectedCustomerPriceId = ''.obs;
   RxString dropdownCustomerValue = 'Select Customer'.obs;
   RxList<String> customerData = <String>['Select Customer'].obs;
 
@@ -109,9 +111,14 @@ class DashboardController extends GetxController {
       orElse: () => {},
     );
     if (selectedCustomer != null) {
+      selectedCustomerPriceId.value = selectedCustomer['PRICE_ID'].toString();
       selectedCustomerId.value = selectedCustomer['ID'].toString();
       Pref.writeData(key: Pref.CUSTOMER_CODE, value: selectedCustomerId.value);
+      Pref.writeData(
+          key: Pref.OFFLINE_PRICE_ID, value: selectedCustomerPriceId.value);
+      setPrice(priceId: selectedCustomerPriceId.value);
       print(selectedCustomerId.value);
+      print(selectedCustomerPriceId.value);
     }
   }
 
@@ -238,6 +245,8 @@ class DashboardController extends GetxController {
     Pref.writeData(key: Pref.BEAT_NAME, value: dropdownBeatValue.value);
     Pref.writeData(key: Pref.CUSTOMER_NAME, value: dropdownCustomerValue.value);
     Pref.writeData(key: Pref.CUSTOMER_CODE, value: selectedCustomerId.value);
+    Pref.writeData(
+        key: Pref.OFFLINE_PRICE_ID, value: selectedCustomerPriceId.value);
     beatCustomerSelectedUpdater(status: true);
     String beatName = Pref.readData(key: Pref.BEAT_NAME) ?? '';
     String CustomerName = Pref.readData(key: Pref.CUSTOMER_NAME) ?? '';
@@ -651,10 +660,65 @@ class DashboardController extends GetxController {
             ));
   }
 
+  setPrice({required String priceId}) {
+    // dynamic firstData = Pref.readData(key: Pref.OFFLINE_DATA);
+    dynamic secondData = Pref.readData(key: Pref.OFFLINE_PRICE);
+    // print(firstData);
+    List<dynamic> matchingElements = secondData['value']
+        .where((element) => element['PRICE_TYPE_ID'].toString() == priceId)
+        .toList();
+
+    // // Iterate through the first JSON data
+    // firstData.forEach((brand, categories) {
+    //   categories.forEach((category, products) {
+    //     for (var product in products) {
+    //       // Get the PRODUCT_CODE of the product
+    //       String productCode = product['PRODUCT_CODE'];
+
+    //       // Check if the PRODUCT_CODE exists in the matching elements
+    //       var matchingProduct = matchingElements.firstWhere(
+    //         (element) => element['SKU_CODE'] == product['PRODUCT_CODE'],
+    //         orElse: () => null,
+    //       );
+
+    //       if (matchingProduct != null) {
+    //         // Store the old and new values
+    //         var oldMRP = product['MPR'];
+    //         var newMRP = matchingProduct['SELL_VALUE'];
+
+    //         // Replace MPR with SELL_VALUE
+    //         product['MPR'] = newMRP;
+
+    //         // Print the old and new values if they have been exchanged
+    //         if (oldMRP != newMRP) {
+    //           print('SKU: ${product['SKU_CODE']}');
+    //           print('Old MRP: $oldMRP');
+    //           print('New MRP: $newMRP');
+    //         }
+    //       }
+    //     }
+    //   });
+    // });
+    // print(firstData);
+    Pref.writeData(key: Pref.OFFLINE_CUSTOMIZED_DATA, value: matchingElements);
+    print(Pref.readData(key: Pref.OFFLINE_CUSTOMIZED_DATA));
+  }
+
+  requestPrice() async {
+    if (await InternetConnectionChecker().hasConnection) {
+      await Repository().requestPriceList().then((value) {
+        print(value);
+        Pref.writeData(key: Pref.OFFLINE_PRICE, value: value);
+      });
+    } else {}
+  }
+
   @override
   Future<void> onInit() async {
     super.onInit();
+    await requestPrice();
     await initialDropdownValue();
+
     beatSelection();
 
     // OFFLINEPRODUCTSYNC().offlineDataSync(brands: [
