@@ -709,7 +709,10 @@ class CartController extends GetxController {
   isbeatCustomerEmpty() {
     if (dropdownBeatValue.value == '' ||
         dropdownCustomerValue.value == '' ||
-        selectedCustomerId.value == '') {
+        selectedCustomerId.value == '' ||
+        dropdownBeatValue.value != null ||
+        dropdownCustomerValue.value != null ||
+        selectedCustomerId.value != null) {
       return true;
     } else {
       return false;

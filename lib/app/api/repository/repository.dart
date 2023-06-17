@@ -47,6 +47,11 @@ class Repository extends Providers {
       await tokenBaseApi(
               endPoint: AppUrl.saleRequisition, method: Method.POST, map: body)
           .then((value) => value);
+  Future<dynamic> requestPriceList(
+          {required Map<String, dynamic> body}) async =>
+      await tokenBaseApi(
+              endPoint: AppUrl.getPrice, method: Method.POST, map: body)
+          .then((value) => value);
 
   Future<dynamic> requestWeather(
           {required double lattitude, required double longitude}) async =>
