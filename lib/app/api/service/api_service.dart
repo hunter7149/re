@@ -12,7 +12,7 @@ const BASE_URL =
 
 //LIVE//
 // 'http://182.160.114.100:7171/dp/';
-const Duration CONNECTION_TIMEOUT = Duration(seconds: 10);
+const Duration CONNECTION_TIMEOUT = Duration(seconds: 5);
 
 class ApiService extends GetxService {
   late Dio _dio;

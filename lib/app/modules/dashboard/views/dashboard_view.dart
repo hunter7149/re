@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sales/app/api/service/prefrences.dart';
 import 'package:sales/app/components/app_strings.dart';
 import 'package:sales/app/config/app_themes.dart';
@@ -24,193 +26,220 @@ class DashboardView extends GetView<DashboardController> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              backgroundColor: Colors.white,
-              expandedHeight: 320,
-              pinned: false,
-              title: Text(
-                "Today's deal",
-                style: TextStyle(color: AppThemes.modernBlue),
-              ),
-              flexibleSpace: FlexibleSpaceBar(
-                // titlePadding: EdgeInsets.all(16),
-                background: Container(
-                  margin: EdgeInsets.only(top: 40),
-                  child: Obx(
-                    () => ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: controller.urls.map((e) {
-                        return ZoomTapAnimation(
-                          onTap: () {
-                            offerDialogue(link: e['link'], type: e['type']);
-                          },
-                          child: Container(
-                            width: 200,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  top: 0,
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: offerItem(dataLink: e["thumb"]),
-                                ),
-                                if (e['type'] == 0)
-                                  Container()
-                                else
-                                  Center(
-                                    child: Container(
-                                      child: Icon(
-                                        Icons.play_arrow,
-                                        size: 80,
-                                        color: AppThemes.modernGreen
-                                            .withOpacity(0.6),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: SizedBox(height: 10),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
+          child: Obx(
+        () => !controller.isInitalized.value
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Dashboard",
+                      "Initalizing dashboard.Won't take long...",
                       style:
-                          TextStyle(fontSize: 20, color: Colors.grey.shade800),
+                          TextStyle(color: AppThemes.modernGreen, fontSize: 18),
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Lottie.asset(
+                      "assets/logo/loading.json",
+                      height: 100,
+                    )
+                    // SpinKitPouringHourGlass(
+                    //   size: 40,
+                    //   color: AppThemes.modernGreen,
+                    // )
                   ],
                 ),
+              )
+            : CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    backgroundColor: Colors.white,
+                    expandedHeight: 320,
+                    pinned: false,
+                    title: Text(
+                      "Today's deal",
+                      style: TextStyle(color: AppThemes.modernBlue),
+                    ),
+                    flexibleSpace: FlexibleSpaceBar(
+                      // titlePadding: EdgeInsets.all(16),
+                      background: Container(
+                        margin: EdgeInsets.only(top: 40),
+                        child: Obx(
+                          () => ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: controller.urls.map((e) {
+                              return ZoomTapAnimation(
+                                onTap: () {
+                                  offerDialogue(
+                                      link: e['link'], type: e['type']);
+                                },
+                                child: Container(
+                                  width: 200,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                        top: 0,
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        child: offerItem(dataLink: e["thumb"]),
+                                      ),
+                                      if (e['type'] == 0)
+                                        Container()
+                                      else
+                                        Center(
+                                          child: Container(
+                                            child: Icon(
+                                              Icons.play_arrow,
+                                              size: 80,
+                                              color: AppThemes.modernGreen
+                                                  .withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 10),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Dashboard",
+                            style: TextStyle(
+                                fontSize: 20, color: Colors.grey.shade800),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverGrid.count(
+                    crossAxisCount: _getCrossAxisCount(context),
+                    childAspectRatio: 0.88,
+                    children: [
+                      menuItem(
+                        icon: Icons.shopping_cart_checkout,
+                        color: AppThemes.modernBlue,
+                        valid: true,
+                        title: "Order Management",
+                        function: () {
+                          Get.toNamed(
+                            Routes.ORDERHOME,
+                            id: Constants.nestedNavigationNavigatorId,
+                          );
+                        },
+                      ),
+                      menuItem(
+                        icon: Icons.list,
+                        color: AppThemes.modernPurple,
+                        title: "Product Catalogue",
+                        valid: true,
+                        function: () async {
+                          var result = await Get.toNamed(
+                                Routes.PRODUCT,
+                                arguments:
+                                    controller.argumentToDetailPage.value,
+                                id: Constants.nestedNavigationNavigatorId,
+                              ) ??
+                              1.0;
+                          print(result);
+                          double result2 = 1.0;
+                          if (result != null) {
+                            controller.argumentUpdater(result: result2);
+                          }
+                        },
+                      ),
+                      menuItem(
+                        icon: Icons.notifications_active_rounded,
+                        color: AppThemes.modernCoolPink,
+                        title: "Notice",
+                        valid: true,
+                        function: () {
+                          Get.toNamed(
+                            Routes.NOTICESCREEN,
+                            id: Constants.nestedNavigationNavigatorId,
+                          );
+                        },
+                      ),
+                      menuItem(
+                        icon: Icons.sync,
+                        color: AppThemes.modernGreen,
+                        title: "Sync",
+                        valid: true,
+                        function: () async {
+                          Fluttertoast.showToast(
+                            msg: "SYNC STARTED!",
+                            backgroundColor: AppThemes.modernBlue,
+                          );
+                          await OFFLINEPRODUCTSYNC()
+                              .offlineDataSync(brands: AppStrings.brands);
+                        },
+                      ),
+                      menuItem(
+                        icon: FontAwesomeIcons.chartLine,
+                        color: AppThemes.modernChocolate,
+                        title: "Statistics",
+                        valid: true,
+                        function: () {
+                          Get.toNamed(
+                            Routes.STATISTICSPAGE,
+                            id: Constants.nestedNavigationNavigatorId,
+                          );
+                        },
+                      ),
+                      menuItem(
+                        icon: Icons.discount,
+                        color: Colors.pink,
+                        title: "Offers",
+                        valid: false,
+                        function: () {
+                          Get.toNamed(
+                            Routes.OFFERINFO,
+                            id: Constants.nestedNavigationNavigatorId,
+                          );
+                        },
+                      ),
+                      menuItem(
+                        icon: Icons.tv,
+                        color: Colors.green,
+                        title: "Promotionals",
+                        valid: false,
+                        function: () {
+                          Get.toNamed(
+                            Routes.PROMOTIONALADS,
+                            id: Constants.nestedNavigationNavigatorId,
+                          );
+                        },
+                      ),
+                      menuItem(
+                        icon: Icons.list,
+                        color: Colors.deepPurple,
+                        title: "Leadership Board",
+                        valid: false,
+                        function: () {
+                          Get.toNamed(
+                            Routes.LEADERSHIPPAGE,
+                            id: Constants.nestedNavigationNavigatorId,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ),
-            SliverGrid.count(
-              crossAxisCount: _getCrossAxisCount(context),
-              childAspectRatio: 0.88,
-              children: [
-                menuItem(
-                  icon: Icons.shopping_cart_checkout,
-                  color: AppThemes.modernBlue,
-                  valid: true,
-                  title: "Order Management",
-                  function: () {
-                    Get.toNamed(
-                      Routes.ORDERHOME,
-                      id: Constants.nestedNavigationNavigatorId,
-                    );
-                  },
-                ),
-                menuItem(
-                  icon: Icons.list,
-                  color: AppThemes.modernPurple,
-                  title: "Product Catalogue",
-                  valid: true,
-                  function: () async {
-                    var result = await Get.toNamed(
-                          Routes.PRODUCT,
-                          arguments: controller.argumentToDetailPage.value,
-                          id: Constants.nestedNavigationNavigatorId,
-                        ) ??
-                        1.0;
-                    print(result);
-                    double result2 = 1.0;
-                    if (result != null) {
-                      controller.argumentUpdater(result: result2);
-                    }
-                  },
-                ),
-                menuItem(
-                  icon: Icons.notifications_active_rounded,
-                  color: AppThemes.modernCoolPink,
-                  title: "Notice",
-                  valid: true,
-                  function: () {
-                    Get.toNamed(
-                      Routes.NOTICESCREEN,
-                      id: Constants.nestedNavigationNavigatorId,
-                    );
-                  },
-                ),
-                menuItem(
-                  icon: Icons.sync,
-                  color: AppThemes.modernGreen,
-                  title: "Sync",
-                  valid: true,
-                  function: () async {
-                    Fluttertoast.showToast(
-                      msg: "SYNC STARTED!",
-                      backgroundColor: AppThemes.modernBlue,
-                    );
-                    await OFFLINEPRODUCTSYNC()
-                        .offlineDataSync(brands: AppStrings.brands);
-                  },
-                ),
-                menuItem(
-                  icon: FontAwesomeIcons.chartLine,
-                  color: AppThemes.modernChocolate,
-                  title: "Statistics",
-                  valid: true,
-                  function: () {
-                    Get.toNamed(
-                      Routes.STATISTICSPAGE,
-                      id: Constants.nestedNavigationNavigatorId,
-                    );
-                  },
-                ),
-                menuItem(
-                  icon: Icons.discount,
-                  color: Colors.pink,
-                  title: "Offers",
-                  valid: false,
-                  function: () {
-                    Get.toNamed(
-                      Routes.OFFERINFO,
-                      id: Constants.nestedNavigationNavigatorId,
-                    );
-                  },
-                ),
-                menuItem(
-                  icon: Icons.tv,
-                  color: Colors.green,
-                  title: "Promotionals",
-                  valid: false,
-                  function: () {
-                    Get.toNamed(
-                      Routes.PROMOTIONALADS,
-                      id: Constants.nestedNavigationNavigatorId,
-                    );
-                  },
-                ),
-                menuItem(
-                  icon: Icons.list,
-                  color: Colors.deepPurple,
-                  title: "Leadership Board",
-                  valid: false,
-                  function: () {
-                    Get.toNamed(
-                      Routes.LEADERSHIPPAGE,
-                      id: Constants.nestedNavigationNavigatorId,
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+      )),
     );
   }
 

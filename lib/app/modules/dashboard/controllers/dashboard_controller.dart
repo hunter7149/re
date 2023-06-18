@@ -7,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sales/app/components/app_strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -20,6 +21,7 @@ import '../../../routes/app_pages.dart';
 import '../../../sync/products/offlineproductsync.dart';
 
 class DashboardController extends GetxController {
+  RxBool isInitalized = false.obs;
   RxList<dynamic> data = <dynamic>["as", "bs"].obs;
   final RxString argumentToDetailPage = RxString('you are the best!');
   final RxString argumentFromDetailPage = RxString('no argument yet');
@@ -254,6 +256,7 @@ class DashboardController extends GetxController {
 
     await firebaseStore();
     _checkVersion();
+    isInitalized.value = true;
     update();
   }
 
@@ -725,18 +728,7 @@ class DashboardController extends GetxController {
 
     beatSelection();
 
-    OFFLINEPRODUCTSYNC().offlineDataSync(brands: [
-      'acnol',
-      'blazoskin',
-      'elanvenezia',
-      'tylox',
-      'herlan',
-      'lily',
-      'nior',
-      'orix',
-      'siodil',
-      'sunbit',
-    ]);
+    OFFLINEPRODUCTSYNC().offlineDataSync(brands: AppStrings.brands);
   }
 
   @override

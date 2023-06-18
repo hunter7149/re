@@ -14,7 +14,7 @@ class CartCounter {
     await cartItemDao.findAllCartItem().then((value) {
       String currentCustomerCode = Pref.readData(key: Pref.CUSTOMER_CODE);
       List<CartItem> tempCart = [];
-      tempCart.forEach((element) {
+      value.forEach((element) {
         if (element.customerName == currentCustomerCode) {
           tempCart.add(element);
         }

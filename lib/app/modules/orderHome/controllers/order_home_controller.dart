@@ -85,6 +85,7 @@ class OrderHomeController extends GetxController {
           key: Pref.OFFLINE_PRICE_ID, value: selectedCustomerPriceId.value);
       setPrice(priceId: selectedCustomerPriceId.value);
       Pref.writeData(key: Pref.CUSTOMER_CODE, value: selectedCustomerId.value);
+      reqOrderList();
       print(selectedCustomerId.value);
       print(selectedCustomerPriceId.value);
     }

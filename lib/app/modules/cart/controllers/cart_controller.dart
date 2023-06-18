@@ -160,181 +160,191 @@ class CartController extends GetxController {
           borderRadius: 0,
           duration: Duration(seconds: 1));
     } else {
-      Random random = Random();
-      int orderId = random.nextInt(99999);
-      if (lattitude.value != 0.0 && longitude.value != 0.0) {
-        await requestWeather();
-        isProccessing.value = true;
-        Update();
-
-        if (await IEchecker.checker()) {
-          RxList<dynamic> allItems = <dynamic>[].obs;
-
-          // -----------------Running old code-------//
-          cartItems.forEach((element) async {
-            allItems.add({
-              "name": element.productName,
-              "brand": element.brand,
-              "productSku": element.productSku.toString(),
-              "productId": element.productId.toString(),
-              "quantity": element.quantity,
-              "totalPrice": element.price,
-              "unitPrice": element.unitPrice,
-            });
-          });
-          //Created a structured list of products
-          RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
-          saleRequisation.value = {
-            "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
-            "customerId": selectedCustomerId.toString(),
-            "lattitude": lattitude.value, //looks like 20.1234
-            "longitude": longitude.value, //looks like 20.1234
-            "address": address.value,
-            "temperature": temparature.value,
-            "weather_code": weatherCode.value,
-            "totalItemCount": cartItems.length, // in number like 3 or 4
-            "dateTime": DateTime.now()
-                .toString(), // looks like 2023-05-10 09:55:06.602402
-            "totalPrice": totalPrice.value, // like 2034.23
-            "beatName": dropdownBeatValue.value, //String
-            "customerName": dropdownCustomerValue.value,
-            "createBy:": Pref.readData(key: Pref.USER_ID), //String
-            "items": allItems.length == 0
-                ? []
-                : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
-          };
-          await requestOnlineCheckout(data: saleRequisation);
-          if (Submitstatus.value != '') {
-            print('success');
-          } else {
-            OfflineOrder item =
-                OfflineOrder(orderId: "ORD${orderId}", status: "Offline");
-            await offlineOrderDao.insertOfflineOrdertItem(
-                item); //Saving this info in offline sync list database
-            await offlineOrderDao
-                .findAllOfflineOrder()
-                .then((value) => print(value[0].orderId));
-          }
-
-          OrderItem orderItem = OrderItem(
-              orderId: "ORD${orderId}",
-              temperature: temparature.value,
-              weather_code: weatherCode.value,
-              userId: "${Pref.readData(key: Pref.USER_ID)}",
-              CustomerId: selectedCustomerId.value.toString(),
-              lattitude: lattitude.value,
-              longitude: longitude.value,
-              Address: address.value,
-              status: Submitstatus.value != '' ? Submitstatus.value : "Pending",
-              totalItem: cartItems.length,
-              dateTime: DateTime.now().toString(),
-              totalPrice: totalPrice.value,
-              beatName: dropdownBeatValue.value,
-              CustomerName: dropdownCustomerValue.value);
-          await orderItemDao.insertOrderItem(
-              orderItem); //Saving a single order info where order Id is the primary key
-          cartItems.forEach((element) async {
-            SaleRequisition item = SaleRequisition(
-                userId: "${Pref.readData(key: Pref.USER_ID)}",
-                orderId: "ORD${orderId}",
-                customerId: selectedCustomerId.value,
-                productSku: element.productSku.toString(),
-                productId: element.productId.toString(),
-                customerName: dropdownCustomerValue.value,
-                beatName: dropdownBeatValue.value,
-                productName: element.productName,
-                catagory: element.catagory,
-                unit: element.unit,
-                image: element.image,
-                price: element.price!,
-                brand: element.brand,
-                quantity: element.quantity);
-            await saleRequisitionDao.insertSaleItem(item);
-          });
-          //Inserting products agains order id one by one.A single order can have multiple products
-          await cartItemDao
-              .deleteCartItemByCustomerID(Pref.readData(key: Pref.USER_ID),
-                  Pref.readData(key: Pref.CUSTOMER_CODE))
-              .then((value) {
-            cartItems.clear();
-            cartItems.refresh();
-            QuickAlert.show(
-              confirmBtnColor: AppThemes.modernGreen,
-              context: Get.context!,
-              type: QuickAlertType.success,
-              // autoCloseDuration: Duration(seconds: 2),
-            );
-          });
-          Update();
-        } else {
-          //If there is no internet, this proceedure will be called
-          OfflineOrder item =
-              OfflineOrder(orderId: "ORD${orderId}", status: "offline");
-          await offlineOrderDao.insertOfflineOrdertItem(
-              item); //Saving this info in offline sync list database
-          await offlineOrderDao
-              .findAllOfflineOrder()
-              .then((value) => print(value[0].orderId));
-
-          OrderItem orderItem = OrderItem(
-              orderId: "ORD${orderId}",
-              userId: "${Pref.readData(key: Pref.USER_ID)}",
-              lattitude: lattitude.value,
-              longitude: longitude.value,
-              Address: address.value,
-              temperature: temparature.value,
-              weather_code: weatherCode.value,
-              CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
-              status: "Pending",
-              totalItem: cartItems.length,
-              dateTime: DateTime.now().toString(),
-              totalPrice: totalPrice.value,
-              beatName: dropdownBeatValue.value,
-              CustomerName: dropdownCustomerValue.value);
-          await orderItemDao.insertOrderItem(orderItem);
-          cartItems.forEach((element) async {
-            SaleRequisition item = SaleRequisition(
-                userId: "${Pref.readData(key: Pref.USER_ID)}",
-                orderId: "ORD${orderId}",
-                customerId: selectedCustomerId.value,
-                productSku: element.productSku.toString(),
-                productId: element.productId.toString(),
-                customerName: element.customerName,
-                beatName: element.beatName,
-                productName: element.productName,
-                catagory: element.catagory,
-                unit: element.unit,
-                image: element.image,
-                price: element.price!,
-                brand: element.brand,
-                quantity: element.quantity);
-            await saleRequisitionDao.insertSaleItem(item);
-          });
-          await cartItemDao
-              .deleteCartItemByCustomerID(Pref.readData(key: Pref.USER_ID),
-                  Pref.readData(key: Pref.CUSTOMER_CODE))
-              .then((value) {
-            cartItems.clear();
-            cartItems.refresh();
-            QuickAlert.show(
-              confirmBtnColor: AppThemes.modernGreen,
-              context: Get.context!,
-              type: QuickAlertType.success,
-            );
-          });
-
-          Update();
-        }
-        isProccessing.value = false;
-        Update();
-      } else {
-        Get.snackbar("Warning", "Enable location to order product",
+      if (dropdownCustomerValue.contains("No customer")) {
+        Get.snackbar("Notice", "You must select customer to place order",
             colorText: Colors.white,
             backgroundColor: Colors.red,
             animationDuration: Duration(seconds: 0),
             borderRadius: 0,
             duration: Duration(seconds: 1));
-        await permissionchecker();
+      } else {
+        isProccessing.value = true;
+        Update();
+        Random random = Random();
+        int orderId = random.nextInt(99999);
+        if (lattitude.value != 0.0 && longitude.value != 0.0) {
+          await requestWeather();
+
+          if (await IEchecker.checker()) {
+            RxList<dynamic> allItems = <dynamic>[].obs;
+
+            // -----------------Running old code-------//
+            cartItems.forEach((element) async {
+              allItems.add({
+                "name": element.productName,
+                "brand": element.brand,
+                "productSku": element.productSku.toString(),
+                "productId": element.productId.toString(),
+                "quantity": element.quantity,
+                "totalPrice": element.price,
+                "unitPrice": element.unitPrice,
+              });
+            });
+            //Created a structured list of products
+            RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
+            saleRequisation.value = {
+              "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
+              "customerId": selectedCustomerId.toString(),
+              "lattitude": lattitude.value, //looks like 20.1234
+              "longitude": longitude.value, //looks like 20.1234
+              "address": address.value,
+              "temperature": temparature.value,
+              "weather_code": weatherCode.value,
+              "totalItemCount": cartItems.length, // in number like 3 or 4
+              "dateTime": DateTime.now()
+                  .toString(), // looks like 2023-05-10 09:55:06.602402
+              "totalPrice": totalPrice.value, // like 2034.23
+              "beatName": dropdownBeatValue.value, //String
+              "customerName": dropdownCustomerValue.value,
+              "createBy:": Pref.readData(key: Pref.USER_ID), //String
+              "items": allItems.length == 0
+                  ? []
+                  : allItems, //[ {"brand": 'nior' "productId": 'Sku1234', "quantity": 5,"totalPrice": 3000,"unitPrice": 800, } ]
+            };
+            await requestOnlineCheckout(data: saleRequisation);
+            if (Submitstatus.value != '') {
+              print('success');
+            } else {
+              OfflineOrder item =
+                  OfflineOrder(orderId: "ORD${orderId}", status: "Offline");
+              await offlineOrderDao.insertOfflineOrdertItem(
+                  item); //Saving this info in offline sync list database
+              await offlineOrderDao
+                  .findAllOfflineOrder()
+                  .then((value) => print(value[0].orderId));
+            }
+
+            OrderItem orderItem = OrderItem(
+                orderId: "ORD${orderId}",
+                temperature: temparature.value,
+                weather_code: weatherCode.value,
+                userId: "${Pref.readData(key: Pref.USER_ID)}",
+                CustomerId: selectedCustomerId.value.toString(),
+                lattitude: lattitude.value,
+                longitude: longitude.value,
+                Address: address.value,
+                status:
+                    Submitstatus.value != '' ? Submitstatus.value : "Pending",
+                totalItem: cartItems.length,
+                dateTime: DateTime.now().toString(),
+                totalPrice: totalPrice.value,
+                beatName: dropdownBeatValue.value,
+                CustomerName: dropdownCustomerValue.value);
+            await orderItemDao.insertOrderItem(
+                orderItem); //Saving a single order info where order Id is the primary key
+            cartItems.forEach((element) async {
+              SaleRequisition item = SaleRequisition(
+                  userId: "${Pref.readData(key: Pref.USER_ID)}",
+                  orderId: "ORD${orderId}",
+                  customerId: selectedCustomerId.value,
+                  productSku: element.productSku.toString(),
+                  productId: element.productId.toString(),
+                  customerName: dropdownCustomerValue.value,
+                  beatName: dropdownBeatValue.value,
+                  productName: element.productName,
+                  catagory: element.catagory,
+                  unit: element.unit,
+                  image: element.image,
+                  price: element.price!,
+                  brand: element.brand,
+                  quantity: element.quantity);
+              await saleRequisitionDao.insertSaleItem(item);
+            });
+            //Inserting products agains order id one by one.A single order can have multiple products
+            await cartItemDao
+                .deleteCartItemByCustomerID(Pref.readData(key: Pref.USER_ID),
+                    Pref.readData(key: Pref.CUSTOMER_CODE))
+                .then((value) {
+              cartItems.clear();
+              cartItems.refresh();
+              QuickAlert.show(
+                confirmBtnColor: AppThemes.modernGreen,
+                context: Get.context!,
+                type: QuickAlertType.success,
+                // autoCloseDuration: Duration(seconds: 2),
+              );
+            });
+            Update();
+          } else {
+            //If there is no internet, this proceedure will be called
+            OfflineOrder item =
+                OfflineOrder(orderId: "ORD${orderId}", status: "offline");
+            await offlineOrderDao.insertOfflineOrdertItem(
+                item); //Saving this info in offline sync list database
+            await offlineOrderDao
+                .findAllOfflineOrder()
+                .then((value) => print(value[0].orderId));
+
+            OrderItem orderItem = OrderItem(
+                orderId: "ORD${orderId}",
+                userId: "${Pref.readData(key: Pref.USER_ID)}",
+                lattitude: lattitude.value,
+                longitude: longitude.value,
+                Address: address.value,
+                temperature: temparature.value,
+                weather_code: weatherCode.value,
+                CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
+                status: "Pending",
+                totalItem: cartItems.length,
+                dateTime: DateTime.now().toString(),
+                totalPrice: totalPrice.value,
+                beatName: dropdownBeatValue.value,
+                CustomerName: dropdownCustomerValue.value);
+            await orderItemDao.insertOrderItem(orderItem);
+            cartItems.forEach((element) async {
+              SaleRequisition item = SaleRequisition(
+                  userId: "${Pref.readData(key: Pref.USER_ID)}",
+                  orderId: "ORD${orderId}",
+                  customerId: selectedCustomerId.value,
+                  productSku: element.productSku.toString(),
+                  productId: element.productId.toString(),
+                  customerName: element.customerName,
+                  beatName: element.beatName,
+                  productName: element.productName,
+                  catagory: element.catagory,
+                  unit: element.unit,
+                  image: element.image,
+                  price: element.price!,
+                  brand: element.brand,
+                  quantity: element.quantity);
+              await saleRequisitionDao.insertSaleItem(item);
+            });
+            await cartItemDao
+                .deleteCartItemByCustomerID(Pref.readData(key: Pref.USER_ID),
+                    Pref.readData(key: Pref.CUSTOMER_CODE))
+                .then((value) {
+              cartItems.clear();
+              cartItems.refresh();
+              QuickAlert.show(
+                confirmBtnColor: AppThemes.modernGreen,
+                context: Get.context!,
+                type: QuickAlertType.success,
+              );
+            });
+
+            Update();
+          }
+        } else {
+          Get.snackbar("Warning", "Enable location to order product",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              animationDuration: Duration(seconds: 0),
+              borderRadius: 0,
+              duration: Duration(seconds: 1));
+          await permissionchecker();
+        }
+        isProccessing.value = false;
+        Update();
       }
     }
   }
