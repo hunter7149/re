@@ -33,7 +33,7 @@ class DashboardView extends GetView<DashboardController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Initalizing dashboard.Won't take long...",
+                      "Initializing dashboard.Won't take long...",
                       style:
                           TextStyle(color: AppThemes.modernGreen, fontSize: 18),
                     ),
