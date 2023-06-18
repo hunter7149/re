@@ -469,6 +469,9 @@ productViewFromList(
                                                 "${Pref.readData(key: Pref.USER_ID)}",
                                             productId:
                                                 controller.products[category]
+                                                    [index]["PRODUCT_CODE"],
+                                            productSku:
+                                                controller.products[category]
                                                     [index]["SKU_CODE"],
                                             customerName:
                                                 "${controller.customerId.value}",

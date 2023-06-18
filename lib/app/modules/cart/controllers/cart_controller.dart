@@ -30,6 +30,8 @@ class CartController extends GetxController {
   late SaleRequisitionDao saleRequisitionDao;
   late SaveItemDao saveItemDao;
   RxBool isDeviceConnected = false.obs;
+  RxString temparature = ''.obs;
+  RxString weatherCode = ''.obs;
   connectionUpdater({required bool status}) {
     isDeviceConnected.value = status;
     Update();
@@ -76,6 +78,7 @@ class CartController extends GetxController {
     CartItem newItem = CartItem(
         id: cartItems[index].id,
         userId: "${Pref.readData(key: Pref.USER_ID)}",
+        productSku: cartItems[index].productSku,
         productId: cartItems[index].productId,
         beatName: cartItems[index].beatName!.toString().isEmpty
             ? ""
@@ -94,7 +97,7 @@ class CartController extends GetxController {
     cartItems[index] = newItem;
     cartItems.refresh();
     print(
-        "${cartItems[index].userId!}+${cartItems[index].productId!}+${cartItems[index].price!}+${cartItems[index].id!}");
+        "${cartItems[index].userId!}+${cartItems[index].productSku!}+${cartItems[index].price!}+${cartItems[index].id!}");
     // await cartItemDao
     //     .updateData(cartItems[index].userId!, cartItems[index].productId!,
     //         cartItems[index].price!, cartItems[index].id!)
@@ -104,16 +107,9 @@ class CartController extends GetxController {
     await cartItemDao.updateCartItem(newItem);
     // cartItems.clear();
     // cartItems.refresh();
-    await cartItemDao.findAllCartItem().then((value) {
-      cartItems.value = value;
-      cartItems.refresh();
-      totalPriceCounter();
-      print("dta length -> ${cartItems.length}");
-    });
+
     // await getlocation();
-    Update();
-    totalPriceCounter();
-    Update();
+    loadData();
   }
 
   screenRefresh() {
@@ -153,6 +149,7 @@ class CartController extends GetxController {
   //Paste  unused codes for location here
 
   RxBool isRequesting = false.obs;
+  RxBool isProccessing = false.obs;
   RxString Submitstatus = ''.obs;
   requestCheckout() async {
     if (isbeatCustomerEmpty()) {
@@ -166,6 +163,10 @@ class CartController extends GetxController {
       Random random = Random();
       int orderId = random.nextInt(99999);
       if (lattitude.value != 0.0 && longitude.value != 0.0) {
+        await requestWeather();
+        isProccessing.value = true;
+        Update();
+
         if (await IEchecker.checker()) {
           RxList<dynamic> allItems = <dynamic>[].obs;
 
@@ -174,6 +175,7 @@ class CartController extends GetxController {
             allItems.add({
               "name": element.productName,
               "brand": element.brand,
+              "productSku": element.productSku.toString(),
               "productId": element.productId.toString(),
               "quantity": element.quantity,
               "totalPrice": element.price,
@@ -184,9 +186,12 @@ class CartController extends GetxController {
           RxMap<String, dynamic> saleRequisation = <String, dynamic>{}.obs;
           saleRequisation.value = {
             "orderId": "ORD${orderId}", //Order id looks like 'ORD12345'
-            "customerId": selectedCustomerId.toString().split(" ~")[0],
-            "lattitude": lattitude, //looks like 20.1234
-            "longitude": longitude, //looks like 20.1234
+            "customerId": selectedCustomerId.toString(),
+            "lattitude": lattitude.value, //looks like 20.1234
+            "longitude": longitude.value, //looks like 20.1234
+            "address": address.value,
+            "temperature": temparature.value,
+            "weather_code": weatherCode.value,
             "totalItemCount": cartItems.length, // in number like 3 or 4
             "dateTime": DateTime.now()
                 .toString(), // looks like 2023-05-10 09:55:06.602402
@@ -203,58 +208,23 @@ class CartController extends GetxController {
             print('success');
           } else {
             OfflineOrder item =
-                OfflineOrder(orderId: "ORD${orderId}", status: "offline");
+                OfflineOrder(orderId: "ORD${orderId}", status: "Offline");
             await offlineOrderDao.insertOfflineOrdertItem(
                 item); //Saving this info in offline sync list database
             await offlineOrderDao
                 .findAllOfflineOrder()
                 .then((value) => print(value[0].orderId));
-
-            // OrderItem orderItem = OrderItem(
-            //     orderId: "ORD${orderId}",
-            //     userId: "${Pref.readData(key: Pref.USER_ID)}",
-            //     lattitude: lattitude.value,
-            //     longitude: longitude.value,
-            //     CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
-            //     status: "Pending",
-            //     totalItem: cartItems.length,
-            //     dateTime: DateTime.now().toString(),
-            //     totalPrice: totalPrice.value,
-            //     beatName: dropdownBeatValue.value,
-            //     CustomerName: dropdownCustomerValue.value);
-            // await orderItemDao.insertOrderItem(orderItem);
-            // cartItems.forEach((element) async {
-            //   SaleRequisition item = SaleRequisition(
-            //       userId: "${Pref.readData(key: Pref.USER_ID)}",
-            //       orderId: "ORD${orderId}",
-            //       productId: element.productId.toString(),
-            //       customerName: dropdownCustomerValue.value,
-            //       beatName: dropdownBeatValue.value,
-            //       productName: element.productName,
-            //       catagory: element.catagory,
-            //       unit: element.unit,
-            //       image: element.image,
-            //       price: element.price!,
-            //       brand: element.brand,
-            //       quantity: element.quantity);
-            //   await saleRequisitionDao.insertSaleItem(item);
-            // });
-            // await cartItemDao
-            //     .deleteCartItemByuserID(Pref.readData(key: Pref.USER_ID))
-            //     .then((value) {
-            //   cartItems.clear();
-            //   cartItems.refresh();
-            // });
-
-            // Update();
           }
 
           OrderItem orderItem = OrderItem(
               orderId: "ORD${orderId}",
+              temperature: temparature.value,
+              weather_code: weatherCode.value,
               userId: "${Pref.readData(key: Pref.USER_ID)}",
-              CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
+              CustomerId: selectedCustomerId.value.toString(),
               lattitude: lattitude.value,
               longitude: longitude.value,
+              Address: address.value,
               status: Submitstatus.value != '' ? Submitstatus.value : "Pending",
               totalItem: cartItems.length,
               dateTime: DateTime.now().toString(),
@@ -267,6 +237,8 @@ class CartController extends GetxController {
             SaleRequisition item = SaleRequisition(
                 userId: "${Pref.readData(key: Pref.USER_ID)}",
                 orderId: "ORD${orderId}",
+                customerId: selectedCustomerId.value,
+                productSku: element.productSku.toString(),
                 productId: element.productId.toString(),
                 customerName: dropdownCustomerValue.value,
                 beatName: dropdownBeatValue.value,
@@ -281,7 +253,8 @@ class CartController extends GetxController {
           });
           //Inserting products agains order id one by one.A single order can have multiple products
           await cartItemDao
-              .deleteCartItemByuserID(Pref.readData(key: Pref.USER_ID))
+              .deleteCartItemByCustomerID(Pref.readData(key: Pref.USER_ID),
+                  Pref.readData(key: Pref.CUSTOMER_CODE))
               .then((value) {
             cartItems.clear();
             cartItems.refresh();
@@ -308,6 +281,9 @@ class CartController extends GetxController {
               userId: "${Pref.readData(key: Pref.USER_ID)}",
               lattitude: lattitude.value,
               longitude: longitude.value,
+              Address: address.value,
+              temperature: temparature.value,
+              weather_code: weatherCode.value,
               CustomerId: selectedCustomerId.value.toString().split(" ~")[0],
               status: "Pending",
               totalItem: cartItems.length,
@@ -320,9 +296,11 @@ class CartController extends GetxController {
             SaleRequisition item = SaleRequisition(
                 userId: "${Pref.readData(key: Pref.USER_ID)}",
                 orderId: "ORD${orderId}",
+                customerId: selectedCustomerId.value,
+                productSku: element.productSku.toString(),
                 productId: element.productId.toString(),
-                customerName: dropdownCustomerValue.value,
-                beatName: dropdownBeatValue.value,
+                customerName: element.customerName,
+                beatName: element.beatName,
                 productName: element.productName,
                 catagory: element.catagory,
                 unit: element.unit,
@@ -333,7 +311,8 @@ class CartController extends GetxController {
             await saleRequisitionDao.insertSaleItem(item);
           });
           await cartItemDao
-              .deleteCartItemByuserID(Pref.readData(key: Pref.USER_ID))
+              .deleteCartItemByCustomerID(Pref.readData(key: Pref.USER_ID),
+                  Pref.readData(key: Pref.CUSTOMER_CODE))
               .then((value) {
             cartItems.clear();
             cartItems.refresh();
@@ -346,6 +325,8 @@ class CartController extends GetxController {
 
           Update();
         }
+        isProccessing.value = false;
+        Update();
       } else {
         Get.snackbar("Warning", "Enable location to order product",
             colorText: Colors.white,
@@ -384,6 +365,8 @@ class CartController extends GetxController {
       SaleRequisition item = SaleRequisition(
           userId: "${Pref.readData(key: Pref.USER_ID)}",
           orderId: "SAVE${saveId}",
+          customerId: selectedCustomerId.value,
+          productSku: element.productSku,
           productId: element.productId.toString(),
           customerName: dropdownCustomerValue.value,
           beatName: dropdownBeatValue.value,
@@ -490,7 +473,7 @@ class CartController extends GetxController {
   requestWeather() async {
     isWeatherLoading.value = true;
     Update();
-    await getlocation();
+    // await userconsent();
     if (lattitude.value != 0.0 && longitude.value != 0.0) {
       await Repository()
           .requestWeather(
@@ -500,6 +483,13 @@ class CartController extends GetxController {
           print(value);
           weatherData.value = value;
           weatherData.refresh();
+          temparature.value =
+              weatherData['current_weather']['temperature'].toString() ??
+                  0.0.toString();
+          weatherCode.value =
+              weatherData['current_weather']['weathercode'].toString() ??
+                  0.0.toString();
+          Update();
         }
         isWeatherLoading.value = false;
         Update();
@@ -696,7 +686,7 @@ class CartController extends GetxController {
 
   int findCartItemIndex(String productId) {
     for (int index = 0; index < cartItems.length; index++) {
-      if (cartItems[index].productId == productId) {
+      if (cartItems[index].productSku == productId) {
         print("The index is : ${index}");
         return index;
       }
@@ -850,7 +840,7 @@ class CartController extends GetxController {
                     child: SingleChildScrollView(
                       child: Center(
                         child: Text(
-                            "Prominent Disclosure for Remark Sales \n Before you grant location access to Remark Sales, please review the following information: \n This app collects location data to enable the following features: \n Employee attendance tracking: Allows us to record your location when you check-in or check-out of your workplace. \n Geo-fencing: Enables us to create virtual boundaries for designated work areas and provide location-based notifications. \n Route optimization: Helps us suggest the most efficient routes for employees traveling to different work locations."),
+                            "Prominent Disclosure for Remark Sales app\n Before you grant location access to Remark Sales, please review the following information: \n This app collects location data to enable the following features: \n Sale requisation location: \n Allows us to record your location when you submit an order.  \n Route optimization: Helps us suggest the most efficient routes for employees traveling to different work locations."),
                       ),
                     ),
                   ),
@@ -913,6 +903,7 @@ class CartController extends GetxController {
     saveItemDao = database.saveItemDao;
     readBeatCustomerStatus();
     loadData();
+    requestWeather();
   }
 
   @override

@@ -98,38 +98,6 @@ class OrderHomeController extends GetxController {
         .where((element) => element['PRICE_TYPE_ID'].toString() == priceId)
         .toList();
 
-    // Iterate through the first JSON data
-    // firstData.forEach((brand, categories) {
-    //   categories.forEach((category, products) {
-    //     for (var product in products) {
-    //       // Get the PRODUCT_CODE of the product
-    //       String productCode = product['PRODUCT_CODE'];
-
-    //       // Check if the PRODUCT_CODE exists in the matching elements
-    //       var matchingProduct = matchingElements.firstWhere(
-    //         (element) => element['SKU_CODE'] == product['PRODUCT_CODE'],
-    //         orElse: () => null,
-    //       );
-
-    //       if (matchingProduct != null) {
-    //         // Store the old and new values
-    //         var oldMRP = product['MPR'];
-    //         var newMRP = matchingProduct['SELL_VALUE'];
-
-    //         // Replace MPR with SELL_VALUE
-    //         product['MPR'] = newMRP;
-
-    //         // Print the old and new values if they have been exchanged
-    //         if (oldMRP != newMRP) {
-    //           print('SKU: ${product['SKU_CODE']}');
-    //           print('Old MRP: $oldMRP');
-    //           print('New MRP: $newMRP');
-    //         }
-    //       }
-    //     }
-    //   });
-    // });
-    // print(firstData);
     Pref.writeData(key: Pref.OFFLINE_CUSTOMIZED_DATA, value: matchingElements);
     print(Pref.readData(key: Pref.OFFLINE_CUSTOMIZED_DATA));
   }
@@ -174,9 +142,16 @@ class OrderHomeController extends GetxController {
           .where((customer) => customer['BEAT_ID'] == selectedBeatId.toString())
           .toList();
       if (filteredCustomers.isNotEmpty) {
-        customerData.assignAll(filteredCustomers.map<String>(
-            (customer) => "${customer['CUSTOMER_NAME']} ~${customer['ID']}"));
-        selectedCustomerId.value = filteredCustomers[0]['ID'].toString();
+        customerData.clear();
+        filteredCustomers.forEach((customer) {
+          final formattedData =
+              "${customer['CUSTOMER_NAME']} ~${customer['ID']}";
+          if (!customerData.contains(formattedData)) {
+            customerData.add(formattedData);
+          }
+        });
+        customerData.refresh();
+
         DropdownCustomerValueUpdater(
             customerData.isNotEmpty ? customerData.first : 'Select Customer');
       } else {
@@ -207,8 +182,37 @@ class OrderHomeController extends GetxController {
   offlineDropDowns() {
     beatList.value = Pref.readData(key: Pref.BEATLIST) ?? [];
     customerList.value = Pref.readData(key: Pref.CUSTOMERLIST) ?? [];
-    assignBeatData();
-    assignCustomerData();
+    if (beatList.isNotEmpty) {
+      beatData.clear();
+      beatList.forEach((element) {
+        beatData.add(element['BEAT_NAME']);
+      });
+      beatData.refresh();
+      savedBeatName.value;
+      DropdownBeatValueUpdater(savedBeatName.value ?? beatData[0]);
+    } else {
+      beatData.value = [];
+      dropdownBeatValue.value = '';
+      isBeatLoading.value = false;
+      Update();
+    }
+    // if (customerList.isNotEmpty) {
+    //   customerData.clear();
+    //   customerList.forEach((element) {
+    //     customerData.add("${element['CUSTOMER_NAME']} ~${element['ID']}");
+    //   });
+    //   customerData.refresh();
+
+    //   customiseCustomerList(beatName: beatData[0]);
+    //   isCustomerLoading.value = false;
+    //   Update();
+    //   // DropdownCustomerValueUpdater(customerData[0]);
+    // } else {
+    //   customerData.value = [];
+    //   dropdownCustomerValue.value = '';
+    //   isCustomerLoading.value = false;
+    //   Update();
+    // }
   }
 
   requestBeatList() async {
@@ -299,9 +303,10 @@ class OrderHomeController extends GetxController {
     itemList.forEach((element) async {
       CartItem item = CartItem(
           userId: "${Pref.readData(key: Pref.USER_ID)}",
+          productSku: element.productSku,
           productId: element.productId,
-          beatName: dropdownBeatValue.value,
-          customerName: dropdownCustomerValue.value,
+          beatName: element.beatName,
+          customerName: element.customerId,
           productName: element.productName,
           catagory: element.catagory,
           unit: element.unit,
@@ -310,7 +315,7 @@ class OrderHomeController extends GetxController {
           brand: element.brand,
           quantity: element.quantity);
       CartItem? existingItem =
-          await cartItemDao.findCartItemById(item.productId!).first;
+          await cartItemDao.findCartItemById(item.productSku!).first;
 
       if (existingItem != null) {
         // If the item already exists, update its quantity
@@ -318,7 +323,7 @@ class OrderHomeController extends GetxController {
 
         existingItem.quantity = (existingItem.quantity! + item.quantity!);
         existingItem.price = (existingItem.price! + item.price!);
-
+        existingItem.customerName = element.customerId;
         if (await cartItemDao
             .updateCartItem(existingItem)
             .then((value) => true)) {
@@ -363,12 +368,12 @@ class OrderHomeController extends GetxController {
 
     await readBeatCustomerStatus();
 
-    await reqOrderList();
     await reqSaveList();
 
-    initialDropdownValue();
+    await initialDropdownValue();
 
     await offlineOrderCounter();
+    await reqOrderList();
     // setIfSaved();
   }
 
@@ -393,8 +398,13 @@ class OrderHomeController extends GetxController {
     await orderItemDao.findAllOrderItem().then((value) async {
       orderItem.clear();
       orderItem.refresh();
-
-      orderItem.value = value;
+      List<OrderItem> tempdata = value;
+      tempdata.forEach((element) {
+        if (element.CustomerId.toString() == selectedCustomerId.value) {
+          orderItem.add(element);
+        }
+      });
+      // orderItem.value = value;
       orderItem.refresh();
       Update();
       if (orderItem.length != 0) {
@@ -418,6 +428,7 @@ class OrderHomeController extends GetxController {
         .then((value) {
       itemList.clear();
       itemList.refresh();
+
       itemList.value = value;
       itemList.refresh();
       Update();
@@ -486,9 +497,10 @@ class OrderHomeController extends GetxController {
     savedItems.forEach((element) async {
       CartItem item = CartItem(
           userId: "${Pref.readData(key: Pref.USER_ID)}",
+          productSku: element.productSku,
           productId: element.productId,
           beatName: dropdownBeatValue.value,
-          customerName: dropdownCustomerValue.value,
+          customerName: selectedCustomerId.value,
           productName: element.productName,
           catagory: element.catagory,
           unit: element.unit,
@@ -498,7 +510,7 @@ class OrderHomeController extends GetxController {
           quantity: element.quantity);
 
       CartItem? existingItem =
-          await cartItemDao.findCartItemById(item.productId!).first;
+          await cartItemDao.findCartItemById(item.productSku!).first;
 
       if (existingItem != null) {
         // If the item already exists, update its quantity

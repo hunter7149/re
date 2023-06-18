@@ -14,7 +14,10 @@ class OrderItem {
   double? totalPrice;
   String? beatName;
   String? CustomerName;
+  String? Address;
   String? CustomerId;
+  String? temperature;
+  String? weather_code;
 
   OrderItem(
       {this.id,
@@ -27,6 +30,9 @@ class OrderItem {
       this.dateTime,
       this.lattitude,
       this.longitude,
+      this.Address,
       this.beatName,
-      this.CustomerName});
+      this.CustomerName,
+      this.temperature,
+      this.weather_code});
 }

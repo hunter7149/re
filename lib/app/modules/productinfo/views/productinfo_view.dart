@@ -258,7 +258,9 @@ class ProductinfoView extends GetView<ProductinfoController> {
                             : () {
                                 CartItem product = CartItem(
                                   userId: "${Pref.readData(key: Pref.USER_ID)}",
-                                  productId: controller.products["SKU_CODE"],
+                                  productId:
+                                      controller.products["PRODUCT_CODE"],
+                                  productSku: controller.products["SKU_CODE"],
                                   customerName:
                                       "${controller.customerCode.value}",
                                   beatName: "",

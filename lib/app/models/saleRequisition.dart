@@ -7,7 +7,8 @@ class SaleRequisition {
   String? userId;
   String? orderId;
   String? productId;
-
+  String? productSku;
+  String? customerId;
   String? customerName;
   String? beatName;
   String? productName;
@@ -23,6 +24,8 @@ class SaleRequisition {
       {this.id,
       this.userId,
       this.orderId,
+      this.customerId,
+      this.productSku,
       this.productId,
       this.customerName,
       this.beatName,

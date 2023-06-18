@@ -181,7 +181,7 @@ class ProductbController extends GetxController {
 
     // Check if the item already exists in the cart
     CartItem? existingItem =
-        await cartItemDao.findCartItemById(data.productId!).first;
+        await cartItemDao.findCartItemById(data.productSku!).first;
 
     if (existingItem != null) {
       // If the item already exists, update its quantity

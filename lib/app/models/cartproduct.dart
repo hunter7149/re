@@ -6,6 +6,8 @@ class CartItem {
   int? id;
   String? userId;
   String? productId;
+  String? productSku;
+  String? customerCode;
   String? customerName;
   String? beatName;
   String? productName;
@@ -21,8 +23,10 @@ class CartItem {
       {this.id,
       this.userId,
       this.productId,
+      this.productSku,
       this.customerName,
       this.beatName,
+      this.customerCode,
       this.productName,
       this.catagory,
       this.unit,

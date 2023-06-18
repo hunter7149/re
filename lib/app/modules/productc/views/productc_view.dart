@@ -521,6 +521,10 @@ class ProductcView extends GetView<ProductcController> {
                                                                       productId:
                                                                           controller.products[i]
                                                                               [
+                                                                              "PRODUCT_CODE"],
+                                                                      productSku:
+                                                                          controller.products[i]
+                                                                              [
                                                                               "SKU_CODE"],
                                                                       customerName:
                                                                           "${controller.customerCode.value}",

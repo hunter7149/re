@@ -637,14 +637,19 @@ class CartView extends GetView<CartController> {
                                     width: double.maxFinite,
                                     color: AppThemes.modernGreen,
                                     child: Center(
-                                      child: Text(
-                                        "PLACE ORDER",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
+                                        child: Obx(
+                                      () => controller.isProccessing.value
+                                          ? SpinKitThreeBounce(
+                                              color: Colors.white,
+                                            )
+                                          : Text(
+                                              "PLACE ORDER",
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                    )),
                                   ),
                                 ),
                               ),
@@ -671,7 +676,7 @@ class CartView extends GetView<CartController> {
               ),
             ),
         pageBuilder: (ctx, anim1, anim2) {
-          controller.findCartItemIndex(controller.cartItems[index].productId!);
+          controller.findCartItemIndex(controller.cartItems[index].productSku!);
           TextEditingController quanity = TextEditingController();
           quanity.text = 1.toString();
 
@@ -716,7 +721,7 @@ class CartView extends GetView<CartController> {
                 ZoomTapAnimation(
                   onTap: () {
                     controller.reqRemoveFromCart(
-                        id: controller.cartItems[index].productId!);
+                        id: controller.cartItems[index].productSku!);
                     Get.back();
                     Get.snackbar(
                         "Item removed!", "The item was removed from your cart!",

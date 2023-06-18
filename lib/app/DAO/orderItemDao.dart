@@ -11,7 +11,8 @@ abstract class OrderItemDao {
 
   @Query('SELECT * FROM OrderItem WHERE orderId = :id')
   Stream<OrderItem?> findOrderItemById(String id);
-
+  @Query('UPDATE OrderItem SET status = :status WHERE orderId = :orderId')
+  Future<void> updateOrderItemStatus(String orderId, String status);
   @insert
   Future<void> insertOrderItem(OrderItem item);
 }

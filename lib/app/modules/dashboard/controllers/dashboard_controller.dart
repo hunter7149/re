@@ -706,10 +706,14 @@ class DashboardController extends GetxController {
 
   requestPrice() async {
     if (await InternetConnectionChecker().hasConnection) {
-      await Repository().requestPriceList().then((value) {
-        print(value);
-        Pref.writeData(key: Pref.OFFLINE_PRICE, value: value);
-      });
+      try {
+        await Repository().requestPriceList().then((value) {
+          print(value);
+          Pref.writeData(key: Pref.OFFLINE_PRICE, value: value);
+        });
+      } on Exception catch (e) {
+        print(e);
+      }
     } else {}
   }
 
@@ -721,18 +725,18 @@ class DashboardController extends GetxController {
 
     beatSelection();
 
-    // OFFLINEPRODUCTSYNC().offlineDataSync(brands: [
-    //   'acnol',
-    //   'blazoskin',
-    //   'elanvenezia',
-    //   'tylox',
-    //   'herlan',
-    //   'lily',
-    //   'nior',
-    //   'orix',
-    //   'siodil',
-    //   'sunbit',
-    // ]);
+    OFFLINEPRODUCTSYNC().offlineDataSync(brands: [
+      'acnol',
+      'blazoskin',
+      'elanvenezia',
+      'tylox',
+      'herlan',
+      'lily',
+      'nior',
+      'orix',
+      'siodil',
+      'sunbit',
+    ]);
   }
 
   @override

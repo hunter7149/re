@@ -12,6 +12,7 @@ const BASE_URL =
 
 //LIVE//
 // 'http://182.160.114.100:7171/dp/';
+const Duration CONNECTION_TIMEOUT = Duration(seconds: 10);
 
 class ApiService extends GetxService {
   late Dio _dio;
@@ -25,7 +26,12 @@ class ApiService extends GetxService {
 
   ApiService({String? token}) {
     print("Base URL ------------>${BASE_URL}");
-    _dio = Dio(BaseOptions(baseUrl: BASE_URL, headers: header(token: token)));
+    _dio = Dio(BaseOptions(
+      baseUrl: BASE_URL,
+      headers: header(token: token),
+      connectTimeout: CONNECTION_TIMEOUT,
+      receiveTimeout: CONNECTION_TIMEOUT,
+    ));
     initInterceptors();
   }
 

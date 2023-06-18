@@ -75,6 +75,7 @@ class OFFLINEORDERSYNC {
             allItems.add({
               "name": elmnt.productName,
               "brand": elmnt.brand,
+              "productSku": elmnt.productSku,
               "productId": elmnt.productId.toString(),
               "quantity": elmnt.quantity,
               "totalPrice": elmnt.price,
@@ -87,6 +88,7 @@ class OFFLINEORDERSYNC {
             "orderId": orderItem[0].orderId,
             "customerId": orderItem[0].CustomerId,
             "lattitude": orderItem[0].lattitude,
+            "address": orderItem[0].Address,
             "longitude": orderItem[0].longitude,
             "totalItemCount": orderItem[0].totalItem,
             "dateTime": orderItem[0].dateTime,
@@ -110,6 +112,8 @@ class OFFLINEORDERSYNC {
                 if (value['result'].toString().contains('cess')) {
                   count.value += 1;
                   Update();
+                  await orderItemDao.updateOrderItemStatus(
+                      orderItem[0].orderId!, value['result'].toString()!);
                   await offlineOrderDao.deleteOrderItemByID(element.orderId!);
                 }
               } else {

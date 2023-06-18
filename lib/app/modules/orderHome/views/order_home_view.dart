@@ -111,9 +111,26 @@ class OrderHomeView extends GetView<OrderHomeController> {
                   Obx(() {
                     return controller.isBeatLoading.value
                         ? Container(
-                            height: 30,
-                            child: SpinKitRipple(
-                              color: AppThemes.modernGreen,
+                            width: double.maxFinite,
+                            margin: EdgeInsets.only(top: 10),
+                            height: 50,
+                            decoration: BoxDecoration(
+                                // color: AppThemes.modernDeepSea
+                                border: Border.all(color: Colors.grey.shade500),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Fetching beat data.Please wait....",
+                                  style:
+                                      TextStyle(color: AppThemes.modernGreen),
+                                ),
+                                SpinKitDoubleBounce(
+                                  size: 20,
+                                  color: AppThemes.modernGreen,
+                                ),
+                              ],
                             ),
                           )
                         : controller.beatData[0] == ""
@@ -162,9 +179,27 @@ class OrderHomeView extends GetView<OrderHomeController> {
                   Obx(() {
                     return controller.isCustomerLoading.value
                         ? Container(
-                            height: 30,
-                            child: SpinKitRipple(
-                              color: AppThemes.modernGreen,
+                            width: double.maxFinite,
+                            height: 100,
+                            margin: EdgeInsets.only(top: 10),
+                            decoration: BoxDecoration(
+                                // color: Colors.blueGrey.shade200,
+                                border: Border.all(
+                                    width: 1, color: Colors.grey.shade500),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Mapping customer list...",
+                                  style:
+                                      TextStyle(color: AppThemes.modernGreen),
+                                ),
+                                SpinKitDoubleBounce(
+                                  size: 20,
+                                  color: AppThemes.modernGreen,
+                                ),
+                              ],
                             ),
                           )
                         : controller.customerData[0] == ""
@@ -919,7 +954,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    "ID:${controller.savedItems[index].productId}",
+                                    "ID:${controller.savedItems[index].productSku}",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400),
