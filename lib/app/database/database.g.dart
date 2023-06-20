@@ -243,6 +243,34 @@ class _$CartItemDao extends CartItemDao {
   }
 
   @override
+  Stream<CartItem?> findCartItemByCustomerId(
+    String id,
+    String customerId,
+  ) {
+    return _queryAdapter.queryStream(
+        'SELECT * FROM CartItem WHERE productSku = ?1 AND customerName = ?2',
+        mapper: (Map<String, Object?> row) => CartItem(
+            id: row['id'] as int?,
+            userId: row['userId'] as String?,
+            productId: row['productId'] as String?,
+            productSku: row['productSku'] as String?,
+            customerName: row['customerName'] as String?,
+            beatName: row['beatName'] as String?,
+            customerCode: row['customerCode'] as String?,
+            productName: row['productName'] as String?,
+            catagory: row['catagory'] as String?,
+            unit: row['unit'] as String?,
+            image: row['image'] as String?,
+            price: row['price'] as double?,
+            brand: row['brand'] as String?,
+            quantity: row['quantity'] as int?,
+            unitPrice: row['unitPrice'] as double?),
+        arguments: [id, customerId],
+        queryableName: 'CartItem',
+        isView: false);
+  }
+
+  @override
   Future<void> deleteCartItemByID(String id) async {
     await _queryAdapter.queryNoReturn(
         'DELETE FROM CartItem WHERE productSku = ?1',

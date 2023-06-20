@@ -42,7 +42,8 @@ class LoginView extends GetView<LoginController> {
                   ],
                 ),
                 child: Container(
-                    height: screenheight / 2.7, color: Color(0xFFD71921)),
+                    height: screenheight / 2.7,
+                    color: AppThemes.mainBlue.withOpacity(0.4)),
               ),
               ClipPath(
                 clipper: ProsteBezierCurve(
@@ -65,7 +66,7 @@ class LoginView extends GetView<LoginController> {
                 ),
                 child: Container(
                   height: screenheight / 3,
-                  color: AppThemes.mainBlue,
+                  color: AppThemes.mainBlue.withOpacity(0.6),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -73,11 +74,16 @@ class LoginView extends GetView<LoginController> {
                         Image.asset(
                           AppAssets.ASSET_APP_REMARK_LOGO,
                           height: 96,
+
+                          // color: Colors.white,
+                        ),
+                        SizedBox(
+                          height: 10,
                         ),
                         Image.asset(
-                          'assets/logo/login_logo_hb.png',
+                          'assets/images/salelogo.png',
                           height: 30,
-                          color: Colors.white,
+                          // color: Colors.white,
                         ),
                       ],
                     ),

@@ -49,26 +49,82 @@ class CartView extends GetView<CartController> {
                         // color: AppThemes.modernGreen,
 
                         height: 40,
+                        width: double.maxFinite,
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.location_pin,
-                                color: AppThemes.modernGreen,
+                              Obx(() => Expanded(
+                                    child: Container(
+                                      height: 40,
+                                      color: AppThemes.modernBlue,
+                                      child: Center(
+                                        child: Flexible(
+                                          child: Text(
+                                            "${controller.dropdownBeatValue.value}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14),
+                                            overflow: TextOverflow.fade,
+                                            // textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )),
+                              Container(
+                                width: 1,
+                                color: Colors.white,
                               ),
-                              Obx(() => Flexible(
-                                    child: Text(
-                                      "${controller.address.value}",
-                                      style: TextStyle(
-                                          color: AppThemes.modernGreen,
-                                          fontSize: 16),
-                                      overflow: TextOverflow.fade,
+                              Obx(() => Expanded(
+                                    child: Container(
+                                      height: 40,
+                                      color: AppThemes.modernBlue,
+                                      child: Center(
+                                        child: Flexible(
+                                          child: Text(
+                                            "${controller.dropdownCustomerValue.value}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14),
+                                            overflow: TextOverflow.fade,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ))
                             ]),
                       )),
+                      // Container(
+                      //   height: 1,
+                      //   color: Colors.white,
+                      // ),
                       Positioned(
-                        top: 50,
+                          top: 40,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            // width: double.maxFinite,
+                            color: AppThemes.modernBlue,
+
+                            height: 40,
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.location_pin, color: Colors.white),
+                                  Obx(() => Flexible(
+                                        child: Text(
+                                          "${controller.address.value}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16),
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ))
+                                ]),
+                          )),
+                      Positioned(
+                        top: 80,
                         left: 0,
                         right: 0,
                         bottom: 130,
@@ -102,10 +158,10 @@ class CartView extends GetView<CartController> {
                                         horizontal: 16, vertical: 10),
                                     height: 120,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(5),
                                         border: Border.all(
                                             width: 1,
-                                            color: AppThemes.modernGreen
+                                            color: AppThemes.modernBlue
                                                 .withOpacity(0.6))),
                                     child: Row(
                                       crossAxisAlignment:
@@ -121,9 +177,10 @@ class CartView extends GetView<CartController> {
                                             child: CachedNetworkImage(
                                               imageUrl:
                                                   // "https://as2.ftcdn.net/v2/jpg/04/66/23/33/1000_F_466233320_J92tRR3Pq1KPiEoveQGBO40gJFNCCPyz.jpg",
-                                                  controller
-                                                      .cartItems[index].image
-                                                      .toString(),
+                                                  // controller
+                                                  //     .cartItems[index].image
+                                                  //     .toString(),
+                                                  "",
                                               height: 80,
                                               fit: BoxFit.cover,
                                               placeholder: (context, url) => Center(
@@ -131,17 +188,17 @@ class CartView extends GetView<CartController> {
                                                       CircularProgressIndicator()),
                                               errorWidget: (ctx, url, err) =>
                                                   Image.asset(
-                                                'assets/images/noprev.png',
+                                                'assets/images/noprevvec.jpg',
                                                 height: 70,
                                               ),
                                             ),
                                           ),
                                         ),
                                         SizedBox(
-                                          width: 20,
+                                          width: 10,
                                         ),
                                         Expanded(
-                                            flex: 1,
+                                            flex: 2,
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
@@ -255,8 +312,8 @@ class CartView extends GetView<CartController> {
                                                         Container(
                                                           width: 60,
                                                           height: 25,
-                                                          color: Colors
-                                                              .grey.shade600,
+                                                          color: AppThemes
+                                                              .modernBlue,
                                                           // decoration: BoxDecoration(
                                                           //     border: Border.all(
                                                           //       color: AppThemes.modernGreen
@@ -391,21 +448,22 @@ class CartView extends GetView<CartController> {
                                                             },
                                                             controller:
                                                                 quantity,
-                                                            decoration:
-                                                                InputDecoration(
-                                                              border:
-                                                                  OutlineInputBorder(
-                                                                // borderRadius:
-                                                                //     BorderRadius
-                                                                //         .circular(5),
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                  color: AppThemes
-                                                                      .modernGreen,
-                                                                  width: 0.7,
+                                                            decoration: InputDecoration(
+                                                                border:
+                                                                    InputBorder
+                                                                        .none
+                                                                //       OutlineInputBorder(
+                                                                //     // borderRadius:
+                                                                //     //     BorderRadius
+                                                                //     //         .circular(5),
+                                                                //     borderSide:
+                                                                //         BorderSide(
+                                                                //       color: AppThemes
+                                                                //           .modernGreen,
+                                                                //       width: 0.7,
+                                                                //     ),
+                                                                //   ),
                                                                 ),
-                                                              ),
-                                                            ),
                                                           ),
                                                         ),
                                                         SizedBox(
@@ -474,20 +532,23 @@ class CartView extends GetView<CartController> {
                                                 ),
                                               ],
                                             )),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "${controller.cartItems[index].price} \n TK",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  color:
-                                                      AppThemes.modernCoolPink),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "${controller.cartItems[index].price} \n TK",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: AppThemes
+                                                        .modernDeepSea),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         SizedBox(
                                           width: 10,

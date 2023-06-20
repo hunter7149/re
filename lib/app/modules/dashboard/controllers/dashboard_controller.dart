@@ -253,10 +253,10 @@ class DashboardController extends GetxController {
     String beatName = Pref.readData(key: Pref.BEAT_NAME) ?? '';
     String CustomerName = Pref.readData(key: Pref.CUSTOMER_NAME) ?? '';
     String customerCode = Pref.readData(key: Pref.CUSTOMER_CODE) ?? '';
-
+    isInitalized.value = true;
     await firebaseStore();
     _checkVersion();
-    isInitalized.value = true;
+
     update();
   }
 

@@ -5,10 +5,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sales/app/api/service/prefrences.dart';
+import 'package:sales/app/components/AppColors.dart';
 import 'package:sales/app/components/app_strings.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/sync/products/offlineordersync.dart';
 import 'package:sales/app/sync/products/offlineproductsync.dart';
+
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -179,12 +181,171 @@ class DashboardView extends GetView<DashboardController> {
                         title: "Sync",
                         valid: true,
                         function: () async {
-                          Fluttertoast.showToast(
-                            msg: "SYNC STARTED!",
-                            backgroundColor: AppThemes.modernBlue,
+                          showDialog(
+                            context: context,
+                            barrierDismissible:
+                                false, // Set barrier dismissible to false
+                            builder: (context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                // title: Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Text(
+                                //       "Syncing...",
+                                //       style: TextStyle(),
+                                //     ),
+                                //   ],
+                                // ),
+                                content: Container(
+                                  width: double.maxFinite,
+                                  height: 150,
+                                  child: FutureBuilder(
+                                    future: OFFLINEPRODUCTSYNC()
+                                        .offlineDataSync(
+                                            brands: AppStrings.brands),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Column(
+                                          children: [
+                                            Lottie.asset(
+                                                'assets/logo/syncing.json',
+                                                height: 120),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              "Syncing...",
+                                              style: TextStyle(
+                                                  color: AppThemes.modernBlue,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Icon(
+                                              Icons.error,
+                                              size: 60,
+                                              color: AppThemes.modernRed,
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              'Sync failed',
+                                              style: TextStyle(
+                                                  color:
+                                                      AppThemes.modernSexyRed,
+                                                  fontSize: 24),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            ZoomTapAnimation(
+                                              onTap: () {
+                                                Get.closeCurrentSnackbar();
+                                                Get.back(); // Close the dialog
+                                              },
+                                              child: Container(
+                                                height: 30,
+                                                width: 60,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    color:
+                                                        AppThemes.modernBlue),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Okay",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      } else {
+                                        // Navigator.pop(
+                                        //     context); // Close the dialog
+                                        // Sync completed successfully
+                                        // You can add any necessary logic or UI updates here
+                                        return Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Icon(
+                                              Icons.done,
+                                              size: 60,
+                                              color: AppThemes.modernGreen,
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              'Sync completed',
+                                              style: TextStyle(
+                                                  color: AppThemes.modernGreen,
+                                                  fontSize: 24),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            ZoomTapAnimation(
+                                              onTap: () {
+                                                Get.closeCurrentSnackbar();
+                                                Get.back(); // Close the dialog
+                                              },
+                                              child: Container(
+                                                height: 30,
+                                                width: 60,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    color:
+                                                        AppThemes.modernGreen),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Okay",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                                actionsPadding: EdgeInsets.all(10),
+                                actions: [],
+                              );
+                            },
                           );
-                          await OFFLINEPRODUCTSYNC()
-                              .offlineDataSync(brands: AppStrings.brands);
+                          // await OFFLINEPRODUCTSYNC()
+                          //     .offlineDataSync(brands: AppStrings.brands)
+                          //     .then({Get.back()});
+                          // Fluttertoast.showToast(
+                          //   msg: "SYNC STARTED!",
+                          //   backgroundColor: AppThemes.modernBlue,
+                          // );
+                          // await OFFLINEPRODUCTSYNC()
+                          //     .offlineDataSync(brands: AppStrings.brands);
                         },
                       ),
                       menuItem(
@@ -472,4 +633,15 @@ class DashboardView extends GetView<DashboardController> {
       );
     });
   }
+
+  // static showDialog({required SimpleFontelicoProgressDialog dialog}) async {
+  //   dialog.show(
+  //       message: 'Syncing...', type: SimpleFontelicoProgressDialogType.normal);
+
+  //   await OFFLINEPRODUCTSYNC()
+  //       .offlineDataSync(brands: AppStrings.brands)
+  //       .then((v) {
+  //     dialog.hide();
+  //   });
+  // }
 }

@@ -68,8 +68,7 @@ class ProductinfoView extends GetView<ProductinfoController> {
                           bottomRight: Radius.circular(15),
                           bottomLeft: Radius.circular(15)),
                       child: CachedNetworkImage(
-                        imageUrl:
-                            "${"https://images.shajgoj.com/wp-content/uploads/2022/08/NIOR-Red-Carpet-Lip-Color-02-Florida.png"}",
+                        imageUrl: "",
                         // height: 160,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Center(
@@ -78,8 +77,9 @@ class ProductinfoView extends GetView<ProductinfoController> {
                           size: 50.0,
                         )),
                         errorWidget: (ctx, url, err) => Image.asset(
-                          'assets/images/noprev.png',
+                          'assets/images/noprevvec.jpg',
                           height: 70,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -123,9 +123,30 @@ class ProductinfoView extends GetView<ProductinfoController> {
                   SizedBox(
                     height: 10,
                   ),
+
                   Text(
                     // ' ${price} Tk',
-                    '${controller.totalPrice.value} Tk / ${quanity.text} ${controller.products['UOM']} ',
+                    'MRP : ${controller.products['MPR']} Tk / ${controller.products['UOM']} ',
+                    style: TextStyle(
+                        decoration: (((double.tryParse(controller
+                                            .products['MPR']
+                                            .toString()) ??
+                                        controller.totalPrice.value) -
+                                    controller.totalPrice.value >
+                                0))
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.grey),
+                  ),
+
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    // ' ${price} Tk',
+                    'TP : ${controller.totalPrice.value} Tk / ${quanity.text} ${controller.products['UOM']} ',
                     style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500,

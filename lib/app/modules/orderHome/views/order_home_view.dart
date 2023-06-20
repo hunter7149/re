@@ -8,6 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:sales/app/components/app_strings.dart';
 import 'package:sales/app/components/common_widgets.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/sync/products/offlineordersync.dart';
@@ -22,18 +24,7 @@ class OrderHomeView extends GetView<OrderHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    List brands = [
-      'acnol',
-      'blazoskin',
-      'elanvenezia',
-      'tylox',
-      'herlan',
-      'lily',
-      'nior',
-      'orix',
-      'siodil',
-      'sunbit',
-    ];
+    List brands = AppStrings.brands;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -49,310 +40,338 @@ class OrderHomeView extends GetView<OrderHomeController> {
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Obx(
-                    () => controller.offlineOrderCount.value == 0
-                        ? Container()
-                        : Container(
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                                color: AppThemes.modernRed,
-                                border: Border.all(
-                                    width: .8, color: AppThemes.modernRed),
-                                borderRadius: BorderRadius.circular(5)),
-                            // height: 50,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "${controller.offlineOrderCount.value} ORDERS WAITING TO BE SYNCED",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: ZoomTapAnimation(
-                                    onTap: () async {
-                                      Fluttertoast.showToast(
-                                          msg: "SYNC STARTED!",
-                                          backgroundColor:
-                                              AppThemes.modernBlue);
-                                      await OFFLINEORDERSYNC().onlineSync();
-                                      controller.offlineOrderCount();
-                                    },
-                                    child: Container(
-                                      height: 40,
-                                      // width: 50,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 10),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: Center(
-                                        child: Text("SYNC NOW"),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Obx(() {
-                    return controller.isBeatLoading.value
-                        ? Container(
-                            width: double.maxFinite,
-                            margin: EdgeInsets.only(top: 10),
-                            height: 50,
-                            decoration: BoxDecoration(
-                                // color: AppThemes.modernDeepSea
-                                border: Border.all(color: Colors.grey.shade500),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Fetching beat data.Please wait....",
-                                  style:
-                                      TextStyle(color: AppThemes.modernGreen),
-                                ),
-                                SpinKitDoubleBounce(
-                                  size: 20,
-                                  color: AppThemes.modernGreen,
-                                ),
-                              ],
-                            ),
-                          )
-                        : controller.beatData[0] == ""
-                            ? Container()
-                            : Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    // color: Colors.blueGrey.shade200,
-                                    border: Border.all(
-                                        width: 1, color: Colors.grey.shade500),
-                                    borderRadius: BorderRadius.circular(10)),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 5),
-                                margin: EdgeInsets.only(top: 10),
-                                width: double.maxFinite,
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(
-                                    isExpanded: true,
-                                    alignment: Alignment.center,
-                                    value: controller.dropdownBeatValue.value,
-                                    icon: Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.grey.shade700,
-                                    ),
-                                    elevation: 2,
-                                    style: TextStyle(
-                                        color: Colors.grey.shade700,
-                                        fontWeight: FontWeight.w300),
-                                    onChanged: (String? newValue) {
-                                      controller.DropdownBeatValueUpdater(
-                                          newValue!);
-                                    },
-                                    items: controller.beatData.value
-                                        .map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              );
-                  }),
-                  const SizedBox(height: 10),
-                  Obx(() {
-                    return controller.isCustomerLoading.value
-                        ? Container(
-                            width: double.maxFinite,
-                            height: 100,
-                            margin: EdgeInsets.only(top: 10),
-                            decoration: BoxDecoration(
-                                // color: Colors.blueGrey.shade200,
-                                border: Border.all(
-                                    width: 1, color: Colors.grey.shade500),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Mapping customer list...",
-                                  style:
-                                      TextStyle(color: AppThemes.modernGreen),
-                                ),
-                                SpinKitDoubleBounce(
-                                  size: 20,
-                                  color: AppThemes.modernGreen,
-                                ),
-                              ],
-                            ),
-                          )
-                        : controller.customerData[0] == ""
-                            ? Container()
-                            : Container(
-                                decoration: BoxDecoration(
+            child: SmartRefresher(
+              header: Obx(() => WaterDropMaterialHeader(
+                    color: Colors.white,
+                    backgroundColor: controller.offlineOrderCount.value != 0
+                        ? AppThemes.modernSexyRed
+                        : AppThemes.modernGreen,
+                  )),
+              controller: controller.refreshController,
+              onRefresh: () {
+                controller.initValues();
+                controller.refreshController.refreshCompleted();
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Obx(
+                      () => controller.offlineOrderCount.value == 0
+                          ? Container()
+                          : Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                  color: AppThemes.modernRed,
                                   border: Border.all(
-                                      width: 1, color: Colors.grey.shade500),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 5),
-                                margin: EdgeInsets.only(top: 10),
-                                width: double.maxFinite,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    TextField(
-                                      controller:
-                                          controller.searchCustomerController,
-                                      onChanged: (value) {
-                                        Future.delayed(
-                                                Duration(milliseconds: 500))
-                                            .then((v) {
-                                          controller.UpdateFilteredCustomers(
-                                              value);
-                                        });
+                                      width: .8, color: AppThemes.modernRed),
+                                  borderRadius: BorderRadius.circular(5)),
+                              // height: 50,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "${controller.offlineOrderCount.value} ORDERS WAITING TO BE SYNCED",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: ZoomTapAnimation(
+                                      onTap: () async {
+                                        Fluttertoast.showToast(
+                                            msg: "SYNC STARTED!",
+                                            backgroundColor:
+                                                AppThemes.modernBlue);
+                                        await OFFLINEORDERSYNC().onlineSync();
+                                        controller.offlineOrderCount();
                                       },
-                                      decoration: InputDecoration(
-                                        hintText: 'Search Customer',
-                                        border: InputBorder.none,
+                                      child: Container(
+                                        height: 40,
+                                        // width: 50,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 10),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Center(
+                                          child: Text("SYNC NOW"),
+                                        ),
                                       ),
                                     ),
-                                    DropdownButtonHideUnderline(
-                                      child: DropdownButton<String>(
-                                        isExpanded: true,
-                                        value: controller
-                                            .dropdownCustomerValue.value,
-                                        icon: Icon(
-                                          Icons.arrow_drop_down,
-                                          color: Colors.grey.shade700,
-                                        ),
-                                        elevation: 2,
-                                        style: TextStyle(
-                                          color: Colors.grey.shade700,
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                        onChanged: (String? newValue) {
-                                          controller
-                                              .DropdownCustomerValueUpdater(
-                                                  newValue!);
-                                        },
-                                        items: controller.customerData
-                                            .map((String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                  }),
-                  const SizedBox(height: 20),
-                  Obx(
-                    () => controller.isReorderCompleted.value
-                        ? Container()
-                        : controller.itemList.length == 0
-                            ? Container()
-                            : Row(
+                                  )
+                                ],
+                              ),
+                            ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Obx(() {
+                      return controller.isBeatLoading.value
+                          ? Container(
+                              width: double.maxFinite,
+                              margin: EdgeInsets.only(top: 10),
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  // color: AppThemes.modernDeepSea
+                                  border:
+                                      Border.all(color: Colors.grey.shade500),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Last order',
-                                    style: TextStyle(
-                                        fontSize: 22,
-                                        color: Colors.grey.shade700),
+                                    "Fetching beat data.Please wait....",
+                                    style:
+                                        TextStyle(color: AppThemes.modernGreen),
+                                  ),
+                                  SpinKitDoubleBounce(
+                                    size: 20,
+                                    color: AppThemes.modernGreen,
                                   ),
                                 ],
                               ),
-                  ),
-                  const SizedBox(height: 10),
-                  //---------------------Last order option---------------//
-
-                  Obx(
-                    () => controller.isReorderCompleted.value
-                        ? Container()
-                        : controller.isReorder.value
-                            ? Container(
-                                height: 250,
-                                width: double.maxFinite,
-                                decoration: BoxDecoration(
+                            )
+                          : controller.beatData[0] == ""
+                              ? Container()
+                              : Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      // color: Colors.blueGrey.shade200,
+                                      border: Border.all(
+                                          width: 1,
+                                          color: Colors.grey.shade500),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 24, vertical: 5),
+                                  margin: EdgeInsets.only(top: 10),
+                                  width: double.maxFinite,
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                      isExpanded: true,
+                                      alignment: Alignment.center,
+                                      value: controller.dropdownBeatValue.value,
+                                      icon: Icon(
+                                        Icons.arrow_drop_down,
+                                        color: Colors.grey.shade700,
+                                      ),
+                                      elevation: 2,
+                                      style: TextStyle(
+                                          color: Colors.grey.shade700,
+                                          fontWeight: FontWeight.w300),
+                                      onChanged: (String? newValue) {
+                                        controller.DropdownBeatValueUpdater(
+                                            newValue!);
+                                      },
+                                      items: controller.beatData.value
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                );
+                    }),
+                    const SizedBox(height: 10),
+                    Obx(() {
+                      return controller.isCustomerLoading.value
+                          ? Container(
+                              width: double.maxFinite,
+                              height: 100,
+                              margin: EdgeInsets.only(top: 10),
+                              decoration: BoxDecoration(
+                                  // color: Colors.blueGrey.shade200,
+                                  border: Border.all(
+                                      width: 1, color: Colors.grey.shade500),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Mapping customer list...",
+                                    style:
+                                        TextStyle(color: AppThemes.modernGreen),
+                                  ),
+                                  SpinKitDoubleBounce(
+                                    size: 20,
                                     color: AppThemes.modernGreen,
-                                    border:
-                                        Border.all(color: Colors.grey.shade500),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : controller.customerData[0] == ""
+                              ? Container()
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1, color: Colors.grey.shade500),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 24, vertical: 5),
+                                  margin: EdgeInsets.only(top: 10),
+                                  width: double.maxFinite,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Icon(
-                                        FontAwesomeIcons.check,
-                                        color: Colors.white,
-                                        size: 100,
+                                      TextField(
+                                        controller:
+                                            controller.searchCustomerController,
+                                        onChanged: (value) {
+                                          Future.delayed(
+                                                  Duration(milliseconds: 500))
+                                              .then((v) {
+                                            controller.UpdateFilteredCustomers(
+                                                value);
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                          hintText: 'Search Customer',
+                                          border: InputBorder.none,
+                                        ),
                                       ),
-                                      Text(
-                                        'Products added to cart!',
-                                        style: TextStyle(
-                                            fontSize: 26,
-                                            color: Colors.grey.shade100),
+                                      DropdownButtonHideUnderline(
+                                        child: DropdownButton<String>(
+                                          isExpanded: true,
+                                          value: controller
+                                              .dropdownCustomerValue.value,
+                                          icon: Icon(
+                                            Icons.arrow_drop_down,
+                                            color: Colors.grey.shade700,
+                                          ),
+                                          elevation: 2,
+                                          style: TextStyle(
+                                            color: Colors.grey.shade700,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                          onChanged: (String? newValue) {
+                                            controller
+                                                .DropdownCustomerValueUpdater(
+                                                    newValue!);
+                                          },
+                                          items: controller.customerData
+                                              .map((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
+                                        ),
                                       ),
-                                    ]),
-                              )
-                            : controller.itemList.isEmpty
-                                ? Container()
-                                : ZoomTapAnimation(
-                                    onTap: () {
-                                      // controller.addAllToCart();
-                                      confirmAlert(controller: controller);
-                                    },
-                                    child: Container(
-                                      height: 250,
-                                      width: double.maxFinite,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        itemCount: controller.itemList.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Container(
-                                            height: 80,
-                                            width: 250,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: 1,
-                                                    color:
-                                                        AppThemes.modernGreen),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(15))),
-                                            child: Column(
-                                              children: [
-                                                Expanded(
-                                                  flex: 2,
-                                                  child: Container(
-                                                    width: double.maxFinite,
-                                                    decoration: BoxDecoration(
+                                    ],
+                                  ),
+                                );
+                    }),
+                    const SizedBox(height: 20),
+                    Obx(
+                      () => controller.isReorderCompleted.value
+                          ? Container()
+                          : controller.itemList.length == 0
+                              ? Container()
+                              : Row(
+                                  children: [
+                                    Text(
+                                      'Last order',
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          color: Colors.grey.shade700),
+                                    ),
+                                  ],
+                                ),
+                    ),
+                    const SizedBox(height: 10),
+                    //---------------------Last order option---------------//
+
+                    Obx(
+                      () => controller.isReorderCompleted.value
+                          ? Container()
+                          : controller.isReorder.value
+                              ? Container(
+                                  height: 250,
+                                  width: double.maxFinite,
+                                  decoration: BoxDecoration(
+                                      color: AppThemes.modernGreen,
+                                      border: Border.all(
+                                          color: Colors.grey.shade500),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.check,
+                                          color: Colors.white,
+                                          size: 100,
+                                        ),
+                                        Text(
+                                          'Products added to cart!',
+                                          style: TextStyle(
+                                              fontSize: 26,
+                                              color: Colors.grey.shade100),
+                                        ),
+                                      ]),
+                                )
+                              : controller.itemList.isEmpty
+                                  ? Container()
+                                  : ZoomTapAnimation(
+                                      onTap: () {
+                                        // controller.addAllToCart();
+                                        confirmAlert(controller: controller);
+                                      },
+                                      child: Container(
+                                        height: 250,
+                                        width: double.maxFinite,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemCount: controller.itemList.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Container(
+                                              height: 80,
+                                              width: 250,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      width: 1,
+                                                      color: AppThemes
+                                                          .modernGreen),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(15))),
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Container(
+                                                      width: double.maxFinite,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          13),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          13)),
+                                                          border: Border.all(
+                                                              width: 1,
+                                                              color: AppThemes
+                                                                  .modernGreen)),
+                                                      child: ClipRRect(
                                                         borderRadius:
                                                             BorderRadius.only(
                                                                 topLeft: Radius
@@ -361,418 +380,415 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                                                 topRight: Radius
                                                                     .circular(
                                                                         13)),
-                                                        border: Border.all(
-                                                            width: 1,
-                                                            color: AppThemes
-                                                                .modernGreen)),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                              topLeft: Radius
-                                                                  .circular(13),
-                                                              topRight: Radius
-                                                                  .circular(
-                                                                      13)),
-                                                      child: CachedNetworkImage(
-                                                        imageUrl: controller
-                                                            .itemList[index]
-                                                            .image
-                                                            .toString(),
-                                                        // height: 160,
-                                                        fit: BoxFit.cover,
-                                                        placeholder: (context,
-                                                                url) =>
-                                                            Center(
-                                                                child:
-                                                                    CircularProgressIndicator()),
-                                                        errorWidget:
-                                                            (ctx, url, err) =>
-                                                                Image.asset(
-                                                          'assets/images/noprev.png',
-                                                          height: 70,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 5),
-                                                Expanded(
-                                                  flex: 2,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        controller
-                                                                    .itemList[
-                                                                        index]
-                                                                    .productName
-                                                                    .toString()
-                                                                    .length >
-                                                                15
-                                                            ? controller
-                                                                .itemList[index]
-                                                                .productName
-                                                                .toString()
-                                                                .substring(
-                                                                    0, 15)
-                                                            : controller
-                                                                .itemList[index]
-                                                                .productName
-                                                                .toString(),
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      Text(
-                                                          controller
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          imageUrl: controller
                                                               .itemList[index]
-                                                              .catagory
+                                                              .image
                                                               .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14)),
-                                                      Text(
-                                                          controller
-                                                              .itemList[index]
-                                                              .brand
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14)),
-                                                      Text(
-                                                          "Quantity: ${controller.itemList[index].quantity}",
-                                                          style: TextStyle(
-                                                              fontSize: 14)),
-                                                      Text(
-                                                        '${controller.itemList[index].price.toString()} Tk',
-                                                        style: TextStyle(
-                                                            fontSize: 14),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                  ),
-                  SizedBox(height: 10),
-                  Obx(
-                    () => controller.saveItem.isEmpty
-                        ? Container()
-                        : Row(
-                            children: [
-                              Text(
-                                'Saved orders',
-                                style: TextStyle(
-                                    fontSize: 22, color: Colors.grey.shade700),
-                              ),
-                            ],
-                          ),
-                  ),
-                  Obx(
-                    () => controller.saveItem.isEmpty
-                        ? Container()
-                        : SizedBox(
-                            height: 10,
-                          ),
-                  ),
-
-                  Obx(
-                    () => controller.saveItem.length == 0
-                        ? Container()
-                        : Container(
-                            height: 250,
-                            width: double.maxFinite,
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: controller.saveItem.length,
-                                itemBuilder: (context, index) {
-                                  DateFormat formatter = new DateFormat.jm();
-                                  String time = formatter.format(DateTime.parse(
-                                      "${controller.saveItem[index].dateTime.toString().split(".")[0]}"));
-                                  return ZoomTapAnimation(
-                                    onLongTap: () {
-                                      deleteAlert(
-                                          index: index, controller: controller);
-                                    },
-                                    onTap: () async {
-                                      await controller.reqSavedItemsList(
-                                          saveId: controller
-                                                  .saveItem[index].saveId ??
-                                              "");
-
-                                      if (controller.savedItems.isNotEmpty) {
-                                        savedOrderItemShow(
-                                            controller: controller);
-                                      }
-                                    },
-                                    child: Container(
-                                      height: 200,
-                                      width: 250,
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 10),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          border: Border.all(
-                                              width: 0.8,
-                                              color: AppThemes.modernGreen)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Flexible(
-                                            flex: 1,
-                                            child: Text(
-                                              "${index + 1} | ",
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Flexible(
-                                            flex: 2,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Save ID: ${controller.saveItem[index].saveId}",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  "Total price: ${controller.saveItem[index].totalPrice}",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  "Save date: ${controller.saveItem[index].dateTime.toString().split(".")[0].split(" ")[0]}",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  "Save time: ${time}",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        padding:
-                                                            EdgeInsets.all(5),
-                                                        decoration: BoxDecoration(
-                                                            color: AppThemes
-                                                                .modernGreen),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "${controller.saveItem[index].totalItem} items",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .white),
+                                                          // height: 160,
+                                                          fit: BoxFit.cover,
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              Center(
+                                                                  child:
+                                                                      CircularProgressIndicator()),
+                                                          errorWidget:
+                                                              (ctx, url, err) =>
+                                                                  Image.asset(
+                                                            'assets/images/noprev.png',
+                                                            height: 70,
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  "Tap and Hold to remove",
-                                                  style: TextStyle(
-                                                      color:
-                                                          Colors.grey.shade600,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                                  ),
+                                                  SizedBox(width: 5),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          controller
+                                                                      .itemList[
+                                                                          index]
+                                                                      .productName
+                                                                      .toString()
+                                                                      .length >
+                                                                  15
+                                                              ? controller
+                                                                  .itemList[
+                                                                      index]
+                                                                  .productName
+                                                                  .toString()
+                                                                  .substring(
+                                                                      0, 15)
+                                                              : controller
+                                                                  .itemList[
+                                                                      index]
+                                                                  .productName
+                                                                  .toString(),
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        Text(
+                                                            controller
+                                                                .itemList[index]
+                                                                .catagory
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 14)),
+                                                        Text(
+                                                            controller
+                                                                .itemList[index]
+                                                                .brand
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 14)),
+                                                        Text(
+                                                            "Quantity: ${controller.itemList[index].quantity}",
+                                                            style: TextStyle(
+                                                                fontSize: 14)),
+                                                        Text(
+                                                          '${controller.itemList[index].price.toString()} Tk',
+                                                          style: TextStyle(
+                                                              fontSize: 14),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  );
-                                })),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Our brands',
-                        style: TextStyle(
-                            fontSize: 22, color: Colors.grey.shade700),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    // padding: EdgeInsets.symmetric(horizontal: 16),
-                    height: 300,
-                    // decoration: BoxDecoration(
-                    //     // color: Colors.blueGrey.shade200,
-                    //     border: Border.all(width: 1, color: Colors.grey.shade500),
-                    //     borderRadius: BorderRadius.circular(10)),
-                    child: GridView.count(
-                      scrollDirection: Axis.horizontal,
-                      crossAxisCount: 2,
-                      children: List.generate(10, (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.PRODUCTB,
-                                arguments: {"brand": brands[index]},
-                                id: Constants.nestedNavigationNavigatorId);
-                            // Get.toNamed(Routes.PRODUCTC,
-                            //     arguments: index.toString(),
-                            //     id: Constants.nestedNavigationNavigatorId);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
+                    ),
+                    SizedBox(height: 10),
+                    Obx(
+                      () => controller.saveItem.isEmpty
+                          ? Container()
+                          : Row(
+                              children: [
+                                Text(
+                                  'Saved orders',
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.grey.shade700),
+                                ),
+                              ],
+                            ),
+                    ),
+                    Obx(
+                      () => controller.saveItem.isEmpty
+                          ? Container()
+                          : SizedBox(
+                              height: 10,
+                            ),
+                    ),
+
+                    Obx(
+                      () => controller.saveItem.length == 0
+                          ? Container()
+                          : Container(
+                              height: 250,
+                              width: double.maxFinite,
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: controller.saveItem.length,
+                                  itemBuilder: (context, index) {
+                                    DateFormat formatter = new DateFormat.jm();
+                                    String time = formatter.format(DateTime.parse(
+                                        "${controller.saveItem[index].dateTime.toString().split(".")[0]}"));
+                                    return ZoomTapAnimation(
+                                      onLongTap: () {
+                                        deleteAlert(
+                                            index: index,
+                                            controller: controller);
+                                      },
+                                      onTap: () async {
+                                        await controller.reqSavedItemsList(
+                                            saveId: controller
+                                                    .saveItem[index].saveId ??
+                                                "");
+
+                                        if (controller.savedItems.isNotEmpty) {
+                                          savedOrderItemShow(
+                                              controller: controller);
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 200,
+                                        width: 250,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 10),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                width: 0.8,
+                                                color: AppThemes.modernGreen)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Flexible(
+                                              flex: 1,
+                                              child: Text(
+                                                "${index + 1} | ",
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Save ID: ${controller.saveItem[index].saveId}",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    "Total price: ${controller.saveItem[index].totalPrice}",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    "Save date: ${controller.saveItem[index].dateTime.toString().split(".")[0].split(" ")[0]}",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    "Save time: ${time}",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          decoration: BoxDecoration(
+                                                              color: AppThemes
+                                                                  .modernGreen),
+                                                          child: Center(
+                                                            child: Text(
+                                                              "${controller.saveItem[index].totalItem} items",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    "Tap and Hold to remove",
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .grey.shade600,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  })),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Our brands',
+                          style: TextStyle(
+                              fontSize: 22, color: Colors.grey.shade700),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      // padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 300,
+                      // decoration: BoxDecoration(
+                      //     // color: Colors.blueGrey.shade200,
+                      //     border: Border.all(width: 1, color: Colors.grey.shade500),
+                      //     borderRadius: BorderRadius.circular(10)),
+                      child: GridView.count(
+                        scrollDirection: Axis.horizontal,
+                        crossAxisCount: 2,
+                        children: List.generate(10, (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Get.toNamed(Routes.PRODUCTB,
+                                  arguments: {"brand": brands[index]},
+                                  id: Constants.nestedNavigationNavigatorId);
+                              // Get.toNamed(Routes.PRODUCTC,
+                              //     arguments: index.toString(),
+                              //     id: Constants.nestedNavigationNavigatorId);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  // borderRadius: BorderRadius.only(
+                                  //     topLeft: Radius.circular(15),
+                                  //     bottomRight: Radius.circular(15)
+                                  //     ),
+                                  border: Border.all(
+                                      width: 1, color: AppThemes.modernGreen)),
+                              child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                // borderRadius: BorderRadius.only(
-                                //     topLeft: Radius.circular(15),
-                                //     bottomRight: Radius.circular(15)
-                                //     ),
-                                border: Border.all(
-                                    width: 1, color: AppThemes.modernGreen)),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image(
-                                image: AssetImage("assets/images/${index}.png"),
-                                fit: BoxFit.contain,
+                                child: Image(
+                                  image:
+                                      AssetImage("assets/images/${index}.png"),
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             ),
+                          );
+                        }),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true, //beauty and cosmetic
+                      itemCount: controller.bottomMenu.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        int random = Random().nextInt(5);
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          // height: 60,
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(15),
+                                        bottomLeft: Radius.circular(15)),
+                                    color: controller.randomeColor[random],
+                                    border: Border.all(
+                                        color: Colors.grey.shade100, width: 1)),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(14),
+                                      bottomLeft: Radius.circular(14)),
+                                  child: CachedNetworkImage(
+                                    imageUrl: controller.bottomMenu[index]
+                                        ['icon'],
+                                    // height: 160,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Center(
+                                        child: SpinKitRipple(
+                                      color: AppThemes.modernGreen,
+                                      size: 50.0,
+                                    )),
+                                    errorWidget: (ctx, url, err) => Image.asset(
+                                      controller.bottomMenu[index]['icon'],
+                                      height: 70,
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    // color: AppThemes.modernGreen,
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(15),
+                                        bottomRight: Radius.circular(15)),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        controller.bottomMenu[index]['title'],
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: controller
+                                                .randomeColor[random]),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         );
-                      }),
+                      },
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true, //beauty and cosmetic
-                    itemCount: controller.bottomMenu.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      int random = Random().nextInt(5);
-                      return Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        // height: 60,
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 100,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      bottomLeft: Radius.circular(15)),
-                                  color: controller.randomeColor[random],
-                                  border: Border.all(
-                                      color: Colors.grey.shade100, width: 1)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(14),
-                                    bottomLeft: Radius.circular(14)),
-                                child: CachedNetworkImage(
-                                  imageUrl: controller.bottomMenu[index]
-                                      ['icon'],
-                                  // height: 160,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => Center(
-                                      child: SpinKitRipple(
-                                    color: AppThemes.modernGreen,
-                                    size: 50.0,
-                                  )),
-                                  errorWidget: (ctx, url, err) => Image.asset(
-                                    controller.bottomMenu[index]['icon'],
-                                    height: 70,
-                                  ),
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  // color: AppThemes.modernGreen,
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(15),
-                                      bottomRight: Radius.circular(15)),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      controller.bottomMenu[index]['title'],
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color:
-                                              controller.randomeColor[random]),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

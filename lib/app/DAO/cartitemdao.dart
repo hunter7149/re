@@ -8,6 +8,9 @@ abstract class CartItemDao {
 
   @Query('SELECT * FROM CartItem WHERE productSku = :id')
   Stream<CartItem?> findCartItemById(String id);
+  @Query(
+      'SELECT * FROM CartItem WHERE productSku = :id AND customerName = :customerId')
+  Stream<CartItem?> findCartItemByCustomerId(String id, String customerId);
 
   @insert
   Future<void> insertCartItem(CartItem item);

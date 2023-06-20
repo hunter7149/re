@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sales/app/DAO/cartitemdao.dart';
 import 'package:sales/app/DAO/saveItemDao.dart';
 import 'package:sales/app/api/repository/repository.dart';
@@ -23,6 +24,7 @@ import '../../../models/orderItem.dart';
 import '../../../models/saleRequisition.dart';
 
 class OrderHomeController extends GetxController {
+  RefreshController refreshController = RefreshController(initialRefresh: true);
   final count = 0.0.obs;
   RxString savedBeatName = ''.obs;
   RxString savedPriceId = ''.obs;
@@ -70,7 +72,7 @@ class OrderHomeController extends GetxController {
   RxString dropdownCustomerValue = ''.obs;
   RxList<String> customerData = <String>[''].obs;
 
-  DropdownCustomerValueUpdater(String type) {
+  DropdownCustomerValueUpdater(String type) async {
     dropdownCustomerValue.value = type;
     Update();
     Pref.writeData(key: Pref.CUSTOMER_NAME, value: type);
@@ -85,7 +87,8 @@ class OrderHomeController extends GetxController {
           key: Pref.OFFLINE_PRICE_ID, value: selectedCustomerPriceId.value);
       setPrice(priceId: selectedCustomerPriceId.value);
       Pref.writeData(key: Pref.CUSTOMER_CODE, value: selectedCustomerId.value);
-      reqOrderList();
+      await reqOrderList();
+      await reqSaveList();
       print(selectedCustomerId.value);
       print(selectedCustomerPriceId.value);
     }
@@ -369,12 +372,11 @@ class OrderHomeController extends GetxController {
 
     await readBeatCustomerStatus();
 
-    await reqSaveList();
-
     await initialDropdownValue();
 
     await offlineOrderCounter();
     await reqOrderList();
+    await reqSaveList();
     // setIfSaved();
   }
 
@@ -400,11 +402,13 @@ class OrderHomeController extends GetxController {
       orderItem.clear();
       orderItem.refresh();
       List<OrderItem> tempdata = value;
+
       tempdata.forEach((element) {
         if (element.CustomerId.toString() == selectedCustomerId.value) {
           orderItem.add(element);
         }
       });
+      tempdata.clear();
       // orderItem.value = value;
       orderItem.refresh();
       Update();
@@ -415,6 +419,9 @@ class OrderHomeController extends GetxController {
           await reqOrderedItemsList(
               orderId: orderItem[orderItem.length - 1].orderId!);
         }
+      } else {
+        itemList.clear();
+        itemList.refresh();
       }
       print(orderItem.length);
       Update();
@@ -470,8 +477,13 @@ class OrderHomeController extends GetxController {
     await saveItemDao.findAllSaveItem().then((value) {
       saveItem.clear();
       saveItem.refresh();
-      saveItem.value = value;
-      saveItem.reversed;
+      List<SaveItem> tempDATA = value ?? [];
+      tempDATA.forEach((element) {
+        if (element.CustomerId == selectedCustomerId.value) {
+          saveItem.add(element);
+        }
+      });
+
       saveItem.refresh();
       print(saveItem.length);
 

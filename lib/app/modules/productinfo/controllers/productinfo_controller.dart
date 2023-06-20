@@ -53,6 +53,8 @@ class ProductinfoController extends GetxController {
     return price.value;
   }
 
+  RxDouble mrp = 0.0.obs;
+
   RxMap<String, dynamic> products = <String, dynamic>{}.obs;
   RxMap<String, dynamic> tempData = <String, dynamic>{}.obs;
   setData({required dynamic data}) async {
@@ -61,7 +63,17 @@ class ProductinfoController extends GetxController {
     requestPriceList();
     products.value = data ?? {};
     products.refresh();
-    customerCode = Pref.readData(key: Pref.CUSTOMER_CODE);
+    customerCode.value = Pref.readData(key: Pref.CUSTOMER_CODE);
+    mrpValueSetter();
+    // calculation(price: 500, quanity: 1);
+    update();
+  }
+
+  mrpValueSetter() {
+    mrp.value = double.tryParse(products['MPR'].toString()) ??
+        getSellPriceByProductCode(
+            productCode: products['PRODUCT_CODE'].toString(),
+            orgCode: products['ORG_CODE'].toString());
     // calculation(price: 500, quanity: 1);
     update();
   }
@@ -105,8 +117,9 @@ class ProductinfoController extends GetxController {
     }
 
     // Check if the item already exists in the cart
-    CartItem? existingItem =
-        await cartItemDao.findCartItemById(data.productSku!).first;
+    CartItem? existingItem = await cartItemDao
+        .findCartItemByCustomerId(data.productSku!, data.customerName!)
+        .first;
 
     if (existingItem != null) {
       // If the item already exists, update its quantity

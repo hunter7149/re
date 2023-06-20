@@ -485,25 +485,30 @@ class CartController extends GetxController {
     Update();
     // await userconsent();
     if (lattitude.value != 0.0 && longitude.value != 0.0) {
-      await Repository()
-          .requestWeather(
-              lattitude: lattitude.value, longitude: longitude.value)
-          .then((value) {
-        if (value != null) {
-          print(value);
-          weatherData.value = value;
-          weatherData.refresh();
-          temparature.value =
-              weatherData['current_weather']['temperature'].toString() ??
-                  0.0.toString();
-          weatherCode.value =
-              weatherData['current_weather']['weathercode'].toString() ??
-                  0.0.toString();
+      try {
+        await Repository()
+            .requestWeather(
+                lattitude: lattitude.value, longitude: longitude.value)
+            .then((value) {
+          if (value != null) {
+            print(value);
+            weatherData.value = value;
+            weatherData.refresh();
+            temparature.value =
+                weatherData['current_weather']['temperature'].toString() ??
+                    0.0.toString();
+            weatherCode.value =
+                weatherData['current_weather']['weathercode'].toString() ??
+                    0.0.toString();
+            Update();
+          }
+          isWeatherLoading.value = false;
           Update();
-        }
+        });
+      } on Exception catch (e) {
         isWeatherLoading.value = false;
         Update();
-      });
+      }
     }
   }
 

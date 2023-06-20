@@ -181,8 +181,9 @@ class ProductcController extends GetxController {
     }
 
     // Check if the item already exists in the cart
-    CartItem? existingItem =
-        await cartItemDao.findCartItemById(data.productSku!).first;
+    CartItem? existingItem = await cartItemDao
+        .findCartItemByCustomerId(data.productSku!, data.customerName!)
+        .first;
 
     if (existingItem != null) {
       // If the item already exists, update its quantity
@@ -327,7 +328,7 @@ class ProductcController extends GetxController {
   setData({required dynamic data}) async {
     tempData.value = data as Map<String, dynamic>;
     tempData.refresh();
-    customerCode = Pref.readData(key: Pref.CUSTOMER_CODE);
+    customerCode.value = Pref.readData(key: Pref.CUSTOMER_CODE);
     update();
 
     await requestPriceList();
