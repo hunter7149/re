@@ -155,6 +155,62 @@ class COMMONWIDGET {
     );
   }
 
+  static successAlert({required String message}) async {
+    Get.closeAllSnackbars();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.generalDialog(
+          // transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+          //       filter: ImageFilter.blur(
+          //         sigmaX: 4 * anim1.value,
+          //         sigmaY: 4 * anim1.value,
+          //       ),
+          //       child: FadeTransition(
+          //         child: child,
+          //         opacity: anim1,
+          //       ),
+          //     ),
+          pageBuilder: (ctx, anim1, anim2) {
+        TextEditingController quanity = TextEditingController();
+
+        return MediaQuery(
+          data: MediaQuery.of(ctx).copyWith(textScaleFactor: 1.0),
+          child: AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            content: Container(
+              height: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          height: 100,
+                          width: 100,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Image.asset(
+                            "assets/images/success.png",
+                          )),
+                      Text(
+                        "${message}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 18),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            actionsPadding: EdgeInsets.all(10),
+            actions: [],
+          ),
+        );
+      });
+    });
+  }
+
   static addtoCart(
       {required String title,
       required VoidCallback funtion,

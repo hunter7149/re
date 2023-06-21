@@ -58,15 +58,13 @@ class CartView extends GetView<CartController> {
                                       height: 40,
                                       color: AppThemes.modernBlue,
                                       child: Center(
-                                        child: Flexible(
-                                          child: Text(
-                                            "${controller.dropdownBeatValue.value}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14),
-                                            overflow: TextOverflow.fade,
-                                            // textAlign: TextAlign.center,
-                                          ),
+                                        child: Text(
+                                          "${controller.dropdownBeatValue.value}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14),
+                                          overflow: TextOverflow.ellipsis,
+                                          // textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ),
@@ -80,15 +78,13 @@ class CartView extends GetView<CartController> {
                                       height: 40,
                                       color: AppThemes.modernBlue,
                                       child: Center(
-                                        child: Flexible(
-                                          child: Text(
-                                            "${controller.dropdownCustomerValue.value}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14),
-                                            overflow: TextOverflow.fade,
-                                            textAlign: TextAlign.center,
-                                          ),
+                                        child: Text(
+                                          "${controller.dropdownCustomerValue.value}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14),
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ),
