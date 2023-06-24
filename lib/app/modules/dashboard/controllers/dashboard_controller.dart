@@ -141,14 +141,25 @@ class DashboardController extends GetxController {
           .map<String>(
               (customer) => "${customer['CUSTOMER_NAME']} ~${customer['ID']}")
           .toList();
-      customerData.clear();
 
-      if (filteredResults.isEmpty) {
+      List<String> uniqueResults = [];
+      for (var formattedCustomer in filteredResults) {
+        if (!uniqueResults.contains(formattedCustomer)) {
+          uniqueResults.add(formattedCustomer);
+        }
+      }
+      filteredCustomers = uniqueResults;
+
+      if (uniqueResults.isEmpty) {
+        customerData.clear();
         customerData.add('No results found');
+        customerData.refresh();
         DropdownCustomerValueUpdater('No results found');
       } else {
-        DropdownCustomerValueUpdater(filteredResults.first);
-        customerData.addAll(filteredResults);
+        customerData.clear();
+        customerData.addAll(uniqueResults);
+        customerData.refresh();
+        DropdownCustomerValueUpdater(uniqueResults.first);
       }
     }
   }

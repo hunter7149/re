@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:floor/floor.dart';
 import 'package:location/location.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:sales/app/DAO/offlineOrderDao.dart';
 import 'package:sales/app/DAO/orderItemDao.dart';
 import 'package:sales/app/DAO/saleRequisitionDao.dart';
 import 'package:sales/app/DAO/saveItemDao.dart';
+import 'package:sales/app/components/common_widgets.dart';
 import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/models/offlineorder.dart';
@@ -264,15 +264,14 @@ class CartController extends GetxController {
             await cartItemDao
                 .deleteCartItemByCustomerID(Pref.readData(key: Pref.USER_ID),
                     Pref.readData(key: Pref.CUSTOMER_CODE))
-                .then((value) {
+                .then((value) async {
               cartItems.clear();
               cartItems.refresh();
-              QuickAlert.show(
-                confirmBtnColor: AppThemes.modernGreen,
-                context: Get.context!,
-                type: QuickAlertType.success,
-                // autoCloseDuration: Duration(seconds: 2),
-              );
+              await COMMONWIDGET.successAlert(
+                  message: "Your order has been placed");
+              Timer(Duration(seconds: 2), () {
+                Get.back();
+              });
             });
             Update();
           } else {
@@ -322,14 +321,14 @@ class CartController extends GetxController {
             await cartItemDao
                 .deleteCartItemByCustomerID(Pref.readData(key: Pref.USER_ID),
                     Pref.readData(key: Pref.CUSTOMER_CODE))
-                .then((value) {
+                .then((value) async {
               cartItems.clear();
               cartItems.refresh();
-              QuickAlert.show(
-                confirmBtnColor: AppThemes.modernGreen,
-                context: Get.context!,
-                type: QuickAlertType.success,
-              );
+              await COMMONWIDGET.successAlert(
+                  message: "Your order has been placed");
+              Timer(Duration(seconds: 2), () {
+                Get.back();
+              });
             });
 
             Update();

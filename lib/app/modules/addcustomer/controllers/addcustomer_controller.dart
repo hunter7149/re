@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
+
 import 'package:sales/app/components/connection_checker.dart';
 import 'package:sales/app/components/thana_finder.dart';
 
 import '../../../api/repository/repository.dart';
 import '../../../api/service/prefrences.dart';
+import '../../../components/common_widgets.dart';
 import '../../../config/app_themes.dart';
 
 class AddcustomerController extends GetxController {
@@ -219,7 +221,7 @@ class AddcustomerController extends GetxController {
 
   RxBool isError = false.obs;
   RxList<String> emptyFields = <String>[].obs;
-  void validateForm() {
+  Future<void> validateForm() async {
     emptyFields.value = findEmptyFields();
     emptyFields.refresh();
 
@@ -227,14 +229,10 @@ class AddcustomerController extends GetxController {
       isError.value = false;
       Update();
       print("Form is valid");
-      QuickAlert.show(
-          context: Get.context!,
-          confirmBtnColor: AppThemes.modernGreen,
-          type: QuickAlertType.success,
-          onConfirmBtnTap: () {
-            Get.back();
-            Get.back();
-          });
+      await COMMONWIDGET.successAlert(message: "Your order has been placed");
+      Timer(Duration(seconds: 2), () {
+        Get.back();
+      });
     } else {
       isError.value = true;
       Update();
