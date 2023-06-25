@@ -229,6 +229,13 @@ class CartView extends GetView<CartController> {
                                                     SizedBox(
                                                       height: 5,
                                                     ),
+                                                    Text(
+                                                        " ${controller.cartItems[index].catagory}",
+                                                        style: TextStyle(
+                                                            fontSize: 14)),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
                                                     Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment

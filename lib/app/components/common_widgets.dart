@@ -12,7 +12,7 @@ import '../config/app_assets.dart';
 import '../modules/noticescreen/controllers/noticescreen_controller.dart';
 
 class COMMONWIDGET {
-  static underDev() {
+  static underDev({required bool backFunction}) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -37,23 +37,25 @@ class COMMONWIDGET {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ZoomTapAnimation(
-                onTap: () {
-                  Get.back();
-                },
-                child: Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                      color: AppThemes.PrimaryColor,
-                      borderRadius: BorderRadius.circular(100)),
-                  child: Center(
-                      child: Text(
-                    "OK",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  )),
-                ),
-              )
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: backFunction
+                      ? Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: AppThemes.PrimaryColor,
+                              borderRadius: BorderRadius.circular(100)),
+                          child: Center(
+                              child: Text(
+                            "OK",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                        )
+                      : Container())
             ],
           ),
         ],

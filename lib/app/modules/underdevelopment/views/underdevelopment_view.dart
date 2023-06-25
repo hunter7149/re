@@ -24,7 +24,7 @@ class UnderdevelopmentView extends GetView<UnderdevelopmentController> {
       //   ),
       // ),
       backgroundColor: Colors.white,
-      body: Center(child: COMMONWIDGET.underDev()),
+      body: Center(child: COMMONWIDGET.underDev(backFunction: true)),
     );
   }
 }

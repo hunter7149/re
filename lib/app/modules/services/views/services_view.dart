@@ -11,7 +11,7 @@ class ServicesView extends GetView<ServicesController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: COMMONWIDGET.underDev()),
+      body: Center(child: COMMONWIDGET.underDev(backFunction: false)),
     );
   }
 }
