@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ import 'package:sales/app/config/app_themes.dart';
 import 'package:sales/app/sync/products/offlineordersync.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
-import '../../../models/saleRequisition.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/order_home_controller.dart';
 
@@ -130,7 +128,10 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                     style:
                                         TextStyle(color: AppThemes.modernGreen),
                                   ),
-                                  SpinKitDoubleBounce(
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  SpinKitThreeBounce(
                                     size: 20,
                                     color: AppThemes.modernGreen,
                                   ),
@@ -200,7 +201,10 @@ class OrderHomeView extends GetView<OrderHomeController> {
                                     style:
                                         TextStyle(color: AppThemes.modernGreen),
                                   ),
-                                  SpinKitDoubleBounce(
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  SpinKitThreeBounce(
                                     size: 20,
                                     color: AppThemes.modernGreen,
                                   ),

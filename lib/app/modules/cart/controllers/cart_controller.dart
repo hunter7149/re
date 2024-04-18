@@ -504,7 +504,7 @@ class CartController extends GetxController {
           isWeatherLoading.value = false;
           Update();
         });
-      } on Exception catch (e) {
+      } on Exception {
         isWeatherLoading.value = false;
         Update();
       }
@@ -724,10 +724,7 @@ class CartController extends GetxController {
   isbeatCustomerEmpty() {
     if (dropdownBeatValue.value == '' ||
         dropdownCustomerValue.value == '' ||
-        selectedCustomerId.value == '' ||
-        dropdownBeatValue.value == null ||
-        dropdownCustomerValue.value == null ||
-        selectedCustomerId.value == null) {
+        selectedCustomerId.value == '') {
       return true;
     } else {
       return false;

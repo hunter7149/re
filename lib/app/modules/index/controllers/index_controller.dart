@@ -5,12 +5,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:sales/app/components/app_strings.dart';
 import 'package:sales/app/components/cart_value.dart';
 import 'package:sales/app/modules/cart/controllers/cart_controller.dart';
 import 'package:sales/app/modules/orderpage/controllers/orderpage_controller.dart';
 import 'package:sales/app/sync/products/offlineordersync.dart';
-import 'package:sales/app/sync/products/offlineproductsync.dart';
 
 import '../../../api/firebase/pushnotificationservice.dart';
 

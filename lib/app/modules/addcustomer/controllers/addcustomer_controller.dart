@@ -11,7 +11,6 @@ import 'package:sales/app/components/thana_finder.dart';
 import '../../../api/repository/repository.dart';
 import '../../../api/service/prefrences.dart';
 import '../../../components/common_widgets.dart';
-import '../../../config/app_themes.dart';
 
 class AddcustomerController extends GetxController {
   RxBool isCustomerTypeLoading = false.obs;

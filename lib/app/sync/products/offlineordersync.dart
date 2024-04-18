@@ -113,7 +113,7 @@ class OFFLINEORDERSYNC {
                   count.value += 1;
                   Update();
                   await orderItemDao.updateOrderItemStatus(
-                      orderItem[0].orderId!, value['result'].toString()!);
+                      orderItem[0].orderId!, value['result'].toString());
                   await offlineOrderDao.deleteOrderItemByID(element.orderId!);
                 }
               } else {

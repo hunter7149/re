@@ -1,6 +1,5 @@
 // import 'package:chewie/chewie.dart';
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:chewie/chewie.dart';
 

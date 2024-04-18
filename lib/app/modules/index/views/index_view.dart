@@ -19,7 +19,6 @@ import 'package:sales/app/modules/promotionalads/bindings/promotionalads_binding
 import 'package:sales/app/modules/promotionalads/views/promotionalads_view.dart';
 import 'package:sales/app/modules/statisticspage/bindings/statisticspage_binding.dart';
 import 'package:sales/app/modules/statisticspage/views/statisticspage_view.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../constants.dart';
 import '../../../routes/app_pages.dart';
 import '../../account/views/account_view.dart';

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,13 +10,10 @@ import 'package:sales/app/components/app_strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-import '../../../../constants.dart';
-import '../../../api/firebase/pushnotificationservice.dart';
 import '../../../api/repository/repository.dart';
 import '../../../api/service/prefrences.dart';
 import '../../../components/connection_checker.dart';
 import '../../../config/app_themes.dart';
-import '../../../routes/app_pages.dart';
 import '../../../sync/products/offlineproductsync.dart';
 
 class DashboardController extends GetxController {
